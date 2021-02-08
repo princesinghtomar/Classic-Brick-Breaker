@@ -23,6 +23,7 @@ while True:
 screen_board = screen(HEIGHT,WIDTH)
 screen_board.create_scenery()
 # print(screen_board.return_screenarray())
+os.system('clear')
 screen_board.showscreen()
 while True:
     key = input_to()

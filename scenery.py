@@ -1,7 +1,5 @@
-from headerfile import *
 import numpy as np
-import os
 
 class scenery :
-    def __init__(self):
-        
+    def __init__(self,HEIGHT,WIDTH,screenarray):
+        self.

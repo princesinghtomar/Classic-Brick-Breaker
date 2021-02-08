@@ -2,8 +2,8 @@
 # parameters :
 GROUND = 1
 SKY = 4
-HEIGHT = 40
-WIDTH = 150
+HEIGHT = 45
+WIDTH = 165
 
 #NOTE Colors 
 # Foreground Colors :

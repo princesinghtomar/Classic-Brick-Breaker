@@ -1,9 +1,10 @@
-
 # parameters :
 GROUND = 1
 SKY = 4
 HEIGHT = 45
 WIDTH = 165
+clear_screen = "\033[0;0H"
+paddle_size = [5,7,11]
 
 #NOTE Colors 
 # Foreground Colors :

@@ -9,7 +9,7 @@ bricks = np.array(["[####]","[$$$$]","[++++]","[IIII]"])
 Ball = "O"
 
 # Paddle :
-paddle = np.array(["<=====>","<=======>","<===========>"])
+paddle_size = np.array([5,7,11])
 
 # Brick Orientations :
 o_1 = "1-1-1-1-1-1-1-1-1-1-1" + " " + \

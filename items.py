@@ -6,15 +6,15 @@ from art import *
 bricks = np.array(["[####]","[$$$$]","[++++]","[IIII]"])
 
 # Ball :
-Ball = "O"
+ball = "O"
 
 # Paddle :
 paddle_size = np.array([5,7,11])
 
 # Brick Orientations :
-o_1 = "1-1-1-1-1-1-1-1-1-1-1" + " " + \
+b_1 = "1-1-1-1-1-1-1-1-1-1-1" + " " + \
       "2-2-2-2-2-2-2-2-2-2-2"
-brick_orientation = np.array(o_1)
+brick_orientation = np.array([b_1])
 
 # instructions :
 instructions = fred + art.instructions_art + all_reset + "\n" + \

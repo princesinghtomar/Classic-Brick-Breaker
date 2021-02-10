@@ -6,6 +6,7 @@ from keypressed import *
 from screen import *
 from paddle import *
 from gametop import *
+from  bricks import *
 
 print(instructions)
 
@@ -25,10 +26,11 @@ screen_array = screen_board.return_screenarray()
 paddle_array = np.array([80,43,0])
 paddle = paddle(paddle_array[0],paddle_array[1],paddle_array[2])
 paddle.update_paddle_onscreen(screen_array)
-
+bricks = Bricks()
+bricks.update_brick_onscreen(screen_array)
 score = 0
 start_time = time.time()
-available_time = 10000
+available_time = 1000
 livesleft = 3
 gametop_data = gametop(available_time,score,livesleft)
 gametop_data.update_gametop_onscreen(screen_array)
@@ -53,8 +55,9 @@ while True:
         if(paddle_end < WIDTH-2):
             paddle_array[0] += 1
             paddle.update_paddle_value(paddle_array[0],paddle_array[1],paddle_array[2])
-
-    available_time -= (time.time() - start_time)
+    cur_time = time.time()
+    available_time -= (cur_time - start_time)
+    start_time = cur_time
     if(available_time < 0):
         os.system('clear')
         print('Time_Over')

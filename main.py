@@ -7,6 +7,7 @@ from screen import *
 from paddle import *
 from gametop import *
 from  bricks import *
+from ball import *
 
 print(instructions)
 
@@ -27,6 +28,7 @@ paddle_array = np.array([80,43,0])
 paddle = paddle(paddle_array[0],paddle_array[1],paddle_array[2])
 paddle.update_paddle_onscreen(screen_array)
 bricks = Bricks()
+ball = Ball(-1,-1,42,80,screen_array)
 bricks.update_brick_onscreen(screen_array)
 score = 0
 start_time = time.time()
@@ -43,7 +45,7 @@ while True:
     paddle_end = paddle_array[0] + half_size + 1
     print(clear_screen)
     if(key == 'q'):
-        os.system('clear')
+        #os.system('clear')
         print(art.you_quit_art)
         break
     if(key == 'a'):
@@ -59,9 +61,16 @@ while True:
     available_time -= (cur_time - start_time)
     start_time = cur_time
     if(available_time < 0):
-        os.system('clear')
+        #os.system('clear')
         print('Time_Over')
         break
+    ball_return_value = ball.update_ball_motion(screen_array)
+    if(ball_return_value < 0):
+        livesleft -= 1
+        if(livesleft <= 0):
+            print("You loose")
+            break
+        ball = Ball(-1,-1,42,80,screen_array)
     gametop_data.update_gametop(available_time,score,livesleft)
     gametop_data.update_gametop_onscreen(screen_array)
     paddle.update_paddle_onscreen(screen_array)

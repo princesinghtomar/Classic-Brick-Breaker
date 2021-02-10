@@ -6,7 +6,7 @@ from art import *
 bricks = np.array(["[####]","[$$$$]","[++++]","[IIII]"])
 
 # Ball :
-ball = "O"
+ball_graphic = "O"
 
 # Paddle :
 paddle_size = np.array([5,7,11])

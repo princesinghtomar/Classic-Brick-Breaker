@@ -1,3 +1,4 @@
+import numpy as np
 # parameters :
 GROUND = 1
 SKY = 4
@@ -53,3 +54,5 @@ back_rest = "\033[49m"
 fore_reset = "\033[39m"
 
 # print(bcyan + "bcyan"+ all_reset + bbrightcyan + "bbrightcyan" + all_reset)
+bricks_color = np.array([bred,byellow,bcyan,bgreen])
+bricks_font_color = np.array([fbrightred,fbrightyellow,fbrightblue,fbrightgreen])

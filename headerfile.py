@@ -6,6 +6,8 @@ HEIGHT = 45
 WIDTH = 165
 clear_screen = "\033[0;0H"
 paddle_size = [5,7,11]
+ball_x_starting_constant_velocity = -1
+ball_y_starting_constant_velocity = -1
 
 #NOTE Colors 
 # Foreground Colors :

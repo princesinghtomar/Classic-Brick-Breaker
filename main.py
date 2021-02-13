@@ -10,7 +10,6 @@ from gametop import *
 from  bricks import *
 from ball import *
 
-# random.seed(0)
 sys_random = random.SystemRandom()
 print(instructions)
 
@@ -23,7 +22,7 @@ while True:
         exit()
     else : 
         pass
-
+os.system('clear')
 screen_board = screen(HEIGHT,WIDTH)
 screen_board.create_scenery()
 screen_array = screen_board.return_screenarray()
@@ -40,6 +39,9 @@ livesleft = 3
 gametop_data = gametop(available_time,score,livesleft)
 gametop_data.update_gametop_onscreen(screen_array)
 screen_board.showscreen()
+# print((screen_array[21][57][10]))
+bricks.remove_brick_onscreen(screen_array,21,60)
+# exit()
 while True:
     key = input_to()
     half_size = (int)(paddle_size[paddle_array[2]]+2)/2

@@ -1,3 +1,6 @@
+""" This file contains color defination and some needed variable 
+"""
+
 import numpy as np
 # parameters :
 GROUND = 1

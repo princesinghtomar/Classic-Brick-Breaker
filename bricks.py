@@ -6,9 +6,9 @@ import random
 sys_random = random.SystemRandom()
 
 class Bricks:
+    """ This class handles all brick related functionality
+    """
     def __init__(self):
-        """ This class handles brick related functionality
-        """
         self.brick_start_x = 20
         self.brick_start_y = 45
         self.brick_configuration = brick_orientation[sys_random.randint(0,((brick_orientation.size)-1))].split()

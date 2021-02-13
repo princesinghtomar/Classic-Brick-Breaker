@@ -12,7 +12,6 @@ from ball import *
 
 sys_random = random.SystemRandom()
 print(instructions)
-
 # Selecting loop :
 while True:
     pressed_key = input_to()
@@ -39,27 +38,24 @@ livesleft = 3
 gametop_data = gametop(available_time,score,livesleft)
 gametop_data.update_gametop_onscreen(screen_array)
 screen_board.showscreen()
-# print((screen_array[21][57][10]))
-bricks.remove_brick_onscreen(screen_array,21,60)
-# exit()
 while True:
     key = input_to()
-    half_size = (int)(paddle_size[paddle_array[2]]+2)/2
+    half_size = int((paddle_size[paddle_array[2]]+2)/2)
     paddle_start = paddle_array[0] - half_size
     paddle_end = paddle_array[0] + half_size + 1
+    print(paddle_start)
     print(clear_screen)
     if(key == 'q'):
         #os.system('clear')
         print(art.you_quit_art)
         break
-    if(key == 'a'):
-        if(paddle_start > 2):
-            paddle_array[0] -= 1
+    elif(key == 'a'):
+        if(paddle_start > 4):
+            paddle_array[0] -= 3
             paddle.update_paddle_value(paddle_array[0],paddle_array[1],paddle_array[2])
-        
-    if(key == 'd'):
-        if(paddle_end < WIDTH-2):
-            paddle_array[0] += 1
+    elif(key == 'd'):
+        if(paddle_end < WIDTH-3):
+            paddle_array[0] += 3
             paddle.update_paddle_value(paddle_array[0],paddle_array[1],paddle_array[2])
     cur_time = time.time()
     available_time -= (cur_time - start_time)
@@ -68,7 +64,7 @@ while True:
         #os.system('clear')
         print('Time_Over')
         break
-    ball_return_value = ball.update_ball_motion(screen_array)
+    ball_return_value = ball.update_ball_motion(screen_array,bricks,paddle_start,paddle_end)
     if(ball_return_value < 0):
         livesleft -= 1
         if(livesleft <= 0):

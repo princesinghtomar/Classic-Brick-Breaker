@@ -1,5 +1,6 @@
 import time
 import os
+import random
 from headerfile import *
 from items import *
 from keypressed import *
@@ -9,6 +10,8 @@ from gametop import *
 from  bricks import *
 from ball import *
 
+# random.seed(0)
+sys_random = random.SystemRandom()
 print(instructions)
 
 # Selecting loop :
@@ -28,7 +31,7 @@ paddle_array = np.array([80,43,0])
 paddle = paddle(paddle_array[0],paddle_array[1],paddle_array[2])
 paddle.update_paddle_onscreen(screen_array)
 bricks = Bricks()
-ball = Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,80,screen_array)
+ball = Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,sys_random.choice(random_paddle_array),screen_array)
 bricks.update_brick_onscreen(screen_array)
 score = 0
 start_time = time.time()

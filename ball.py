@@ -11,7 +11,6 @@ def raytrace(A, B):
     """ Return all cells of the unit grid crossed by the line segment between
         A and B.
     """
-
     (xA, yA) = A
     (xB, yB) = B
     (dx, dy) = (xB - xA, yB - yA)
@@ -59,15 +58,11 @@ class Ball:
         previous_y = self._y
         size_x = abs(self.velocity_x)
         size_y = abs(self.velocity_y)
-        # print("temp_x :",temp_x)
-        # print("temp_y :",temp_y)
-        # print("velocity_x :",self.velocity_x)
         # if went below paddle :
         if(temp_x >= 42):
             screen_array[previous_x][previous_y] = ' '
             return -2
         else:
-            a = screen_array[temp_x][temp_y]
             size = bricks.size
             array = [bricks_color[i]+bricks_font_color[i]+bricks[i][1]+all_reset for i in range(0,size)]
             screen_array[previous_x][previous_y] = ' '
@@ -97,13 +92,44 @@ class Ball:
                 temp_y = (WIDTH - 2) + temp_val
             else:
                 # collision with bricks :
-                sign_vx = self.velocity_x >= 0 ? +1 : -1
-                sign_vy = self.velocity_y >= 0 ? +1 : -1
-                if(abs(self.velocity_x) == abs(self.velocity_y) ):
-                    squares_covered = raytrace((previous_x,previous_y),(temp_x,temp_y))
+                sign_vx = sign(self.velocity_x)
+                sign_vy = sign(self.velocity_y)
+                flag = 0
+                if(abs(self.velocity_x)==0):
+                    if(screen_array[temp_x][temp_y] != ' ' ):
+                        self.velocity_y = -self.velocity_y
+                        temp_y = previous_y
+                elif(abs(self.velocity_x)==1):
+                    if(screen_array[temp_x-sign_vx][temp_y]!=' ' and screen_array[temp_x][temp_y-sign_vy]!=' '):
+                        self.velocity_y = -self.velocity_y
+                        self.velocity_x = -self.velocity_x
+                        temp_x = previous_x
+                        temp_y = previous_y
+                    elif(screen_array[temp_x-sign_vx][temp_y] != ' '):
+                        self.velocity_y = -self.velocity_y
+                        temp_y = temp_y + sign_vy
+                    elif(screen_array[temp_x][temp_y-sign_vy] != ' '):
+                        self.velocity_x = -self.velocity_x
+                        temp_x = temp_x + sign_vx
+                    elif(screen_array[temp_x][temp_y]!=' '):
+                        self.velocity_x = -self.velocity_x
+                        self.velocity_y = -self.velocity_y
+                    # self._x = temp_x
+                    # self._y = temp_y
+                elif(abs(self.velocity_x)==2):
+                    if(screen_array[self._x][self._y+sign_vy]!= ' '):
+                        self.velocity_y = -self.velocity_y
+                        temp_y = temp_y - 2*sign_vy
+                    elif(screen_array[self._x+sign_vx][self.sign_vy]!= ' '):
+                        self.velocity_x = -self.velocity_x
+                        temp_x = temp_x - sign_vx
+                    elif(screen_array[temp_x][temp_y]!=' '):
+                        self.velocity_y = -self.velocity_y
+                        temp_y = temp_y-sign_vy
+                # elif(abs(self.velocity_x)==3):
+                #     if(screen_array[self._x])
 
-
-            if(a == ' '):
+            if(screen_array[temp_x][temp_y] == ' '):
                 self._x = temp_x
                 self._y = temp_y
             if(point_is):

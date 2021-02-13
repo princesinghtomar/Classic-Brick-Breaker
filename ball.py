@@ -90,44 +90,8 @@ class Ball:
                 self.velocity_y = -self.velocity_y
                 temp_val = (WIDTH - 2) - temp_y
                 temp_y = (WIDTH - 2) + temp_val
-            else:
+            # else:
                 # collision with bricks :
-                sign_vx = sign(self.velocity_x)
-                sign_vy = sign(self.velocity_y)
-                flag = 0
-                if(abs(self.velocity_x)==0):
-                    if(screen_array[temp_x][temp_y] != ' ' ):
-                        self.velocity_y = -self.velocity_y
-                        temp_y = previous_y
-                elif(abs(self.velocity_x)==1):
-                    if(screen_array[temp_x-sign_vx][temp_y]!=' ' and screen_array[temp_x][temp_y-sign_vy]!=' '):
-                        self.velocity_y = -self.velocity_y
-                        self.velocity_x = -self.velocity_x
-                        temp_x = previous_x
-                        temp_y = previous_y
-                    elif(screen_array[temp_x-sign_vx][temp_y] != ' '):
-                        self.velocity_y = -self.velocity_y
-                        temp_y = temp_y + sign_vy
-                    elif(screen_array[temp_x][temp_y-sign_vy] != ' '):
-                        self.velocity_x = -self.velocity_x
-                        temp_x = temp_x + sign_vx
-                    elif(screen_array[temp_x][temp_y]!=' '):
-                        self.velocity_x = -self.velocity_x
-                        self.velocity_y = -self.velocity_y
-                    # self._x = temp_x
-                    # self._y = temp_y
-                elif(abs(self.velocity_x)==2):
-                    if(screen_array[self._x][self._y+sign_vy]!= ' '):
-                        self.velocity_y = -self.velocity_y
-                        temp_y = temp_y - 2*sign_vy
-                    elif(screen_array[self._x+sign_vx][self.sign_vy]!= ' '):
-                        self.velocity_x = -self.velocity_x
-                        temp_x = temp_x - sign_vx
-                    elif(screen_array[temp_x][temp_y]!=' '):
-                        self.velocity_y = -self.velocity_y
-                        temp_y = temp_y-sign_vy
-                # elif(abs(self.velocity_x)==3):
-                #     if(screen_array[self._x])
 
             if(screen_array[temp_x][temp_y] == ' '):
                 self._x = temp_x

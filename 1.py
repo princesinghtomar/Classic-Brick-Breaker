@@ -2,9 +2,9 @@ def sign(n):
     return (n > 0) - (n < 0)
 
 def raytrace(A, B):
-    """ Return all cells of the unit grid crossed by the line segment between
+    ''' Return all cells of the unit grid crossed by the line segment between
         A and B.
-    """
+    '''
     (xA, yA) = A
     (xB, yB) = B
     (dx, dy) = (xB - xA, yB - yA)

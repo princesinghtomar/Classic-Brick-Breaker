@@ -2,8 +2,9 @@ import numpy as np
 import sys
 
 class screen:
-    """ This class handle creating and displaying task of game screen
-    """
+    ''' 
+    This class handle creating and displaying task of game screen
+    '''
 
     def __init__(self,HEIGHT,WIDTH):
         self.width = WIDTH

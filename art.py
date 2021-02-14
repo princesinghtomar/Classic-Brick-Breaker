@@ -1,6 +1,7 @@
 class art :
-    """ This class containis Art items used in the game
-    """
+    ''' 
+    This class containis Art items used in the game
+    '''
     game_over_art = "" +\
     "  ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗ \n" + \
     " ██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██║   ██║██╔════╝██╔══██╗\n" + \

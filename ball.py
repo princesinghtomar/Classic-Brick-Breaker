@@ -7,14 +7,14 @@ from math import floor
 # CHECK THIS PART :-/
 
 def sign(n):
-    """ Return value: Sign of input value
-    """
+    ''' Return value: Sign of input value
+    '''
     return (n > 0) - (n < 0)
 
 # def raytrace(A, B):
-#     """ Return all cells of the unit grid crossed by the line segment between
+#     ''' Return all cells of the unit grid crossed by the line segment between
 #         A and B.
-#     """
+#     '''
 #     (xA, yA) = A
 #     (xB, yB) = B
 #     (dx, dy) = (xB - xA, yB - yA)
@@ -47,8 +47,8 @@ def sign(n):
 #     return traversed
 
 class Ball:
-    """ This class contains all ball functions
-    """
+    ''' This class contains all ball functions
+    '''
     def __init__(self,velocity_x,velocity_y,x,y,screen_array):
         self.velocity_x = velocity_x
         self.velocity_y = velocity_y
@@ -58,8 +58,8 @@ class Ball:
             screen_array[x][y] = 'O'
 
     def for_velocity_one(self,screen_array,temp_x,temp_y,bricks_class):
-        """ This function constains final position if velocity given is 1
-        """
+        ''' This function constains final position if velocity given is 1
+        '''
         sign_vx = sign(self.velocity_x)
         sign_vy = sign(self.velocity_y)
         previous_x = self._x
@@ -86,8 +86,8 @@ class Ball:
         return (temp_x,temp_y)
 
     def update_ball_motion(self,screen_array,bricks_class,paddle_start,paddle_end):
-        """ This functions handle collision of ball with bricks
-        """
+        ''' This functions handle collision of ball with bricks
+        '''
         temp_x = self._x + self.velocity_x
         temp_y = self._y + self.velocity_y
         previous_x = self._x
@@ -183,8 +183,8 @@ class Ball:
                 return -2
 
     def update_ball_onscreen(self,screen_array):
-        """ This function updates ball on screen :)
-        """
+        ''' This function updates ball on screen :)
+        '''
         if(screen_array[self._x][self._y] == ' '):
             screen_array[self._x][self._y] = 'O'
 

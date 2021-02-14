@@ -1,5 +1,5 @@
-""" This file contains color defination and some needed variable 
-"""
+''' This file contains color defination and some needed variable 
+'''
 
 import numpy as np
 # parameters :

@@ -2,53 +2,26 @@ import numpy as np
 from items import *
 from headerfile import *
 from bricks import *
-import math
-import sys
+from math 
 
 # CHECK THIS PART :-/
 
-#   *-------
-#   | | | | |
-#   *-------
-#   | | | | |
-#   *-------
-
 def sign(n):
-    '''
-    Return sign of n
-    '''
     return (n > 0) - (n < 0)
 
 def s1(coeff,x,y):
-    '''
-    Return the sign of point with line
-    '''
     return (y - coeff[0]*x - coeff[1])
 
 def s(coeff,x,y):
-    '''
-    Returns whether point lies between line or not
-    '''
     val1 = (s1(coeff,x+1,y)) * (s1(coeff,x,y+1))
     val2 = (s1(coeff,x,y)) * (s1(coeff,x+1,y+1))
     return True if (val1 <= 1e-8 or val2 <= 1e-8 ) else False
 
-def sort_bydist(arr,x,y,flag_check):
-    '''
-    Returns sorted list accr to their distance by starting point
-    '''
+def sort_bydist(arr,x,y):
     a = []
-    size = len(arr)
-    j=0
     for i in arr:
-        if(flag_check):
-            if(j!=0 and j!=(size-1)):
-                dist = math.sqrt(math.pow(i[0]-x,2) + math.pow(i[1]-y,2))
-                a.append((dist,(i[0],i[1])))
-        else:
-            dist = math.sqrt(math.pow(i[0]-x,2) + math.pow(i[1]-y,2))
-            a.append((dist,(i[0],i[1])))
-        j+=1
+        dist = math.sqrt(math.pow(i[0]-x,2) + math.pow(i[1]-y,2))
+        a.append((dist,(i[0],i[1])))
     a.sort()
     val = []
     for i in a:
@@ -56,28 +29,17 @@ def sort_bydist(arr,x,y,flag_check):
     return val
 
 def raytrace(A, B):
-    ''' 
-    Return all cells of the unit grid crossed by the line segment between
-    A and B.
+    ''' Return all cells of the unit grid crossed by the line segment between
+        A and B.
     '''
-    flag_check = 0
     (xA, yA) = A
     (xB, yB) = B
     (dx, dy) = (xB - xA, yB - yA)
+    temp = xB - xA
     coeff = []
-    '''
-    Never let vX be 0
-    '''
-    if(dy/dx < 0):
-        flag_check = 1
-        if(dy>0):
-            yB+=1
-            xA+=1
-        else:
-            yA+=1
-            xB+=1
-    (dx, dy) = (xB - xA, yB - yA)
+    coeff.append(dy/dx)
     #
+    #    point to remember i.e. never make x-velocty as zero
     #   If slope = -ve 
     #       then do (xA+1,yB) & (xB,yB+1)
     #   elif slope = +ve
@@ -85,7 +47,6 @@ def raytrace(A, B):
     #   elif slope == 0
     #       then do nothing
     #
-    coeff.append(dy/dx)
     coeff.append(yA-coeff[0]*xA)
     sigvar = (sx, sy) = (sign(dx), sign(dy))
     grid_start = A
@@ -101,10 +62,21 @@ def raytrace(A, B):
             y += sy
             j+=1
         x += sx
-    result = sort_bydist(result,xA,yA,flag_check)
+    result = sort_bydist(result,xA,yA)
     return result
 
-def for_velocity_one(self,screen_array,temp_x,temp_y,bricks_class):
+class Ball:
+    ''' This class contains all ball functions
+    '''
+    def __init__(self,velocity_x,velocity_y,x,y,screen_array):
+        self.velocity_x = velocity_x
+        self.velocity_y = velocity_y
+        self._x = x
+        self._y = y
+        if(screen_array[x][y] == ' '):
+            screen_array[x][y] = 'O'
+
+    def for_velocity_one(self,screen_array,temp_x,temp_y,bricks_class):
         ''' This function constains final position if velocity given is 1
         '''
         sign_vx = sign(self.velocity_x)
@@ -132,22 +104,8 @@ def for_velocity_one(self,screen_array,temp_x,temp_y,bricks_class):
             self.velocity_y = -self.velocity_y
         return (temp_x,temp_y)
 
-
-class Ball:
-    ''' 
-    This class contains all ball functions
-    '''
-    def __init__(self,velocity_x,velocity_y,x,y,screen_array):
-        self.velocity_x = velocity_x
-        self.velocity_y = velocity_y
-        self._x = x
-        self._y = y
-        if(screen_array[x][y] == ' '):
-            screen_array[x][y] = 'O'
-
     def update_ball_motion(self,screen_array,bricks_class,paddle_start,paddle_end):
-        ''' 
-        This functions handle collision of ball with bricks
+        ''' This functions handle collision of ball with bricks
         '''
         temp_x = self._x + self.velocity_x
         temp_y = self._y + self.velocity_y
@@ -155,22 +113,18 @@ class Ball:
         previous_y = self._y
         size_x = abs(self.velocity_x)
         size_y = abs(self.velocity_y)
-        #
         # if went below paddle :
-        #
         if(temp_x >= 43):
             if(temp_x == 43):
                 if(temp_y >= paddle_start and temp_y <= paddle_end):
                     sizepaddle = paddle_end - paddle_start
-                    bythree = math.floor(sizepaddle/3)
+                    bythree = floor(sizepaddle/3)
                     arr = [paddle_start+bythree,paddle_end-bythree]
-                    #
                     # speed change
-                    #
-                    if(temp_y<arr[0]):
-                        self.velocity_y -= 1
-                    elif(temp_y>arr[1]):
-                        self.velocity_y += 1
+                    # if(temp_y<arr[0]):
+                    #     self.velocity_y -= 1
+                    # elif(temp_y>arr[1]):
+                    #     self.velocity_y += 1
                     temp_x = previous_x
                     temp_y = previous_y
                     self.velocity_x = -self.velocity_x
@@ -186,9 +140,7 @@ class Ball:
             array = [bricks_color[i]+bricks_font_color[i]+bricks[i][1]+all_reset for i in range(0,size)]
             screen_array[previous_x][previous_y] = ' '
             point_is = 1
-            #
             # if collision with walls :
-            #
             if(temp_x <= 5):
                 self.velocity_x = -self.velocity_x
                 temp_val = 5 - temp_x
@@ -212,46 +164,26 @@ class Ball:
                 temp_val = (WIDTH - 2) - temp_y
                 temp_y = (WIDTH - 2) + temp_val
             else:
-                #
                 # collision with bricks :
-                #
                 sign_vx = sign(self.velocity_x)
                 sign_vy = sign(self.velocity_y)
                 ball_temp = raytrace((self._x,self._y),(temp_x,temp_y))
-                cur_x = self._x
-                cur_y = self._y
-                second_flag = 1
-                i =0
-                #
-                # while second_flag:
-                #
                 for i in range(1,len(ball_temp)):
-                    if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!=' '):
-                        if((cur_x+1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
-                            (cur_x-1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1]) or 
-                            (cur_x-1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
-                            (cur_x+1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
-                            self.velocity_x = -self.velocity_x
-                            self.velocity_y = -self.velocity_y
-                        elif((cur_x,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
-                            (cur_x,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
-                            self.velocity_y = -self.velocity_y
-                        elif((cur_x+1,cur_y)==(ball_temp[i][0],ball_temp[i][1]) or
-                            (cur_x-1,cur_y)==(ball_temp[i][0],ball_temp[i][1])):
-                            self.velocity_x = -self.velocity_x
-                        bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1])
-                        temp_x = cur_x
-                        temp_y = cur_y
-                        break
-                    else:
-                        cur_x = ball_temp[i][0]
-                        cur_y = ball_temp[i][1]
+                    if(screen_array[ball_temp[i][0]][ball_temp[i][1]] != ' '):
+                        flag1 = ball_temp[i-1][0]+1 == ball_temp[i][0] and ball_temp[i-1][1]+1 == ball_temp[i][1]
+                        flag2 = ball_temp[i][0]+1 == ball_temp[i-1][0] and ball_temp[i][1]+1 == ball_temp[i-1][1]
+                        if(flag1 or flag2):
+                            (temp_x,temp_y) = update_ball_motion(screen_array,ball_temp[i][0],ball_temp[i][1],bricks_class)
+                            break
 
             if(screen_array[temp_x][temp_y] == ' '):
                 self._x = temp_x
                 self._y = temp_y
+            if(point_is):
                 screen_array[self._x][self._y] = 'O'
                 return 1
+            else:
+                return -2
 
     def update_ball_onscreen(self,screen_array):
         ''' This function updates ball on screen :)

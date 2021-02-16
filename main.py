@@ -42,7 +42,7 @@ tic_toc = time.time()
 while True:
     toc = time.time()
     frames = toc - tic_toc
-    if(frames >= 0.1):
+    if(frames >= 0.15):
         tic_toc = toc
         key = input_to()
         half_size = int((paddle_size[paddle_array[2]]+2)/2)

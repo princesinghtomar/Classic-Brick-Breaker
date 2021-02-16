@@ -13,127 +13,103 @@ import sys
 #   | | | | |
 #   *-------
 
-def sign(n):
-    '''
-    Return sign of n
-    '''
-    return (n > 0) - (n < 0)
+class functionality_class:
+    def __init__(self):
+        self.flag = False
 
-def s1(coeff,x,y):
-    '''
-    Return the sign of point with line
-    '''
-    return (y - coeff[0]*x - coeff[1])
+    def sign(self,n):
+        '''
+        Return sign of n
+        '''
+        return (n > 0) - (n < 0)
 
-def s(coeff,x,y):
-    '''
-    Returns whether point lies between line or not
-    '''
-    val1 = (s1(coeff,x+1,y)) * (s1(coeff,x,y+1))
-    val2 = (s1(coeff,x,y)) * (s1(coeff,x+1,y+1))
-    return True if (val1 <= 1e-8 or val2 <= 1e-8 ) else False
+    def s1(self,coeff,x,y):
+        '''
+        Return the sign of point with line
+        '''
+        return (y - coeff[0]*x - coeff[1])
 
-def sort_bydist(arr,x,y,flag_check):
-    '''
-    Returns sorted list accr to their distance by starting point
-    '''
-    a = []
-    size = len(arr)
-    j=0
-    for i in arr:
-        if(flag_check):
-            if(j!=0 and j!=(size-1)):
+    def s(self,coeff,x,y):
+        '''
+        Returns whether point lies between line or not
+        '''
+        val1 = (self.s1(coeff,x+1,y)) * (self.s1(coeff,x,y+1))
+        val2 = (self.s1(coeff,x,y)) * (self.s1(coeff,x+1,y+1))
+        return True if (val1 <= 1e-8 or val2 <= 1e-8 ) else False
+
+    def sort_bydist(self,arr,x,y,flag_check):
+        '''
+        Returns sorted list accr to their distance by starting point
+        '''
+        a = []
+        size = len(arr)
+        j=0
+        for i in arr:
+            if(flag_check):
+                if(j!=0 and j!=(size-1)):
+                    dist = math.sqrt(math.pow(i[0]-x,2) + math.pow(i[1]-y,2))
+                    a.append((dist,(i[0],i[1])))
+            else:
                 dist = math.sqrt(math.pow(i[0]-x,2) + math.pow(i[1]-y,2))
                 a.append((dist,(i[0],i[1])))
-        else:
-            dist = math.sqrt(math.pow(i[0]-x,2) + math.pow(i[1]-y,2))
-            a.append((dist,(i[0],i[1])))
-        j+=1
-    a.sort()
-    val = []
-    for i in a:
-        val.append(i[1])
-    return val
-
-def raytrace(A, B):
-    ''' 
-    Return all cells of the unit grid crossed by the line segment between
-    A and B.
-    '''
-    flag_check = 0
-    (xA, yA) = A
-    (xB, yB) = B
-    (dx, dy) = (xB - xA, yB - yA)
-    coeff = []
-    '''
-    Never let vX be 0
-    '''
-    if(dy/dx < 0):
-        flag_check = 1
-        if(dy>0):
-            yB+=1
-            xA+=1
-        else:
-            yA+=1
-            xB+=1
-    (dx, dy) = (xB - xA, yB - yA)
-    #
-    #   If slope = -ve 
-    #       then do (xA+1,yB) & (xB,yB+1)
-    #   elif slope = +ve
-    #       then do nothing
-    #   elif slope == 0
-    #       then do nothing
-    #
-    coeff.append(dy/dx)
-    coeff.append(yA-coeff[0]*xA)
-    sigvar = (sx, sy) = (sign(dx), sign(dy))
-    grid_start = A
-    result = []
-    x = xA
-    y = yA
-    j = 0 
-    while (x != xB+sx):
-        y = yA
-        while (y != yB+sy):
-            if(s(coeff,x,y)):
-                result.append((x,y))
-            y += sy
             j+=1
-        x += sx
-    result = sort_bydist(result,xA,yA,flag_check)
-    return result
+        a.sort()
+        val = []
+        for i in a:
+            val.append(i[1])
+        return val
 
-def for_velocity_one(self,screen_array,temp_x,temp_y,bricks_class):
-        ''' This function constains final position if velocity given is 1
+    def raytrace(self,A, B):
+        ''' 
+        Return all cells of the unit grid crossed by the line segment between
+        A and B.
         '''
-        sign_vx = sign(self.velocity_x)
-        sign_vy = sign(self.velocity_y)
-        previous_x = self._x
-        previous_y = self._y
-        if(screen_array[temp_x-sign_vx][temp_y]!=' ' and screen_array[temp_x][temp_y-sign_vy]!=' '):
-            self.velocity_y = -self.velocity_y
-            self.velocity_x = -self.velocity_x
-            bricks_class.remove_brick_onscreen(screen_array,temp_x-sign_vx,temp_y)
-            bricks_class.remove_brick_onscreen(screen_array,temp_x,temp_y-sign_vy)
-            temp_x = previous_x
-            temp_y = previous_y
-        elif(screen_array[temp_x-sign_vx][temp_y] != ' '):
-            bricks_class.remove_brick_onscreen(screen_array,temp_x-sign_vx,temp_y)
-            self.velocity_y = -self.velocity_y
-            temp_x = temp_x - sign_vx
-        elif(screen_array[temp_x][temp_y-sign_vy] != ' '):
-            bricks_class.remove_brick_onscreen(screen_array,temp_x,temp_y-sign_vy)
-            self.velocity_x = -self.velocity_x
-            temp_y = temp_y - sign_vy
-        elif(screen_array[temp_x][temp_y]!=' '):
-            bricks_class.remove_brick_onscreen(screen_array,temp_x,temp_y)
-            self.velocity_x = -self.velocity_x
-            self.velocity_y = -self.velocity_y
-        return (temp_x,temp_y)
+        flag_check = 0
+        (xA, yA) = A
+        (xB, yB) = B
+        (dx, dy) = (xB - xA, yB - yA)
+        coeff = []
+        '''
+        Never let vX be 0
+        '''
+        if(dy/dx < 0):
+            flag_check = 1
+            if(dy>0):
+                yB+=1
+                xA+=1
+            else:
+                yA+=1
+                xB+=1
+        (dx, dy) = (xB - xA, yB - yA)
+        #
+        #   If slope = -ve 
+        #       then do (xA+1,yB) & (xB,yB+1)
+        #   elif slope = +ve
+        #       then do nothing
+        #   elif slope == 0
+        #       then do nothing
+        #
+        coeff.append(dy/dx)
+        coeff.append(yA-coeff[0]*xA)
+        sigvar = (sx, sy) = (self.sign(dx), self.sign(dy))
+        grid_start = A
+        result = []
+        x = xA
+        y = yA
+        j = 0 
+        while (x != xB+sx):
+            y = yA
+            while (y != yB+sy):
+                if(self.s(coeff,x,y)):
+                    result.append((x,y))
+                y += sy
+                j+=1
+            x += sx
+        result = self.sort_bydist(result,xA,yA,flag_check)
+        return result
 
 
-class Ball:
+class Ball(functionality_class):
     ''' 
     This class contains all ball functions
     '''
@@ -215,9 +191,9 @@ class Ball:
                 #
                 # collision with bricks :
                 #
-                sign_vx = sign(self.velocity_x)
-                sign_vy = sign(self.velocity_y)
-                ball_temp = raytrace((self._x,self._y),(temp_x,temp_y))
+                sign_vx = self.sign(self.velocity_x)
+                sign_vy = self.sign(self.velocity_y)
+                ball_temp = self.raytrace((self._x,self._y),(temp_x,temp_y))
                 cur_x = self._x
                 cur_y = self._y
                 second_flag = 1

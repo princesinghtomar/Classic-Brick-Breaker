@@ -1,6 +1,5 @@
 ''' This file contains color defination and some needed variable 
 '''
-
 import numpy as np
 # parameters :
 GROUND = 1
@@ -11,7 +10,7 @@ clear_screen = "\033[0;0H"
 paddle_size = [5,7,11]
 random_paddle_array = [77,78,79,80,81,82,83]
 ball_x_starting_constant_velocity = -1
-ball_y_starting_constant_velocity = +2
+ball_y_starting_constant_velocity = -1
 
 #NOTE Colors 
 # Foreground Colors :

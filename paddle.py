@@ -40,3 +40,6 @@ class paddle:
         self.cur_x = changed_X
         self.cur_y = changed_Y
         self.type = changed_type
+
+    def update_type(self,changed_type):
+        self.type = changed_type

@@ -7,7 +7,7 @@ from keypressed import *
 from screen import *
 from paddle import *
 from gametop import *
-from  bricks import *
+from bricks import *
 from ball import *
 
 class Run:

@@ -23,7 +23,7 @@ class Run:
                 break
             elif(pressed_key == 'q'):
                 exit()
-            else : 
+            else :
                 pass
         os.system('clear')
         screen_board = screen(HEIGHT,WIDTH)
@@ -49,11 +49,10 @@ class Run:
             if(frames >= 0.15):
                 tic_toc = toc
                 key = input_to()
-                half_size = int((paddle_size[paddle_array[2]]+2)/2)
-                paddle_start = paddle_array[0] - half_size
-                paddle_end = paddle_array[0] + half_size + 1
-                # print(paddle_start)
-                print(clear_screen)
+                half_size = int((paddle_size[paddle_array[2]])/2)
+                paddle_start = paddle_array[0] - half_size-1
+                paddle_end = paddle_array[0] + half_size+1
+                # print(clear_screen)
                 if(key == 'q'):
                     #os.system('clear')
                     print(art.you_quit_art)

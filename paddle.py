@@ -2,6 +2,11 @@ import numpy as np
 from items import *
 from headerfile import *
 
+# -- incr_dec_paddle
+# if - 0 then No obtianed
+# if - 1 then incr obtained
+# if - 2 then dec obtained
+
 class paddle:
     """ Handles paddle
     """
@@ -9,15 +14,18 @@ class paddle:
         self.cur_x = current_X
         self.cur_y = current_Y
         self.type = current_type
+        self.fire = False 
+        self.Stick_powerup = False
+        self.incr_dec_paddle = 0
 
     def update_paddle_onscreen(self,screengrid):
         """ Focusses on updating paddle on screen
         """
         paddle_val = paddle_size[self.type]
-        paddle = '<'
+        paddle = '~'
         for i in range(0,paddle_val):
-            paddle = paddle + '='
-        paddle = paddle + '>'
+            paddle = paddle + '~'
+        paddle = paddle + '~'
         size = len(paddle)
         half_size = (int)(size/2)
         start = self.cur_x - half_size

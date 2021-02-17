@@ -118,7 +118,7 @@ class Ball(functionality_class):
         self.velocity_y = velocity_y
         self._x = x
         self._y = y
-        self._thru_ball = True
+        self._thru_ball = False
         if(screen_array[x][y] == ' '):
             screen_array[x][y] = 'O'
 

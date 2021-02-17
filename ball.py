@@ -118,8 +118,16 @@ class Ball(functionality_class):
         self.velocity_y = velocity_y
         self._x = x
         self._y = y
+        self._thru_ball = True
         if(screen_array[x][y] == ' '):
             screen_array[x][y] = 'O'
+
+    def return_class_init(self):
+        return (self.velocity_x,self.velocity_y,self._x,self._y)
+
+    def update_speed(self):
+        self.velocity_y = 4
+        self.velocity_x += 3 
 
     def update_ball_motion(self,screen_array,bricks_class,paddle_start,paddle_end):
         ''' 
@@ -135,7 +143,7 @@ class Ball(functionality_class):
         # if went below paddle :
         #
         if(temp_x >= 43):
-            if(temp_x == 43):
+            if(( temp_x == 43 or self._x <= 43 )):
                 if(temp_y >= paddle_start and temp_y <= paddle_end):
                     sizepaddle = paddle_end - paddle_start
                     bythree = math.floor(sizepaddle/3)
@@ -188,50 +196,62 @@ class Ball(functionality_class):
                 temp_val = (WIDTH - 2) - temp_y
                 temp_y = (WIDTH - 2) + temp_val
             else:
-                #
-                # collision with bricks :
-                #
                 sign_vx = self.sign(self.velocity_x)
                 sign_vy = self.sign(self.velocity_y)
                 ball_temp = self.raytrace((self._x,self._y),(temp_x,temp_y))
                 cur_x = self._x
                 cur_y = self._y
-                second_flag = 1
-                i =0
-                #
-                # while second_flag:
-                #
-                for i in range(1,len(ball_temp)):
-                    if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!=' '):
-                        if((cur_x+1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
-                            (cur_x-1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1]) or 
-                            (cur_x-1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
-                            (cur_x+1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
-                            self.velocity_x = -self.velocity_x
-                            self.velocity_y = -self.velocity_y
-                        elif((cur_x,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
-                            (cur_x,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
-                            self.velocity_y = -self.velocity_y
-                        elif((cur_x+1,cur_y)==(ball_temp[i][0],ball_temp[i][1]) or
-                            (cur_x-1,cur_y)==(ball_temp[i][0],ball_temp[i][1])):
-                            self.velocity_x = -self.velocity_x
-                        bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1])
-                        temp_x = cur_x
-                        temp_y = cur_y
-                        break
-                    else:
-                        cur_x = ball_temp[i][0]
-                        cur_y = ball_temp[i][1]
+                if(not self._thru_ball):
+                    #
+                    # collision with bricks :
+                    #
+                    second_flag = 1
+                    i =0
+                    #
+                    # while second_flag:
+                    #
+                    for i in range(1,len(ball_temp)):
+                        if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!=' '):
+                            if((cur_x+1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
+                                (cur_x-1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1]) or 
+                                (cur_x-1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
+                                (cur_x+1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
+                                self.velocity_x = -self.velocity_x
+                                self.velocity_y = -self.velocity_y
+                            elif((cur_x,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
+                                (cur_x,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
+                                self.velocity_y = -self.velocity_y
+                            elif((cur_x+1,cur_y)==(ball_temp[i][0],ball_temp[i][1]) or
+                                (cur_x-1,cur_y)==(ball_temp[i][0],ball_temp[i][1])):
+                                self.velocity_x = -self.velocity_x
+                            bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1])
+                            temp_x = cur_x
+                            temp_y = cur_y
+                            break
+                        else:
+                            cur_x = ball_temp[i][0]
+                            cur_y = ball_temp[i][1]
+                else:
+                    for i in range(1,len(ball_temp)):
+                        if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!= 'O' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]]!= '-' or 
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '|' or 
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '*' or 
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '=' or 
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '>' or 
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '<'):
+                            if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!=' '):
+                                bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1])
 
-            if(screen_array[temp_x][temp_y] == ' '):
+
+            if(screen_array[temp_x][temp_y] == ' ' and not self._thru_ball):
                 self._x = temp_x
                 self._y = temp_y
                 screen_array[self._x][self._y] = 'O'
                 return 1
+            elif(self._thru_ball):
 
-    def update_ball_onscreen(self,screen_array):
-        ''' This function updates ball on screen :)
-        '''
-        if(screen_array[self._x][self._y] == ' '):
-            screen_array[self._x][self._y] = 'O'
-
+                self._x = temp_x
+                self._y = temp_y
+                screen_array[self._x][self._y] = 'O'
+                return 1

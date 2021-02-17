@@ -5,7 +5,6 @@ from headerfile import *
 class paddle:
     """ Handles paddle
     """
-
     def __init__(self,current_X,current_Y,current_type):
         self.cur_x = current_X
         self.cur_y = current_Y

@@ -3,7 +3,7 @@ from items import *
 from headerfile import *
 import random
 from inherit_brick import *
-
+import sys
 sys_random = random.SystemRandom()
 
 class Bricks:
@@ -42,9 +42,29 @@ class Bricks:
         This function is used to remove bricks that are being hit
         '''
         pointer_1 = y
-        pointer_2 = y
         while (screen_array[x][pointer_1][10]!='['):
             pointer_1 -= 1
+            if(screen_array[x][pointer_1] == 'O' or screen_array[x][pointer_1] == ' '):
+                if(len(screen_array[x][pointer_1-1])>2):
+                    screen_array[x][pointer_1] = screen_array[x][pointer_1+1]
+                    if(screen_array[x][pointer_1-1][10]== ']'):
+                        break
+                else:
+                    i = pointer_1+1
+                    while(screen_array[x][i][10]!=']' or screen_array[x][i][10]!='['):
+                        if(screen_array[x][i][10]!=']'):
+                            pointer_1 = i-5
+                            break
+                        elif(screen_array[x][i][10]!='['):
+                            pointer_1 = i-6
+                            break
+                        i+=1
+                        if(len(screen_array[x][i])<2):
+                            break
+                    else:
+                        continue
+                    break
+
         index= [0,0]
         for i in range(0,self.brick_data.shape[0]):
             index[0] = i

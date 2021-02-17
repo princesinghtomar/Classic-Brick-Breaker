@@ -37,7 +37,7 @@ class Bricks:
             temp_brick_data.append(brci_temp)
         self.brick_data = np.array(temp_brick_data)
 
-    def remove_brick_onscreen(self,screen_array,x,y):
+    def remove_brick_onscreen(self,screen_array,x,y,go_thru):
         '''
         This function is used to remove bricks that are being hit
         '''
@@ -75,10 +75,11 @@ class Bricks:
             else:
                 continue
             break
-        (life,typeb) = self.brick_data[index[0]][index[1]].decrease_brick_life()
+        (life,typeb) = self.brick_data[index[0]][index[1]].decrease_brick_life(1,go_thru)
+        print("(life,typeb) : ",(life,typeb))
         k_color = self.brick_data[index[0]][index[1]].change_color_brick(typeb)
         lamda = pointer_1
-        if(life != 0):
+        if(life > 0):
             for z in range(0,6):
                     screen_array[x][lamda] = k_color +bricks[typeb][z] + all_reset
                     lamda+=1

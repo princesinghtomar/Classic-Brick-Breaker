@@ -14,7 +14,7 @@ class paddle:
         self.cur_x = current_X
         self.cur_y = current_Y
         self.type = current_type
-        self.fire = False 
+        self.free_ball = False
         self.Stick_powerup = False
         self.incr_dec_paddle = 0
 
@@ -27,19 +27,23 @@ class paddle:
             paddle = paddle + '~'
         paddle = paddle + '~'
         size = len(paddle)
-        half_size = (int)(size/2)
-        start = self.cur_x - half_size
-        end = self.cur_x + half_size + 1
-        start_val = start -2 if start-3 < 1 else start-3
-        end_val = end+2 if end+3 > WIDTH-3 else end+3
+        half_size = int((paddle_size[self.type])/2)
+        paddle_start = self.cur_x - half_size-1
+        paddle_end = self.cur_x + half_size+1
+        start_val = paddle_start-3 if paddle_start-3 < 1 else 1
+        end_val = WIDTH-1 if paddle_end+3 > WIDTH-1 else paddle_end + 3
+        print("start val : " + str(start_val) + " end_val : " + str(end_val) )
         for i in range(start_val,end_val):
             if(screengrid[self.cur_y][i]!='0' or screengrid[self.cur_y][i]!='|'):
                 screengrid[self.cur_y][i] = ' '
         j=0
-        for i in range(start,end):
+        # print(self.cur_y)
+        for i in range(paddle_start,paddle_end):
             screengrid[self.cur_y][i] = paddle[j]
             j+=1
         screengrid[self.cur_y][0] = '|'
+        screengrid[self.cur_y][WIDTH-1] = '|'
+        
 
     def update_paddle_value(self,changed_X,changed_Y,changed_type):
         """ For updating paddle value in the class
@@ -50,3 +54,6 @@ class paddle:
 
     def update_type(self,changed_type):
         self.type = changed_type
+
+    def return_xandy(self):
+        return (self.cur_x,self.cur_y)

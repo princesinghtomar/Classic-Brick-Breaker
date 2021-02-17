@@ -130,3 +130,6 @@ class Thru_ball(shrink_paddle):
                     # update ball speed
                     current_ball.update_speed()
             self._x += 1
+            
+class Sticky_ball(shrink_paddle):
+    

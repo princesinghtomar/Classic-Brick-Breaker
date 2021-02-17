@@ -18,11 +18,15 @@ class Brick_inherit:
         self.s_x = starting_x
         self.s_y = starting_y
         
-    def decrease_brick_life(self):
-        if(self.type  != 3):
+    def decrease_brick_life(self,value,go_thru):
+        if(go_thru):
+            self.type = -1
+            self.life = 0
+        elif(self.type  != 3):
             self.life = brick_life_store[self.type]
             self.type -= 1
             return (self.life,self.type)
+        return (self.life,self.type)
     
     def change_color_brick(self,typeb):
         self.color  = bricks_color[typeb]+bricks_font_color[typeb]

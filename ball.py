@@ -21,7 +21,7 @@ class functionality_class:
         '''
         Return sign of n
         '''
-        return (n > 0) - (n < 0)
+        return -1 if n < 0 else +1
 
     def s1(self,coeff,x,y):
         '''
@@ -64,6 +64,7 @@ class functionality_class:
         Return all cells of the unit grid crossed by the line segment between
         A and B.
         '''
+        print(str(A) + " :A , B: " + str(B))
         flag_check = 0
         (xA, yA) = A
         (xB, yB) = B
@@ -81,6 +82,7 @@ class functionality_class:
                 yA+=1
                 xB+=1
         (dx, dy) = (xB - xA, yB - yA)
+        print("(dx, dy) : " + str((dx, dy)))
         #
         #   If slope = -ve 
         #       then do (xA+1,yB) & (xB,yB+1)
@@ -119,15 +121,28 @@ class Ball(functionality_class):
         self._x = x
         self._y = y
         self._thru_ball = False
+        self.sticky_ball = False
+        self.sticky_ball_at_starting = True
+
         if(screen_array[x][y] == ' '):
             screen_array[x][y] = 'O'
 
     def return_class_init(self):
         return (self.velocity_x,self.velocity_y,self._x,self._y)
 
-    def update_speed(self):
-        self.velocity_y = 4
-        self.velocity_x += 3 
+    def update_speed(self,vx,vy):
+        self.velocity_y = vx
+        self.velocity_x = vy
+
+    def update_xandy(self,x,y):
+        self._x = x
+        self._y = y
+
+    def ball_sticky_motion(self,screen_array,dx,dy):
+        screen_array[self._x][self._y] = ' '    
+        self._x = dx
+        self._y = dy
+        screen_array[self._x][self._y] = 'O'
 
     def update_ball_motion(self,screen_array,bricks_class,paddle_start,paddle_end):
         ''' 
@@ -224,7 +239,7 @@ class Ball(functionality_class):
                             elif((cur_x+1,cur_y)==(ball_temp[i][0],ball_temp[i][1]) or
                                 (cur_x-1,cur_y)==(ball_temp[i][0],ball_temp[i][1])):
                                 self.velocity_x = -self.velocity_x
-                            bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1])
+                            bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
                             temp_x = cur_x
                             temp_y = cur_y
                             break
@@ -241,7 +256,7 @@ class Ball(functionality_class):
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '>' or 
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '<'):
                             if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!=' '):
-                                bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1])
+                                bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],True)
 
 
             if(screen_array[temp_x][temp_y] == ' ' and not self._thru_ball):

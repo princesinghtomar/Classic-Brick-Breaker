@@ -36,13 +36,13 @@ class Run:
             if(paddle_start > 4):
                 paddle_array[0] -= 3
                 if(self.sticky_ball_motion):
-                    self.ball_class.ball_sticky_motion(self.screen_array,paddle_array[1]-1,paddle_array[0])
+                    self.ball_class.ball_sticky_motion(self.screen_array,0,-3)
                 self.Paddle.update_paddle_value(paddle_array[0],paddle_array[1],paddle_array[2])
         elif(key == 'd'):
             if(paddle_end < WIDTH-3):
                 paddle_array[0] += 3
                 if(self.sticky_ball_motion):
-                    self.ball_class.ball_sticky_motion(self.screen_array,paddle_array[1]-1,paddle_array[0])
+                    self.ball_class.ball_sticky_motion(self.screen_array,0,+3)
                 self.Paddle.update_paddle_value(paddle_array[0],paddle_array[1],paddle_array[2])
         elif(key == 'k'):
             self.sticky_ball_motion = False
@@ -67,8 +67,9 @@ class Run:
         self.Paddle = paddle(paddle_array[0],paddle_array[1],paddle_array[2])
         self.Paddle.update_paddle_onscreen(self.screen_array)
         bricks = Bricks()
-        self.ball_class = Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,80,self.screen_array)
         (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end(paddle_array)
+        temp_random = sys_random.choice([i for i in range(paddle_start,paddle_end)])
+        self.ball_class = Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,temp_random,self.screen_array)
         bricks.update_brick_onscreen(self.screen_array)
         score = 0
         start_time = time.time()
@@ -103,11 +104,9 @@ class Run:
                         if(livesleft <= 0):
                             print("You loose")
                             break
-                        (px,py) = self.Paddle.return_xandy()
-                        print(px,py)
-                        self.ball_class = Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,py,px,self.screen_array)
+                        temp_random = sys_random.choice([i for i in range(paddle_start,paddle_end)])
+                        self.ball_class = Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,temp_random,self.screen_array)
                         self.sticky_ball_motion = True
-
                 gametop_data.update_gametop(available_time,score,livesleft)
                 gametop_data.update_gametop_onscreen(self.screen_array)
                 self.Paddle.update_paddle_onscreen(self.screen_array)

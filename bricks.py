@@ -76,7 +76,7 @@ class Bricks:
                 continue
             break
         (life,typeb) = self.brick_data[index[0]][index[1]].decrease_brick_life(1,go_thru)
-        print("(life,typeb) : ",(life,typeb))
+        # print("(life,typeb) : ",(life,typeb))
         k_color = self.brick_data[index[0]][index[1]].change_color_brick(typeb)
         lamda = pointer_1
         if(life > 0):

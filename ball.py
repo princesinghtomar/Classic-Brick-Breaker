@@ -64,7 +64,7 @@ class functionality_class:
         Return all cells of the unit grid crossed by the line segment between
         A and B.
         '''
-        print(str(A) + " :A , B: " + str(B))
+        # print(str(A) + " :A , B: " + str(B))
         flag_check = 0
         (xA, yA) = A
         (xB, yB) = B
@@ -82,7 +82,7 @@ class functionality_class:
                 yA+=1
                 xB+=1
         (dx, dy) = (xB - xA, yB - yA)
-        print("(dx, dy) : " + str((dx, dy)))
+        # print("(dx, dy) : " + str((dx, dy)))
         #
         #   If slope = -ve 
         #       then do (xA+1,yB) & (xB,yB+1)
@@ -140,8 +140,8 @@ class Ball(functionality_class):
 
     def ball_sticky_motion(self,screen_array,dx,dy):
         screen_array[self._x][self._y] = ' '    
-        self._x = dx
-        self._y = dy
+        self._x += dx
+        self._y += dy
         screen_array[self._x][self._y] = 'O'
 
     def update_ball_motion(self,screen_array,bricks_class,paddle_start,paddle_end):

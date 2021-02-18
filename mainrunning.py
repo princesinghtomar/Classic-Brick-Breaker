@@ -9,6 +9,7 @@ from paddle import *
 from gametop import *
 from bricks import *
 from ball import *
+from powerup import *
 
 class Run:
     '''
@@ -20,22 +21,25 @@ class Run:
         self.ball_class = None
         self.screen_array = np.array([])
         self.Paddle = None
+        self.paddle_array = np.array([])
+        self.expand_paddle_powerup = None
+        self.expand_paddle_powerup_bool = False
 
-    def return_paddle_start_and_end(self,paddle_array):
+    def return_paddle_start_and_end(self):
         '''
         This function returns starting  and ending point of paddle
         '''
-        half_size = int((paddle_size[paddle_array[2]])/2)
-        paddle_start = paddle_array[0] - half_size-1
-        paddle_end = paddle_array[0] + half_size+1
+        half_size = int((paddle_size[self.paddle_array[2]])/2)
+        paddle_start = self.paddle_array[0] - half_size-1
+        paddle_end = self.paddle_array[0] + half_size+1
         return (half_size,paddle_start,paddle_end)
 
-    def move(self,paddle_array):
+    def move(self):
         '''
         This function is responsible for detecting user input and responding accordingly
         '''
         key = input_to()
-        (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end(paddle_array)
+        (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
         print(clear_screen)
         if(key == 'q'):
             #os.system('clear')
@@ -43,16 +47,16 @@ class Run:
             return 0
         elif(key == 'a'):
             if(paddle_start > 4):
-                paddle_array[0] -= 3
+                self.paddle_array[0] -= 3
                 if(self.sticky_ball_motion):
                     self.ball_class.ball_sticky_motion(self.screen_array,0,-3)
-                self.Paddle.update_paddle_value(paddle_array[0],paddle_array[1],paddle_array[2])
+                self.Paddle.update_paddle_value(self.paddle_array[0],self.paddle_array[1],self.paddle_array[2])
         elif(key == 'd'):
             if(paddle_end < WIDTH-3):
-                paddle_array[0] += 3
+                self.paddle_array[0] += 3
                 if(self.sticky_ball_motion):
                     self.ball_class.ball_sticky_motion(self.screen_array,0,+3)
-                self.Paddle.update_paddle_value(paddle_array[0],paddle_array[1],paddle_array[2])
+                self.Paddle.update_paddle_value(self.paddle_array[0],self.paddle_array[1],self.paddle_array[2])
         elif(key == 'k'):
             self.sticky_ball_motion = False
         return 1
@@ -73,6 +77,23 @@ class Run:
                 pass
         os.system('clear')
 
+    def expand_paddle_function(self):
+        # print("hel;lo")
+        (vx,vy,x,y) = self.ball_class.return_class_init()
+        if(not self.expand_paddle_powerup_bool):
+            self.expand_paddle_powerup = expand_paddle(time.time(),x,y)
+        self.expand_paddle_powerup_bool = True
+        (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
+        self.expand_paddle_powerup.make_powerup_active()
+        self.expand_paddle_powerup.update_powerup_onscreen(self.screen_array,paddle_end,paddle_start,self.Paddle)
+
+    def powerup_flow(self,choosen_value):
+        if(choosen_value == 1):
+            # expand paddle
+            self.expand_paddle_function()
+        # elif(choosen_value == 2):
+            # shrick paddle
+
     def Go(self):
         '''
         This function has the main control flow of the game
@@ -81,11 +102,11 @@ class Run:
         screen_board = screen(HEIGHT,WIDTH)
         screen_board.create_scenery()
         self.screen_array = screen_board.return_screenarray()
-        paddle_array = np.array([80,43,0])
-        self.Paddle = paddle(paddle_array[0],paddle_array[1],paddle_array[2])
+        self.paddle_array = np.array([80,43,1])
+        self.Paddle = paddle(self.paddle_array[0],self.paddle_array[1],self.paddle_array[2])
         self.Paddle.update_paddle_onscreen(self.screen_array)
         bricks = Bricks()
-        (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end(paddle_array)
+        (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
         temp_random = self.sys_random.choice([i for i in range(paddle_start,paddle_end)])
         self.ball_class = Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,temp_random,self.screen_array)
         bricks.update_brick_onscreen(self.screen_array)
@@ -103,7 +124,7 @@ class Run:
             frames = toc - tic_toc
             if(frames >= 0.11):
                 tic_toc = toc
-                move_return = self.move(paddle_array)
+                move_return = self.move()
                 if(not move_return):
                     break
                 cur_time = time.time()
@@ -115,9 +136,11 @@ class Run:
                     break
                 
                 if(not self.sticky_ball_motion):
-                    (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end(paddle_array)
+                    (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
                     (ball_return_value,score_,choosen_value) = self.ball_class.update_ball_motion(self.screen_array,bricks,paddle_start,paddle_end)
+                    self.powerup_flow(choosen_value)
                     score+=score_
+                    print(1)
                     score_ = 0
                     if(ball_return_value < 0):
                         livesleft -= 1
@@ -128,6 +151,9 @@ class Run:
                         temp_random = self.sys_random.choice([i for i in range(paddle_start,paddle_end)])
                         self.ball_class = Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,temp_random,self.screen_array)
                         self.sticky_ball_motion = True
+                if(self.expand_paddle_powerup_bool):
+                    (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
+                    self.expand_paddle_powerup.update_powerup_onscreen(self.screen_array,paddle_end,paddle_start,self.Paddle)
                 gametop_data.update_gametop(available_time,score,livesleft)
                 gametop_data.update_gametop_onscreen(self.screen_array)
                 self.Paddle.update_paddle_onscreen(self.screen_array)

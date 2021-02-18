@@ -1,2 +1,8 @@
-# Python_game_using_colorama
-A python game without curses libraries (like pygame)
+# Classic Brick Breaker Game 
+
+## Controls :
+    - a : move left
+    - d : move right
+    - k : release ball
+    - g : start game
+    - q : quit game

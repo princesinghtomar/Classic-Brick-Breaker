@@ -13,7 +13,8 @@ paddle_size = np.array([5,7,11])
 
 # Brick Orientations :
 b_1 = "1-1-1-1-1-1-1-1-1-1-1" + " " + \
-      "2-2-3-2-2-2-2-2-2-2-2"
+      "2-2-3-2-2-2-2-2-2-2-2" + " " + \
+      "3-3-3-3-3-3-3-3-3-3-3"
 brick_orientation = np.array([b_1])
 brick_life_store = [0,1,2,5000]
 

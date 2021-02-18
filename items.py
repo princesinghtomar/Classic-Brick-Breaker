@@ -29,5 +29,7 @@ instructions = fred + art.instructions_art + all_reset + "\n" + \
     "                                                                                         " + fred + "|\n" + all_reset + \
     fred + "|" + all_reset + " > Press " + fred + "g" + all_reset + " to start the game                                              " + \
     "                                                                                         " + fred + "|\n" + all_reset + \
+    fred + "|" + all_reset + " > Press " + fred + "k" + all_reset + " to release ball                                                " + \
+    "                                                                                         " + fred + "|\n" + all_reset + \
     fred + "*----------------------------------------------------------------------------------------------------------------------" + \
     "---------------------------------------------*\n"+ all_reset

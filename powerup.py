@@ -39,10 +39,10 @@ class expand_paddle:
             else:
                 if(y >= paddle_start and y <= paddle_end):
                     if(screen_array[self._x-1][self._y] == temp):
-                    screen_array[self._x-1][self._y] == ' '
-                    self.active = 2
-                    # update paddle size
-                    Paddle.update_type(2)
+                        screen_array[self._x-1][self._y] == ' '
+                        self.active = 2
+                        # update paddle size
+                        Paddle.update_type(2)
             self._x += 1
 
 class shrink_paddle(expand_paddle):
@@ -57,10 +57,10 @@ class shrink_paddle(expand_paddle):
             else:
                 if(y >= paddle_start and y <= paddle_end):
                     if(screen_array[self._x-1][self._y] == temp):
-                    screen_array[self._x-1][self._y] == ' '
-                    self.active = 2
-                    # update paddle size
-                    Paddle.update_type(0)
+                        screen_array[self._x-1][self._y] == ' '
+                        self.active = 2
+                        # update paddle size
+                        Paddle.update_type(0)
             self._x += 1
 
 class ball_multiplier(shrink_paddle):
@@ -76,17 +76,17 @@ class ball_multiplier(shrink_paddle):
             else:
                 if(y >= paddle_start and y <= paddle_end):
                     if(screen_array[self._x-1][self._y] == temp):
-                    screen_array[self._x-1][self._y] == ' '
-                    self.active = 2
-                    # here add return another ball :
-                    ball_multiplier_flag = 1
+                        screen_array[self._x-1][self._y] == ' '
+                        self.active = 2
+                        # here add return another ball :
+                        ball_multiplier_flag = 1
             self._x += 1
         if(ball_multiplier_flag):
             curr_value = ball.return_class_init()
             if(screen_array[curr_value[2]][curr_value[3]]=='0'):
                 another_ball = Ball(-curr_value[0],curr_value[1],curr_value[2],curr_value[3],screen_array)
                 return another_ball
-    return 0
+        return 0
 
 class Fast_ball(shrink_paddle):
     def update_powerup_onscreen(self,screen_array,paddle_end,paddle_start,Paddle,current_ball):
@@ -100,10 +100,10 @@ class Fast_ball(shrink_paddle):
             else:
                 if(y >= paddle_start and y <= paddle_end):
                     if(screen_array[self._x-1][self._y] == temp):
-                    screen_array[self._x-1][self._y] == ' '
-                    self.active = 2
-                    # update ball speed
-                    current_ball.update_speed()
+                        screen_array[self._x-1][self._y] == ' '
+                        self.active = 2
+                        # update ball speed
+                        current_ball.update_speed()
             self._x += 1
 
 class Thru_ball(shrink_paddle):
@@ -111,7 +111,7 @@ class Thru_ball(shrink_paddle):
         if(self.active != 0):
             if(time.time() - self.time_activated > self.max_time):
                 self.active = 0
-                current_ball.
+                # current_ball.
 
 
     def update_powerup_onscreen(self,screen_array,paddle_end,paddle_start,Paddle,current_ball):
@@ -125,11 +125,11 @@ class Thru_ball(shrink_paddle):
             else:
                 if(y >= paddle_start and y <= paddle_end):
                     if(screen_array[self._x-1][self._y] == temp):
-                    screen_array[self._x-1][self._y] == ' '
-                    self.active = 2
-                    # update ball speed
-                    current_ball.update_speed()
+                        screen_array[self._x-1][self._y] == ' '
+                        self.active = 2
+                        # update ball speed
+                        current_ball.update_speed()
             self._x += 1
             
-class Sticky_ball(shrink_paddle):
+# class Sticky_ball(shrink_paddle):
     

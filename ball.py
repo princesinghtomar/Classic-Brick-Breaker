@@ -7,13 +7,17 @@ import sys
 
 # CHECK THIS PART :-/
 
-#   *-------
+#   *--------
 #   | | | | |
-#   *-------
+#   *--------
 #   | | | | |
-#   *-------
+#   *--------
 
 class functionality_class:
+    '''
+    This class handles mathematical part of brick-ball collision
+    and is inherited by the Ball class
+    '''
     def __init__(self):
         self.flag = False
 
@@ -154,6 +158,8 @@ class Ball(functionality_class):
         previous_y = self._y
         size_x = abs(self.velocity_x)
         size_y = abs(self.velocity_y)
+        score_= 0
+        choosen_value = 0
         #
         # if went below paddle :
         #
@@ -173,13 +179,13 @@ class Ball(functionality_class):
                     temp_x = previous_x
                     temp_y = previous_y
                     self.velocity_x = -self.velocity_x
-                    return 1
+                    return (1,score_,choosen_value)
                 else:
                     screen_array[previous_x][previous_y] = ' '
-                    return -2
+                    return (-2,score_,choosen_value)
             else:
                 screen_array[previous_x][previous_y] = ' '
-                return -2
+                return (-2,score_,choosen_value)
         else:
             size = bricks.size
             array = [bricks_color[i]+bricks_font_color[i]+bricks[i][1]+all_reset for i in range(0,size)]
@@ -239,7 +245,7 @@ class Ball(functionality_class):
                             elif((cur_x+1,cur_y)==(ball_temp[i][0],ball_temp[i][1]) or
                                 (cur_x-1,cur_y)==(ball_temp[i][0],ball_temp[i][1])):
                                 self.velocity_x = -self.velocity_x
-                            bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
+                            (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
                             temp_x = cur_x
                             temp_y = cur_y
                             break
@@ -256,17 +262,16 @@ class Ball(functionality_class):
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '>' or 
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '<'):
                             if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!=' '):
-                                bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],True)
-
+                                (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],True)
 
             if(screen_array[temp_x][temp_y] == ' ' and not self._thru_ball):
                 self._x = temp_x
                 self._y = temp_y
                 screen_array[self._x][self._y] = 'O'
-                return 1
+                return (1,score_,choosen_value)
             elif(self._thru_ball):
 
                 self._x = temp_x
                 self._y = temp_y
                 screen_array[self._x][self._y] = 'O'
-                return 1
+                return (1,score_,choosen_value)

@@ -4,7 +4,7 @@ from headerfile import *
 import random
 from inherit_brick import *
 import sys
-sys_random = random.SystemRandom()
+from powerup import *
 
 class Bricks:
     ''' 
@@ -13,8 +13,13 @@ class Bricks:
     def __init__(self):
         self.brick_start_x = 20
         self.brick_start_y = 45
-        self.brick_configuration = brick_orientation[sys_random.randint(0,((brick_orientation.size)-1))].split()
+        self.sys_random = random.SystemRandom()
+        self.brick_configuration = brick_orientation[self.sys_random.randint(0,((brick_orientation.size)-1))].split()
+        self.poweruparray = [0 for i in range(1,30)]
         self.brick_data = np.array([])
+        for i in range(0,6):
+            self.poweruparray[i] = 6-i
+        print(self.poweruparray)
     
     def update_brick_onscreen(self,screen_array):
         '''
@@ -75,8 +80,7 @@ class Bricks:
             else:
                 continue
             break
-        (life,typeb) = self.brick_data[index[0]][index[1]].decrease_brick_life(1,go_thru)
-        # print("(life,typeb) : ",(life,typeb))
+        (life,typeb,score_) = self.brick_data[index[0]][index[1]].decrease_brick_life(1,go_thru)
         k_color = self.brick_data[index[0]][index[1]].change_color_brick(typeb)
         lamda = pointer_1
         if(life > 0):
@@ -87,4 +91,6 @@ class Bricks:
             for z in range(0,6):
                     screen_array[x][lamda] = ' '
                     lamda+=1
+        choosen_value = self.sys_random.choice(self.poweruparray)
+        return (score_,choosen_value)
 

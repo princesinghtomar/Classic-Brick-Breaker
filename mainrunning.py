@@ -11,6 +11,9 @@ from bricks import *
 from ball import *
 
 class Run:
+    '''
+    This is Main Game Class handling all the game flow
+    '''
     def __init__(self):
         self.sys_random = random.SystemRandom()
         self.sticky_ball_motion = True
@@ -19,12 +22,18 @@ class Run:
         self.Paddle = None
 
     def return_paddle_start_and_end(self,paddle_array):
+        '''
+        This function returns starting  and ending point of paddle
+        '''
         half_size = int((paddle_size[paddle_array[2]])/2)
         paddle_start = paddle_array[0] - half_size-1
         paddle_end = paddle_array[0] + half_size+1
         return (half_size,paddle_start,paddle_end)
 
     def move(self,paddle_array):
+        '''
+        This function is responsible for detecting user input and responding accordingly
+        '''
         key = input_to()
         (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end(paddle_array)
         print(clear_screen)
@@ -48,7 +57,10 @@ class Run:
             self.sticky_ball_motion = False
         return 1
 
-    def Go(self):
+    def starting_instruction(self):
+        '''
+        This function just gives instructions to the user
+        '''
         print(instructions)
         # Selecting loop :
         while True:
@@ -60,6 +72,12 @@ class Run:
             else :
                 pass
         os.system('clear')
+
+    def Go(self):
+        '''
+        This function has the main control flow of the game
+        '''
+        self.starting_instruction()
         screen_board = screen(HEIGHT,WIDTH)
         screen_board.create_scenery()
         self.screen_array = screen_board.return_screenarray()
@@ -68,10 +86,11 @@ class Run:
         self.Paddle.update_paddle_onscreen(self.screen_array)
         bricks = Bricks()
         (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end(paddle_array)
-        temp_random = sys_random.choice([i for i in range(paddle_start,paddle_end)])
+        temp_random = self.sys_random.choice([i for i in range(paddle_start,paddle_end)])
         self.ball_class = Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,temp_random,self.screen_array)
         bricks.update_brick_onscreen(self.screen_array)
         score = 0
+        choosen_value = 0
         start_time = time.time()
         available_time = 1000
         livesleft = 3
@@ -97,14 +116,16 @@ class Run:
                 
                 if(not self.sticky_ball_motion):
                     (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end(paddle_array)
-                    ball_return_value = self.ball_class.update_ball_motion(self.screen_array,bricks,paddle_start,paddle_end)
+                    (ball_return_value,score_,choosen_value) = self.ball_class.update_ball_motion(self.screen_array,bricks,paddle_start,paddle_end)
+                    score+=score_
+                    score_ = 0
                     if(ball_return_value < 0):
                         livesleft -= 1
                         print("livesleft : ",livesleft)
                         if(livesleft <= 0):
                             print("You loose")
                             break
-                        temp_random = sys_random.choice([i for i in range(paddle_start,paddle_end)])
+                        temp_random = self.sys_random.choice([i for i in range(paddle_start,paddle_end)])
                         self.ball_class = Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,temp_random,self.screen_array)
                         self.sticky_ball_motion = True
                 gametop_data.update_gametop(available_time,score,livesleft)

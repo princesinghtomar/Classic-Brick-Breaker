@@ -8,8 +8,9 @@ from headerfile import *
 # if - 2 then dec obtained
 
 class paddle:
-    """ Handles paddle
-    """
+    '''
+    Handles paddle
+    '''
     def __init__(self,current_X,current_Y,current_type):
         self.cur_x = current_X
         self.cur_y = current_Y
@@ -19,8 +20,9 @@ class paddle:
         self.incr_dec_paddle = 0
 
     def update_paddle_onscreen(self,screengrid):
-        """ Focusses on updating paddle on screen
-        """
+        ''' 
+        Focusses on updating paddle on screen
+        '''
         paddle_val = paddle_size[self.type]
         paddle = '~'
         for i in range(0,paddle_val):
@@ -46,14 +48,21 @@ class paddle:
         
 
     def update_paddle_value(self,changed_X,changed_Y,changed_type):
-        """ For updating paddle value in the class
-        """
+        ''' 
+        For updating paddle value in the class
+        '''
         self.cur_x = changed_X
         self.cur_y = changed_Y
         self.type = changed_type
 
     def update_type(self,changed_type):
+        '''
+        Updates type of paddle used for powerup implementation
+        '''
         self.type = changed_type
 
     def return_xandy(self):
+        '''
+        Return : (self.cur_x,self.cur_y)
+        '''
         return (self.cur_x,self.cur_y)

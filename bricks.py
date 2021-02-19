@@ -19,7 +19,7 @@ class Bricks:
         self.poweruparray = [0 for i in range(1,30)]
         for i in range(0,6):
             self.poweruparray[i] = 6-i
-        print(self.poweruparray)
+        # print(self.poweruparray)
     
     def update_brick_onscreen(self,screen_array):
         '''
@@ -47,12 +47,12 @@ class Bricks:
         This function is used to remove bricks that are being hit
         '''
         pointer_1 = y
-        print(screen_array[x][pointer_1][6])
+        # print(screen_array[x][pointer_1][6])
         if(screen_array[x][pointer_1][5]=='P'):
             return (0,0)
         while (screen_array[x][pointer_1][10]!='['):
             pointer_1 -= 1
-            print('12342354')
+            # print('12342354')
             if(screen_array[x][pointer_1] == 'O' or screen_array[x][pointer_1] == ' '):
                 if(len(screen_array[x][pointer_1-1])>2):
                     screen_array[x][pointer_1] = screen_array[x][pointer_1+1]

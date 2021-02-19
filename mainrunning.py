@@ -22,8 +22,9 @@ class Run:
         self.screen_array = np.array([])
         self.Paddle = None
         self.paddle_array = np.array([])
-        self.expand_paddle_powerup = None
-        self.expand_paddle_powerup_bool = False
+        self.powerup_flag = [0,0,0,0,0,0]
+        # self.expand_paddle_powerup = None
+        # self.expand_paddle_powerup_bool = False
 
     def return_paddle_start_and_end(self):
         '''
@@ -77,22 +78,24 @@ class Run:
                 pass
         os.system('clear')
 
-    def expand_paddle_function(self):
-        # print("hel;lo")
-        (vx,vy,x,y) = self.ball_class.return_class_init()
-        if(not self.expand_paddle_powerup_bool):
-            self.expand_paddle_powerup = expand_paddle(time.time(),x,y)
-        self.expand_paddle_powerup_bool = True
-        (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
-        self.expand_paddle_powerup.make_powerup_active()
-        self.expand_paddle_powerup.update_powerup_onscreen(self.screen_array,paddle_end,paddle_start,self.Paddle)
+    # def expand_paddle_function(self):
+    #     # print("hel;lo")
+    #     (vx,vy,x,y) = self.ball_class.return_class_init()
+    #     if(not self.expand_paddle_powerup_bool):
+    #         self.expand_paddle_powerup = expand_paddle(time.time(),x,y)
+    #     self.expand_paddle_powerup_bool = True
+    #     (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
+    #     self.expand_paddle_powerup.make_powerup_active()
+    #     self.expand_paddle_powerup.update_powerup_onscreen(self.screen_array,paddle_end,paddle_start,self.Paddle)
 
-    def powerup_flow(self,choosen_value):
-        if(choosen_value == 1):
-            # expand paddle
-            self.expand_paddle_function()
-        # elif(choosen_value == 2):
-            # shrick paddle
+    # def powerup_flow(self,choosen_value):
+    #     if(choosen_value == 1):
+    #         # expand paddle
+    #         self.expand_paddle_function()
+    #     # elif(choosen_value == 2):
+    #         # shrick paddle
+
+    # def powerup_flag(self.choosen_value):
 
     def Go(self):
         '''
@@ -119,6 +122,10 @@ class Run:
         gametop_data.update_gametop_onscreen(self.screen_array)
         screen_board.showscreen()
         tic_toc = time.time()
+        power_up_x = 0
+        power_up_y = 0
+        powerups = []
+        # powerups.append(power)
         while True:
             toc = time.time()
             frames = toc - tic_toc
@@ -138,22 +145,28 @@ class Run:
                 if(not self.sticky_ball_motion):
                     (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
                     (ball_return_value,score_,choosen_value) = self.ball_class.update_ball_motion(self.screen_array,bricks,paddle_start,paddle_end)
-                    self.powerup_flow(choosen_value)
+                    # self.powerup_flow(choosen_value)
+                    if(choosen_value):
+                        self.powerup_flag[choosen_value] = 1
+                        print(self.powerup_flag)
                     score+=score_
-                    print(1)
+                    # print(1)
                     score_ = 0
                     if(ball_return_value < 0):
                         livesleft -= 1
-                        print("livesleft : ",livesleft)
+                        # print("livesleft : ",livesleft)
                         if(livesleft <= 0):
                             print("You loose")
                             break
                         temp_random = self.sys_random.choice([i for i in range(paddle_start,paddle_end)])
                         self.ball_class = Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,temp_random,self.screen_array)
                         self.sticky_ball_motion = True
-                if(self.expand_paddle_powerup_bool):
-                    (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
-                    self.expand_paddle_powerup.update_powerup_onscreen(self.screen_array,paddle_end,paddle_start,self.Paddle)
+                # for i in range(0,6):
+                #     if(self.powerup_flag[i]):
+
+                # if(self.expand_paddle_powerup_bool):
+                #     (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
+                #     self.expand_paddle_powerup.update_powerup_onscreen(self.screen_array,paddle_end,paddle_start,self.Paddle)
                 gametop_data.update_gametop(available_time,score,livesleft)
                 gametop_data.update_gametop_onscreen(self.screen_array)
                 self.Paddle.update_paddle_onscreen(self.screen_array)

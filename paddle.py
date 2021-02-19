@@ -32,8 +32,8 @@ class paddle:
         half_size = int((paddle_size[self.type])/2)
         paddle_start = self.cur_x - half_size-1
         paddle_end = self.cur_x + half_size+1
-        start_val = paddle_start-3 if paddle_start-3 < 1 else 1
-        end_val = WIDTH-1 if paddle_end+3 > WIDTH-1 else paddle_end + 3
+        start_val = paddle_start-6 if paddle_start-6 < 1 else 1
+        end_val = WIDTH-1 if paddle_end+6 > WIDTH-1 else paddle_end + 6
         # print("start val : " + str(start_val) + " end_val : " + str(end_val) )
         for i in range(start_val,end_val):
             if(screengrid[self.cur_y][i]!='0' or screengrid[self.cur_y][i]!='|'):

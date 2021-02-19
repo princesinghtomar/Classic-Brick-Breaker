@@ -126,7 +126,6 @@ class Ball(functionality_class):
         self._y = y
         self._thru_ball = False
         self.sticky_ball = False
-        self.sticky_ball_at_starting = True
 
         if(screen_array[x][y] == ' '):
             screen_array[x][y] = 'O'
@@ -141,6 +140,13 @@ class Ball(functionality_class):
     def update_xandy(self,x,y):
         self._x = x
         self._y = y
+
+    def update_thru_ball(self,value):
+        self.update_thru_ball = value
+
+    def increase_speed(self,dvx,dvy):
+        self.velocity_x *= abs(dvx)
+        self.velocity_y *= abs(dvy)
 
     def ball_sticky_motion(self,screen_array,dx,dy):
         screen_array[self._x][self._y] = ' '    

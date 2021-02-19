@@ -18,11 +18,14 @@ class Run:
     def __init__(self):
         self.sys_random = random.SystemRandom()
         self.sticky_ball_motion = True
+        self.sticky_ball_powerup = False
         self.ball_class = None
         self.screen_array = np.array([])
         self.Paddle = None
         self.paddle_array = np.array([])
         self.powerup_flag = [0,0,0,0,0,0]
+        self.balls = []
+        self.ball_index = []
         # self.expand_paddle_powerup = None
         # self.expand_paddle_powerup_bool = False
 
@@ -41,7 +44,8 @@ class Run:
         '''
         key = input_to()
         (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
-        print(clear_screen)
+        # print(clear_screen)
+        # os.system('clear')
         if(key == 'q'):
             #os.system('clear')
             print(art.you_quit_art)
@@ -78,25 +82,6 @@ class Run:
                 pass
         os.system('clear')
 
-    # def expand_paddle_function(self):
-    #     # print("hel;lo")
-    #     (vx,vy,x,y) = self.ball_class.return_class_init()
-    #     if(not self.expand_paddle_powerup_bool):
-    #         self.expand_paddle_powerup = expand_paddle(time.time(),x,y)
-    #     self.expand_paddle_powerup_bool = True
-    #     (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
-    #     self.expand_paddle_powerup.make_powerup_active()
-    #     self.expand_paddle_powerup.update_powerup_onscreen(self.screen_array,paddle_end,paddle_start,self.Paddle)
-
-    # def powerup_flow(self,choosen_value):
-    #     if(choosen_value == 1):
-    #         # expand paddle
-    #         self.expand_paddle_function()
-    #     # elif(choosen_value == 2):
-    #         # shrick paddle
-
-    # def powerup_flag(self.choosen_value):
-
     def Go(self):
         '''
         This function has the main control flow of the game
@@ -125,7 +110,12 @@ class Run:
         power_up_x = 0
         power_up_y = 0
         powerups = []
-        # powerups.append(power)
+        powerups.append(power0(0,0))
+        powerups.append(power1(0,0))
+        powerups.append(power2(0,0))
+        powerups.append(power3(0,0))
+        powerups.append(power4(0,0))
+        powerups.append(power5(0,0))
         while True:
             toc = time.time()
             frames = toc - tic_toc
@@ -141,32 +131,77 @@ class Run:
                     #os.system('clear')
                     print('Time_Over')
                     break
+
+                if(self.sticky_ball_powerup):
+                    (bavx,bavy,bax,bay) = self.ball_class.return_class_init()
+                    (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
+                    if(bay == 43):
+                        if(bax>=paddle_start and bax <= paddle_end):
+                            self.sticky_ball_motion = True
                 
                 if(not self.sticky_ball_motion):
                     (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
                     (ball_return_value,score_,choosen_value) = self.ball_class.update_ball_motion(self.screen_array,bricks,paddle_start,paddle_end)
-                    # self.powerup_flow(choosen_value)
-                    if(choosen_value):
-                        self.powerup_flag[choosen_value] = 1
-                        print(self.powerup_flag)
+                    kapa = 0
+                    # print(choosen_value)
+                    for i in range(0,6):
+                        if(self.powerup_flag[choosen_value-1] == 1):
+                            kapa+=1
+                    if(choosen_value and kapa <= 2):
+                        if(self.powerup_flag[choosen_value-1] == 1):
+                            powerups[choosen_value-1].update_time_activated()
+                        self.powerup_flag[choosen_value-1] = 1
+                        # print("self.powerup_flag : ",self.powerup_flag)
                     score+=score_
-                    # print(1)
                     score_ = 0
                     if(ball_return_value < 0):
                         livesleft -= 1
-                        # print("livesleft : ",livesleft)
                         if(livesleft <= 0):
                             print("You loose")
                             break
                         temp_random = self.sys_random.choice([i for i in range(paddle_start,paddle_end)])
                         self.ball_class = Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,temp_random,self.screen_array)
                         self.sticky_ball_motion = True
-                # for i in range(0,6):
-                #     if(self.powerup_flag[i]):
+                for i in range(0,6):
+                    if(self.powerup_flag[i]):
+                        # print(powerups[i].return_status())
+                        # print("i : ",i)
+                        # print(powerups[i].check_time())
+                        if(powerups[i].return_status() == 0):
+                            (bavx,bavy,bax,bay) = self.ball_class.return_class_init()
+                            powerups[i].update_xy(bax,bay)
+                            powerups[i].make_powerup_active()
+                        elif(powerups[i].return_status() == 1):
+                            (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
+                            ret_value = powerups[i].update_powerup_onscreen(self.screen_array,paddle_end,paddle_start,self.Paddle)
+                            if(ret_value == True):
+                                if(i == 0 or i == 1):
+                                    powerups[i].do(self.Paddle)
+                                elif(i == 2):
+                                    # print("nothin done yet")
+                                elif(i == 3 or i ==4):
+                                    powerups[i].do(self.ball_class)
+                                elif(i==5):
+                                    self.sticky_ball_powerup = powerups[i].do()
+                            if(powerups[i].return_status() == 0):
+                                self.powerup_flag[i]=0
+                        elif(powerups[i].return_status() == 2):
+                            if(i == 0 or i ==1):
+                                powerups[i].do(self.Paddle)
+                            #elif(i == 3):
+                            #    powerups[i].do(self.ball_class,self.screen_array)
+                            if(not powerups[i].check_time()):
+                                self.powerup_flag[i] = 0
+                                if(i == 0 or i ==1):
+                                    powerups[i].undo(self.Paddle)
+                                elif(i == 2):
+                                    # print("nothin done yet")
+                                elif(i == 3 or i == 4):
+                                    powerups[i].undo(self.ball_class)
+                                elif(i==5):
+                                    self.sticky_ball_powerup = powerups[i].undo()
 
-                # if(self.expand_paddle_powerup_bool):
-                #     (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
-                #     self.expand_paddle_powerup.update_powerup_onscreen(self.screen_array,paddle_end,paddle_start,self.Paddle)
+                # print("self.sticky_ball_powerup : ",self.sticky_ball_powerup)
                 gametop_data.update_gametop(available_time,score,livesleft)
                 gametop_data.update_gametop_onscreen(self.screen_array)
                 self.Paddle.update_paddle_onscreen(self.screen_array)

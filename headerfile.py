@@ -58,7 +58,6 @@ all_reset = "\033[0m"
 back_rest = "\033[49m"
 fore_reset = "\033[39m"
 
-# print(bcyan + "bcyan"+ all_reset + bbrightcyan + "bbrightcyan" + all_reset)
 bricks_color = np.array([bred,byellow,bcyan,bgreen])
 bricks_font_color = np.array([fbrightred,fbrightyellow,fbrightblue,fbrightgreen])
 powerup_temper = [bmagenta+"P" + all_reset,bgreen + "P" + all_reset,bred + "P" + all_reset,byellow + "P" + all_reset,bblue + "P" + all_reset,bcyan + "P" + all_reset]

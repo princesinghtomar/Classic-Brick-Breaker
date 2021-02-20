@@ -34,12 +34,10 @@ class paddle:
         paddle_end = self.cur_x + half_size+1
         start_val = paddle_start-6 if paddle_start-6 < 1 else 1
         end_val = WIDTH-1 if paddle_end+6 > WIDTH-1 else paddle_end + 6
-        # print("start val : " + str(start_val) + " end_val : " + str(end_val) )
         for i in range(start_val,end_val):
             if(screengrid[self.cur_y][i]!='0' or screengrid[self.cur_y][i]!='|'):
                 screengrid[self.cur_y][i] = ' '
         j=0
-        # print(self.cur_y)
         for i in range(paddle_start,paddle_end):
             screengrid[self.cur_y][i] = paddle[j]
             j+=1

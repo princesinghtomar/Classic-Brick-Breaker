@@ -68,7 +68,6 @@ class functionality_class:
         Return all cells of the unit grid crossed by the line segment between
         A and B.
         '''
-        # print(str(A) + " :A , B: " + str(B))
         flag_check = 0
         (xA, yA) = A
         (xB, yB) = B

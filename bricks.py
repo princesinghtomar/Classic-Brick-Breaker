@@ -96,6 +96,6 @@ class Bricks:
                     screen_array[x][lamda] = ' '
                     lamda+=1
         # choosen_value = self.sys_random.choice(self.poweruparray)
-        choosen_value = 0
+        choosen_value = 2
         return (score_,choosen_value)
 

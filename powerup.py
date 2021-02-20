@@ -47,7 +47,6 @@ class powerupclass:
         self.bally = y
 
     def update_powerup_onscreen(self,screen_array,paddle_end,paddle_start,Paddle):
-        #self.check_time()
         if(self.active == 1):
             if(self.ballx < 43):
                 temp = powerup_temper[self.index]
@@ -170,10 +169,7 @@ class power5(powerupclass):
         self.index = 5
 
     def do(self):
-        # print("yup Reaced here")
-        # sticky_ball_powerup = True
         return True
 
     def undo(self):
-        # sticky_ball_powerup = False
         return False

@@ -166,7 +166,6 @@ class Ball(functionality_class):
         size_y = abs(self.velocity_y)
         score_= 0
         choosen_value = 0
-        print("self.ball_x : " + str(self.ball_x) + " self.bal_y : " + str(self.bal_y))
         #
         # if went below paddle :
         #
@@ -233,39 +232,27 @@ class Ball(functionality_class):
                     #
                     # while second_flag:
                     #
-                    # print("ball_temp : ",ball_temp)
-                    # if(len(ball_temp) <= 3):
-                    #     kapa = 1
-                    # else:
-                    #     kapa=2
                     for i in range(1,len(ball_temp)):
-                        # print("here0" + str(i))
-                        # print("cur_x : " + str(cur_x) + " cur_y : " + str(cur_y))
                         if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!=' '):
                             if((cur_x+1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
                                 (cur_x-1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1]) or 
                                 (cur_x-1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
                                 (cur_x+1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
-                                # print("here1")
                                 self.velocity_x = -self.velocity_x
                                 self.velocity_y = -self.velocity_y
                             elif((cur_x,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
                                 (cur_x,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
-                                # print("here2")
                                 self.velocity_y = -self.velocity_y
                             elif((cur_x+1,cur_y)==(ball_temp[i][0],ball_temp[i][1]) or
                                 (cur_x-1,cur_y)==(ball_temp[i][0],ball_temp[i][1])):
-                                # print("here3")
                                 self.velocity_x = -self.velocity_x
                             (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
                             temp_x = cur_x
                             temp_y = cur_y
-                            print("here4")
                             break
                         else:
                             cur_x = ball_temp[i][0]
                             cur_y = ball_temp[i][1]
-                            # print("here5")
                 else:
                     for i in range(1,len(ball_temp)):
                         if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!= 'O' or
@@ -276,7 +263,6 @@ class Ball(functionality_class):
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '>' or 
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '<'):
                             if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!=' '):
-                                print("here6")
                                 (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],True)
 
             if(screen_array[temp_x][temp_y] == ' ' and not self.thru_ball):

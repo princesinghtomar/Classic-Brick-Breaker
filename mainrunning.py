@@ -1,6 +1,7 @@
 import time
 import os
 import random
+import logging
 from headerfile import *
 from items import *
 from keypressed import *
@@ -10,6 +11,9 @@ from gametop import *
 from bricks import *
 from ball import *
 from powerup import *
+
+logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s',level=logging.DEBUG)
+logging.debug('This will get logged to a file')
 
 class Run:
     '''
@@ -26,8 +30,6 @@ class Run:
         self.powerup_flag = [0,0,0,0,0,0]
         self.balls = []
         self.ball_index = []
-        # self.expand_paddle_powerup = None
-        # self.expand_paddle_powerup_bool = False
 
     def return_paddle_start_and_end(self):
         '''
@@ -44,8 +46,7 @@ class Run:
         '''
         key = input_to()
         (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
-        # print(clear_screen)
-        # os.system('clear')
+        print(clear_screen)
         if(key == 'q'):
             #os.system('clear')
             print(art.you_quit_art)
@@ -136,7 +137,8 @@ class Run:
                     (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
                     (ball_return_value,score_,choosen_value) = self.ball_class.update_ball_motion(self.screen_array,bricks,paddle_start,paddle_end)
                     kapa = 0
-                    # print(choosen_value)
+                    # --------  choosen_value
+                    logging.debug(choosen_value)
                     for i in range(0,6):
                         if(self.powerup_flag[i] == 1):
                             kapa+=1
@@ -145,7 +147,8 @@ class Run:
                             powerups[choosen_value-1].update_time_activated()
                         else:
                             self.powerup_flag[choosen_value-1] = 1
-                        # print("self.powerup_flag : ",self.powerup_flag)
+                        # -------  self.powerup_flag 
+                        logging.debug("self.powerup_flag : ",self.powerup_flag)
                     score+=score_
                     score_ = 0
                     if(ball_return_value < 0):
@@ -158,9 +161,6 @@ class Run:
                         self.sticky_ball_motion = True
                 for i in range(0,6):
                     if(self.powerup_flag[i]):
-                        # print(powerups[i].return_status())
-                        # print("i : ",i)
-                        print("powerups[i].check_time() : ",powerups[i].check_time())
                         if(powerups[i].return_status() == 0):
                             (bavx,bavy,bax,bay) = self.ball_class.return_class_init()
                             powerups[i].update_xy(bax,bay)
@@ -182,8 +182,6 @@ class Run:
                         elif(powerups[i].return_status() == 2):
                             if(i == 0 or i ==1):
                                 powerups[i].do(self.Paddle)
-                            #elif(i == 3):
-                            #    powerups[i].do(self.ball_class,self.screen_array)
                             if(not powerups[i].check_time()):
                                 self.powerup_flag[i] = 0
                                 if(i == 0 or i ==1):
@@ -205,17 +203,13 @@ class Run:
                         elif(i==5):
                             self.sticky_ball_powerup = powerups[i].undo()
 
-
-                # print("self.sticky_ball_powerup : ",self.sticky_ball_powerup)
                 gametop_data.update_gametop(available_time,score,livesleft)
                 gametop_data.update_gametop_onscreen(self.screen_array)
                 self.Paddle.update_paddle_onscreen(self.screen_array)
                 screen_board.showscreen()
                 
-                print("self.sticky_ball_powerup : ",self.sticky_ball_powerup)
                 if(self.sticky_ball_powerup):
                     (bavx,bavy,bax,bay) = self.ball_class.return_class_init()
-                    print("(bavx,bavy,bax,bay) : ",(bavx,bavy,bax,bay))
                     (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
                     if(bax >= 42):
                         if(bay>=paddle_start and bay <= paddle_end):

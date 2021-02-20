@@ -13,7 +13,7 @@ class power0:
     def __init__(self,x,y):
         self.time_activated = time.time()
         self.active = 0
-        self.max_time = 5
+        self.max_time = 15
         self._x = x + 5
         self._y = y
 
@@ -46,7 +46,7 @@ class power0:
         self._y = y
 
     def update_powerup_onscreen(self,screen_array,paddle_end,paddle_start,Paddle):
-        self.check_time()
+        #self.check_time()
         if(self.active == 1):
             if(self._x < 43):
                 temp = powerup_temper[0]
@@ -73,7 +73,7 @@ class power1(power0):
     def __init__(self,x,y):
         self.time_activated = time.time()
         self.active = 0
-        self.max_time = 5
+        self.max_time = 10
         self._x = x + 5
         self._y = y
 
@@ -140,10 +140,10 @@ class power4(power0):
         self._y = y
 
     def do(self,ball_class):
-        ball_class._thru_ball(True)
+        ball_class.update_thru_ball(True)
 
     def undo(self,ball_class):
-        ball_class._thru_ball(False)
+        ball_class.update_thru_ball(False)
 
 class power5(power0):
     def __init__(self,x,y):
@@ -153,11 +153,11 @@ class power5(power0):
         self._x = x + 5
         self._y = y
 
-    def do(self,sticky_ball_powerup):
+    def do(self):
         # print("yup Reaced here")
         # sticky_ball_powerup = True
         return True
 
-    def undo(self,sticky_ball_powerup):
+    def undo(self):
         # sticky_ball_powerup = False
         return False

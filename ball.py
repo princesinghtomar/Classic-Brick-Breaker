@@ -142,7 +142,7 @@ class Ball(functionality_class):
         self._y = y
 
     def update_thru_ball(self,value):
-        self.update_thru_ball = value
+        self._thru_ball = value
 
     def increase_speed(self,dvx,dvy):
         self.velocity_x *= abs(dvx)
@@ -166,6 +166,7 @@ class Ball(functionality_class):
         size_y = abs(self.velocity_y)
         score_= 0
         choosen_value = 0
+        print("self._x : " + str(self._x) + " self._y : " + str(self._y))
         #
         # if went below paddle :
         #
@@ -264,7 +265,7 @@ class Ball(functionality_class):
                             (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
                             temp_x = cur_x
                             temp_y = cur_y
-                            # print("here4")
+                            print("here4")
                             break
                         else:
                             cur_x = ball_temp[i][0]
@@ -280,7 +281,7 @@ class Ball(functionality_class):
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '>' or 
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '<'):
                             if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!=' '):
-                                # print("here6")
+                                print("here6")
                                 (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],True)
 
             if(screen_array[temp_x][temp_y] == ' ' and not self._thru_ball):

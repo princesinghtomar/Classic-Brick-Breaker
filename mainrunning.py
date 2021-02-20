@@ -131,13 +131,6 @@ class Run:
                     #os.system('clear')
                     print('Time_Over')
                     break
-
-                if(self.sticky_ball_powerup):
-                    (bavx,bavy,bax,bay) = self.ball_class.return_class_init()
-                    (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
-                    if(bay == 43):
-                        if(bax>=paddle_start and bax <= paddle_end):
-                            self.sticky_ball_motion = True
                 
                 if(not self.sticky_ball_motion):
                     (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
@@ -145,12 +138,13 @@ class Run:
                     kapa = 0
                     # print(choosen_value)
                     for i in range(0,6):
-                        if(self.powerup_flag[choosen_value-1] == 1):
+                        if(self.powerup_flag[i] == 1):
                             kapa+=1
-                    if(choosen_value and kapa <= 2):
+                    if(choosen_value!=0 and kapa <= 2):
                         if(self.powerup_flag[choosen_value-1] == 1):
                             powerups[choosen_value-1].update_time_activated()
-                        self.powerup_flag[choosen_value-1] = 1
+                        else:
+                            self.powerup_flag[choosen_value-1] = 1
                         # print("self.powerup_flag : ",self.powerup_flag)
                     score+=score_
                     score_ = 0
@@ -166,7 +160,7 @@ class Run:
                     if(self.powerup_flag[i]):
                         # print(powerups[i].return_status())
                         # print("i : ",i)
-                        # print(powerups[i].check_time())
+                        print("powerups[i].check_time() : ",powerups[i].check_time())
                         if(powerups[i].return_status() == 0):
                             (bavx,bavy,bax,bay) = self.ball_class.return_class_init()
                             powerups[i].update_xy(bax,bay)
@@ -177,8 +171,8 @@ class Run:
                             if(ret_value == True):
                                 if(i == 0 or i == 1):
                                     powerups[i].do(self.Paddle)
-                                elif(i == 2):
-                                    # print("nothin done yet")
+                                # elif(i == 2):
+                                #     # print("nothin done yet")
                                 elif(i == 3 or i ==4):
                                     powerups[i].do(self.ball_class)
                                 elif(i==5):
@@ -194,15 +188,35 @@ class Run:
                                 self.powerup_flag[i] = 0
                                 if(i == 0 or i ==1):
                                     powerups[i].undo(self.Paddle)
-                                elif(i == 2):
-                                    # print("nothin done yet")
+                                # elif(i == 2):
+                                #     # print("nothin done yet")
                                 elif(i == 3 or i == 4):
                                     powerups[i].undo(self.ball_class)
                                 elif(i==5):
                                     self.sticky_ball_powerup = powerups[i].undo()
+                    else:
+                        powerups[i].update_status(0)
+                        if(i == 0 or i ==1):
+                            powerups[i].undo(self.Paddle)
+                        # elif(i == 2):
+                        #     # print("nothin done yet")
+                        elif(i == 4):
+                            powerups[i].undo(self.ball_class)
+                        elif(i==5):
+                            self.sticky_ball_powerup = powerups[i].undo()
+
 
                 # print("self.sticky_ball_powerup : ",self.sticky_ball_powerup)
                 gametop_data.update_gametop(available_time,score,livesleft)
                 gametop_data.update_gametop_onscreen(self.screen_array)
                 self.Paddle.update_paddle_onscreen(self.screen_array)
                 screen_board.showscreen()
+                
+                print("self.sticky_ball_powerup : ",self.sticky_ball_powerup)
+                if(self.sticky_ball_powerup):
+                    (bavx,bavy,bax,bay) = self.ball_class.return_class_init()
+                    print("(bavx,bavy,bax,bay) : ",(bavx,bavy,bax,bay))
+                    (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
+                    if(bax >= 42):
+                        if(bay>=paddle_start and bay <= paddle_end):
+                            self.sticky_ball_motion = True

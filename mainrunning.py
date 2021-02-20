@@ -166,7 +166,7 @@ class Run:
                                 logging.debug("Here at i == 0 & i == 1  -- undo part")
                                 powerups[i].undo(self.Paddle)
                             elif(i == 2):
-                                powerups[i].undo(self.Paddle)
+                                powerups[i].undo(self.ball_class,self.screen_array,self.ball_index)
                                 for i in range(0,len(self.balls)):
                                     self.balls.pop()
                                 for i in range(0,len(self.ball_index)):

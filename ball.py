@@ -122,67 +122,62 @@ class Ball(functionality_class):
     def __init__(self,velocity_x,velocity_y,x,y,screen_array):
         self.velocity_x = velocity_x
         self.velocity_y = velocity_y
-        self._x = x
-        self._y = y
-        self._thru_ball = False
+        self.ball_x = x
+        self.bal_y = y
+        self.thru_ball = False
         self.sticky_ball = False
 
         if(screen_array[x][y] == ' '):
             screen_array[x][y] = 'O'
 
     def return_class_init(self):
-        return (self.velocity_x,self.velocity_y,self._x,self._y)
+        return (self.velocity_x,self.velocity_y,self.ball_x,self.bal_y)
 
     def update_speed(self,vx,vy):
         self.velocity_y = vx
         self.velocity_x = vy
 
     def update_xandy(self,x,y):
-        self._x = x
-        self._y = y
+        self.ball_x = x
+        self.bal_y = y
 
     def update_thru_ball(self,value):
-        self._thru_ball = value
+        self.thru_ball = value
 
     def increase_speed(self,dvx,dvy):
         self.velocity_x *= abs(dvx)
         self.velocity_y *= abs(dvy)
 
     def ball_sticky_motion(self,screen_array,dx,dy):
-        screen_array[self._x][self._y] = ' '    
-        self._x += dx
-        self._y += dy
-        screen_array[self._x][self._y] = 'O'
+        screen_array[self.ball_x][self.bal_y] = ' '    
+        self.ball_x += dx
+        self.bal_y += dy
+        screen_array[self.ball_x][self.bal_y] = 'O'
 
     def update_ball_motion(self,screen_array,bricks_class,paddle_start,paddle_end):
         ''' 
         This functions handle collision of ball with bricks
         '''
-        temp_x = self._x + self.velocity_x
-        temp_y = self._y + self.velocity_y
-        previous_x = self._x
-        previous_y = self._y
+        temp_x = self.ball_x + self.velocity_x
+        temp_y = self.bal_y + self.velocity_y
+        previous_x = self.ball_x
+        previous_y = self.bal_y
         size_x = abs(self.velocity_x)
         size_y = abs(self.velocity_y)
         score_= 0
         choosen_value = 0
-        print("self._x : " + str(self._x) + " self._y : " + str(self._y))
+        print("self.ball_x : " + str(self.ball_x) + " self.bal_y : " + str(self.bal_y))
         #
         # if went below paddle :
         #
         if(temp_x >= 43):
-            if(( temp_x == 43 or self._x <= 43 )):
+            if(( temp_x == 43 or self.ball_x <= 43 )):
+                paddle_center = (paddle_start + paddle_end)/2
                 if(temp_y >= paddle_start and temp_y <= paddle_end):
-                    sizepaddle = paddle_end - paddle_start
-                    bythree = math.floor(sizepaddle/3)
-                    arr = [paddle_start+bythree,paddle_end-bythree]
-                    #
-                    # speed change
-                    #
-                    if(temp_y<arr[0]):
-                        self.velocity_y -= 1
-                    elif(temp_y>arr[1]):
-                        self.velocity_y += 1
+                    if(temp_y > paddle_center):
+                        self.velocity_y += math.ceil(abs(temp_y - paddle_center))
+                    else:
+                        self.velocity_y -= math.ceil(abs(temp_y - paddle_center))
                     temp_x = previous_x
                     temp_y = previous_y
                     self.velocity_x = -self.velocity_x
@@ -213,8 +208,8 @@ class Ball(functionality_class):
                     self.velocity_y = -self.velocity_y
                     temp_val = (WIDTH - 2) - temp_y
                     temp_y = (WIDTH - 2) + temp_val
-                self._x = temp_x
-                self._y = temp_y
+                self.ball_x = temp_x
+                self.bal_y = temp_y
             elif(temp_y <=2 ):
                 self.velocity_y = -self.velocity_y
                 temp_val = 2 - temp_y
@@ -226,10 +221,10 @@ class Ball(functionality_class):
             else:
                 sign_vx = self.sign(self.velocity_x)
                 sign_vy = self.sign(self.velocity_y)
-                ball_temp = self.raytrace((self._x,self._y),(temp_x,temp_y))
-                cur_x = self._x
-                cur_y = self._y
-                if(not self._thru_ball):
+                ball_temp = self.raytrace((self.ball_x,self.bal_y),(temp_x,temp_y))
+                cur_x = self.ball_x
+                cur_y = self.bal_y
+                if(not self.thru_ball):
                     #
                     # collision with bricks :
                     #
@@ -284,13 +279,13 @@ class Ball(functionality_class):
                                 print("here6")
                                 (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],True)
 
-            if(screen_array[temp_x][temp_y] == ' ' and not self._thru_ball):
-                self._x = temp_x
-                self._y = temp_y
-                screen_array[self._x][self._y] = 'O'
+            if(screen_array[temp_x][temp_y] == ' ' and not self.thru_ball):
+                self.ball_x = temp_x
+                self.bal_y = temp_y
+                screen_array[self.ball_x][self.bal_y] = 'O'
                 return (1,score_,choosen_value)
-            elif(self._thru_ball):
-                self._x = temp_x
-                self._y = temp_y
-                screen_array[self._x][self._y] = 'O'
+            elif(self.thru_ball):
+                self.ball_x = temp_x
+                self.bal_y = temp_y
+                screen_array[self.ball_x][self.bal_y] = 'O'
                 return (1,score_,choosen_value)

@@ -14,8 +14,8 @@ class powerupclass:
         self.time_activated = time.time()
         self.active = 0
         self.max_time = 15
-        self._x = x + 5
-        self._y = y
+        self.ballx = x + 5
+        self.bally = y
         self.index = 0
 
     def update_time_activated(self):
@@ -43,25 +43,25 @@ class powerupclass:
         self.active = st
 
     def update_xy(self,x,y):
-        self._x = x + 5
-        self._y = y
+        self.ballx = x + 5
+        self.bally = y
 
     def update_powerup_onscreen(self,screen_array,paddle_end,paddle_start,Paddle):
         #self.check_time()
         if(self.active == 1):
-            if(self._x < 43):
+            if(self.ballx < 43):
                 temp = powerup_temper[self.index]
-                screen_array[self._x-1][self._y] = ' '
-                screen_array[self._x][self._y] = temp
-            elif(self._x > 43):
+                screen_array[self.ballx-1][self.bally] = ' '
+                screen_array[self.ballx][self.bally] = temp
+            elif(self.ballx > 43):
                 self.active = 0
             else:
                 temp = powerup_temper[self.index]
-                screen_array[self._x-1][self._y] = ' '
-                if(self._y >= paddle_start and self._y <= paddle_end):
+                screen_array[self.ballx-1][self.bally] = ' '
+                if(self.bally >= paddle_start and self.bally <= paddle_end):
                     self.active = 2
                     return True
-            self._x += 1
+            self.ballx += 1
             return False
 
 class power0(powerupclass):
@@ -70,8 +70,8 @@ class power0(powerupclass):
         self.time_activated = time.time()
         self.active = 0
         self.max_time = 15
-        self._x = x + 5
-        self._y = y
+        self.ballx = x + 5
+        self.bally = y
         self.index = 0
 
     def do(self,Paddle):
@@ -85,8 +85,8 @@ class power1(powerupclass):
         self.time_activated = time.time()
         self.active = 0
         self.max_time = 15
-        self._x = x + 5
-        self._y = y
+        self.ballx = x + 5
+        self.bally = y
         self.index = 1
 
     def do(self,Paddle):
@@ -100,8 +100,8 @@ class power2(powerupclass):
         self.time_activated = time.time()
         self.active = 0
         self.max_time = 15
-        self._x = x + 5
-        self._y = y
+        self.ballx = x + 5
+        self.bally = y
         self.index = 2
 
     def do(self,ball_class,screen_array,balls,ball_index):
@@ -130,8 +130,8 @@ class power3(powerupclass):
         self.time_activated = time.time()
         self.active = 0
         self.max_time = 15
-        self._x = x + 5
-        self._y = y
+        self.ballx = x + 5
+        self.bally = y
         self.index = 3
 
     def do(self,ball_class):
@@ -150,8 +150,8 @@ class power4(powerupclass):
         self.time_activated = time.time()
         self.active = 0
         self.max_time = 15
-        self._x = x + 5
-        self._y = y
+        self.ballx = x + 5
+        self.bally = y
         self.index = 4
 
     def do(self,ball_class):
@@ -165,8 +165,8 @@ class power5(powerupclass):
         self.time_activated = time.time()
         self.active = 0
         self.max_time = 15
-        self._x = x + 5
-        self._y = y
+        self.ballx = x + 5
+        self.bally = y
         self.index = 5
 
     def do(self):

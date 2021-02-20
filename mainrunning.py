@@ -159,6 +159,26 @@ class Run:
                         self.ball_class = Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,temp_random,self.screen_array)
                         for i in range(0,6):
                             self.powerup_flag[i] = 0
+                            powerups[i].update_status(0)
+                            powerups[i].deactivate_time()
+                            if(i == 0 or i ==1):
+                                # -------- ( i == 0 or 1 )
+                                logging.debug("Here at i == 0 & i == 1  -- undo part")
+                                powerups[i].undo(self.Paddle)
+                            elif(i == 2):
+                                powerups[i].undo(self.Paddle)
+                                for i in range(0,len(self.balls)):
+                                    self.balls.pop()
+                                for i in range(0,len(self.ball_index)):
+                                    self.ball_index.pop()
+                            elif(i == 3 or i == 4):
+                                # -------- ( i == 3 or 4 )
+                                logging.debug("Here at i == 0 & i == 1  -- undo part")
+                                powerups[i].undo(self.ball_class)
+                            elif(i==5):
+                                # -------- ( i == 5 )
+                                logging.debug("Here at i == 5 -- undo part")
+                                self.sticky_ball_powerup = powerups[i].undo()
                         self.sticky_ball_motion = True
                 for i in range(0,6):
                     # ------- self.powerup_flag[i]
@@ -187,7 +207,7 @@ class Run:
                                 # elif(i == 2):
                                 #     # print("nothin done yet")
                                 elif(i == 3 or i ==4):
-                                    # -------- ( i == 0 or 1 )
+                                    # -------- ( i == 3 or 4 )
                                     logging.debug("Here at i == 0 & i == 1  -- do part")
                                     powerups[i].do(self.ball_class)
                                 elif(i==5):
@@ -205,11 +225,12 @@ class Run:
                                 powerups[i].do(self.Paddle)
                             if(not powerups[i].check_time()):
                                 self.powerup_flag[i] = 0
+                                powerups[i].update_status(0)
+                                powerups[i].deactivate_time()
                                 if(i == 0 or i ==1):
                                     # -------- ( i == 0 or 1 )
                                     logging.debug("Here at i == 0 & i == 1  -- undo part")
                                     powerups[i].undo(self.Paddle)
-                                    powerups[i].update_status(0)
                                 # elif(i == 2):
                                 #     # print("nothin done yet")
                                 elif(i == 3 or i == 4):

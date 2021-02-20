@@ -42,6 +42,9 @@ class powerupclass:
     def update_status(self,st):
         self.active = st
 
+    def deactivate_time(self):
+        self.time_activated = time.time() - self.max_time
+
     def update_xy(self,x,y):
         self.ballx = x + 5
         self.bally = y

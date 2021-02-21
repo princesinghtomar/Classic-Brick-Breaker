@@ -3,6 +3,7 @@ from items import *
 from headerfile import *
 from bricks import *
 import math
+import logging
 import sys
 
 # CHECK THIS PART :-/
@@ -48,6 +49,7 @@ class functionality_class:
         a = []
         size = len(arr)
         j=0
+        prev = 0
         for i in arr:
             if(flag_check):
                 if(j!=0 and j!=(size-1)):
@@ -59,8 +61,11 @@ class functionality_class:
             j+=1
         a.sort()
         val = []
-        for i in a:
-            val.append(i[1])
+        logging.debug("a : " + str(a))
+        for i in range(0,len(a)):
+            if(i!=0 and abs(a[i][0]-a[i-1][0])>0.1):
+                val.append(a[i][1])
+        logging.debug("val : " + str(val))
         return val
 
     def raytrace(self,A, B):
@@ -233,17 +238,16 @@ class Ball(functionality_class):
                     #
                     for i in range(1,len(ball_temp)):
                         if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!=' '):
-                            if((cur_x+1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
-                                (cur_x-1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1]) or 
-                                (cur_x-1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
-                                (cur_x+1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
-                                self.velocity_x = -self.velocity_x
-                                self.velocity_y = -self.velocity_y
-                            elif((cur_x,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
+                            if((cur_x,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
                                 (cur_x,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
                                 self.velocity_y = -self.velocity_y
                             elif((cur_x+1,cur_y)==(ball_temp[i][0],ball_temp[i][1]) or
                                 (cur_x-1,cur_y)==(ball_temp[i][0],ball_temp[i][1])):
+                                self.velocity_x = -self.velocity_x
+                            elif((cur_x+1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
+                                (cur_x-1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1]) or 
+                                (cur_x-1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
+                                (cur_x+1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
                                 self.velocity_x = -self.velocity_x
                             (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
                             temp_x = cur_x

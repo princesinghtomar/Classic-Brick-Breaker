@@ -23,13 +23,12 @@ class Run:
         self.sys_random = random.SystemRandom()
         self.sticky_ball_motion = True
         self.sticky_ball_powerup = False
-        self.ball_class = None
+        self.ball_class = []
         self.screen_array = np.array([])
         self.Paddle = None
         self.paddle_array = np.array([])
         self.powerup_flag = [0,0,0,0,0,0]
-        self.balls = []
-        self.ball_index = []
+        # self.ball_index = []
 
     def return_paddle_start_and_end(self):
         '''
@@ -48,20 +47,21 @@ class Run:
         (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
         print(clear_screen)
         if(key == 'q'):
-            #os.system('clear')
+            os.system('clear')
+            # ----
             print(art.you_quit_art)
             return 0
         elif(key == 'a'):
             if(paddle_start > 4):
                 self.paddle_array[0] -= 3
                 if(self.sticky_ball_motion):
-                    self.ball_class.ball_sticky_motion(self.screen_array,0,-3)
+                    self.ball_class[0].ball_sticky_motion(self.screen_array,0,-3)
                 self.Paddle.update_paddle_value(self.paddle_array[0],self.paddle_array[1],self.paddle_array[2])
         elif(key == 'd'):
             if(paddle_end < WIDTH-3):
                 self.paddle_array[0] += 3
                 if(self.sticky_ball_motion):
-                    self.ball_class.ball_sticky_motion(self.screen_array,0,+3)
+                    self.ball_class[0].ball_sticky_motion(self.screen_array,0,+3)
                 self.Paddle.update_paddle_value(self.paddle_array[0],self.paddle_array[1],self.paddle_array[2])
         elif(key == 'k'):
             self.sticky_ball_motion = False
@@ -97,7 +97,7 @@ class Run:
         bricks = Bricks()
         (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
         temp_random = self.sys_random.choice([i for i in range(paddle_start,paddle_end)])
-        self.ball_class = Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,temp_random,self.screen_array)
+        self.ball_class.append(Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,temp_random,self.screen_array))
         bricks.update_brick_onscreen(self.screen_array)
         score = 0
         choosen_value = 0
@@ -129,21 +129,25 @@ class Run:
                 available_time -= (cur_time - start_time)
                 start_time = cur_time
                 if(available_time < 0):
-                    #os.system('clear')
+                    os.system('clear')
+                    # --------
                     print('Time_Over')
                     break
                 
                 if(not self.sticky_ball_motion):
                     (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
-                    (ball_return_value,score_,choosen_value) = self.ball_class.update_ball_motion(self.screen_array,bricks,paddle_start,paddle_end)
-                    # --------  choosen_value -
+                    (ball_return_value,score_,choosen_value) = self.ball_class[0].update_ball_motion(self.screen_array,bricks,paddle_start,paddle_end)
+                    if(len(self.ball_class) > 1):
+                        for i in range(1,len(self.ball_class)):
+                            (ball_return_value1,score_1,choosen_value1) = self.ball_class[i].update_ball_motion(self.screen_array,bricks,paddle_start,paddle_end)
+                    # --------  choosen_value 
                     logging.debug("choosen_value : " + str(choosen_value))
                     if(choosen_value!=0):
                         # ---------
                         logging.debug("choosen_value!=0 : " + str(choosen_value!=0))
                         if(self.powerup_flag[choosen_value-1] == 1):
                             logging.debug("self.powerup_flag[choosen_value-1] :" + str(self.powerup_flag[choosen_value-1]))
-                            powerups[choosen_value-1].update_time_activated()
+                            # powerups[choosen_value-1].update_time_activated()
                         else:
                             self.powerup_flag[choosen_value-1] = 1
                         # -------  self.powerup_flag - 
@@ -156,29 +160,26 @@ class Run:
                             print("You loose")
                             break
                         temp_random = self.sys_random.choice([i for i in range(paddle_start,paddle_end)])
-                        self.ball_class = Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,temp_random,self.screen_array)
+                        self.ball_class[0] = Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,temp_random,self.screen_array)
                         for i in range(0,6):
-                            self.powerup_flag[i] = 0
-                            powerups[i].update_status(0)
-                            powerups[i].deactivate_time()
-                            if(i == 0 or i ==1):
-                                # -------- ( i == 0 or 1 )
-                                logging.debug("Here at i == 0 & i == 1  -- undo part")
-                                powerups[i].undo(self.Paddle)
-                            elif(i == 2):
-                                powerups[i].undo(self.ball_class,self.screen_array,self.ball_index)
-                                for i in range(0,len(self.balls)):
-                                    self.balls.pop()
-                                for i in range(0,len(self.ball_index)):
-                                    self.ball_index.pop()
-                            elif(i == 3 or i == 4):
-                                # -------- ( i == 3 or 4 )
-                                logging.debug("Here at i == 0 & i == 1  -- undo part")
-                                powerups[i].undo(self.ball_class)
-                            elif(i==5):
-                                # -------- ( i == 5 )
-                                logging.debug("Here at i == 5 -- undo part")
-                                self.sticky_ball_powerup = powerups[i].undo()
+                            if(self.powerup_flag[i] == 1): 
+                                powerups[i].update_status(0)
+                                powerups[i].deactivate_time()
+                                self.powerup_flag[i] = 0
+                                if(i == 0 or i ==1):
+                                    # -------- ( i == 0 or 1 )
+                                    logging.debug("Here at i == 0 & i == 1  -- undo part")
+                                    powerups[i].undo(self.Paddle)
+                                elif(i == 2):
+                                    powerups[i].undo(self.ball_class,self.screen_array)
+                                elif(i == 3 or i == 4):
+                                    # -------- ( i == 3 or 4 )
+                                    logging.debug("Here at i == 0 & i == 1  -- undo part")
+                                    powerups[i].undo(self.ball_class[0])
+                                elif(i==5):
+                                    # -------- ( i == 5 )
+                                    logging.debug("Here at i == 5 -- undo part")
+                                    self.sticky_ball_powerup = powerups[i].undo()
                         self.sticky_ball_motion = True
                 for i in range(0,6):
                     # ------- self.powerup_flag[i]
@@ -187,7 +188,7 @@ class Run:
                         # ---------  powerups[i].return_status() -
                         logging.debug("powerups[i].return_status() : " + str(powerups[i].return_status()))
                         if(powerups[i].return_status() == 0):
-                            (bavx,bavy,bax,bay) = self.ball_class.return_class_init()
+                            (bavx,bavy,bax,bay) = self.ball_class[0].return_class_init()
                             # -------- (bavx,bavy,bax,bay) -
                             logging.debug("(bavx,bavy,bax,bay) : " + str((bavx,bavy,bax,bay)))
                             powerups[i].update_xy(bax,bay)
@@ -204,12 +205,14 @@ class Run:
                                     # -------- ( i == 0 or 1 )
                                     logging.debug("Here at i == 0 & i == 1  -- do part")
                                     powerups[i].do(self.Paddle)
-                                # elif(i == 2):
-                                #     # print("nothin done yet")
+                                elif(i == 2):
+                                    # -------- ( i == 2)
+                                    logging.debug("Here at i == 2  -- do part")
+                                    powerups[i].do(self.ball_class,self.screen_array)
                                 elif(i == 3 or i ==4):
                                     # -------- ( i == 3 or 4 )
                                     logging.debug("Here at i == 0 & i == 1  -- do part")
-                                    powerups[i].do(self.ball_class)
+                                    powerups[i].do(self.ball_class[0])
                                 elif(i==5):
                                     # -------- ( i == 5 )
                                     logging.debug("Here at i == 5 -- do part")
@@ -231,12 +234,14 @@ class Run:
                                     # -------- ( i == 0 or 1 )
                                     logging.debug("Here at i == 0 & i == 1  -- undo part")
                                     powerups[i].undo(self.Paddle)
-                                # elif(i == 2):
-                                #     # print("nothin done yet")
+                                elif(i == 2):
+                                    # -------- ( i == 2)
+                                    logging.debug("Here at i == 2  -- undo part")
+                                    powerups[i].undo(self.ball_class,self.screen_array)
                                 elif(i == 3 or i == 4):
                                     # -------- ( i == 0 or 1 )
                                     logging.debug("Here at i == 0 & i == 1  -- undo part")
-                                    powerups[i].undo(self.ball_class)
+                                    powerups[i].undo(self.ball_class[0])
                                     powerups[i].update_status(0)
                                 elif(i==5):
                                     # -------- ( i == 5 )
@@ -250,7 +255,7 @@ class Run:
                 screen_board.showscreen()
                 
                 if(self.sticky_ball_powerup):
-                    (bavx,bavy,bax,bay) = self.ball_class.return_class_init()
+                    (bavx,bavy,bax,bay) = self.ball_class[0].return_class_init()
                     (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
                     if(bax >= 42):
                         if(bay>=paddle_start and bay <= paddle_end):

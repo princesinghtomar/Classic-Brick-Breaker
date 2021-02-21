@@ -4,6 +4,7 @@ from paddle import *
 from items import *
 from ball import *
 import time
+import logging
 
 # Active = 0 // not active or release
 # Active = 1 // released but not yet taken by the player
@@ -106,26 +107,22 @@ class power2(powerupclass):
         self.bally = y
         self.index = 2
 
-    def do(self,ball_class,screen_array,balls,ball_index):
-        x = ball_class
+    def do(self,ball_class,screen_array):
         total_balls = len(ball_class)
-        # temp = []
-        # for i in range(0,total_balls):
-        #     (bavx,bavy,bax,bay) = self.ball_class[i].return_class_init()
-        #     ball_class.append(Ball(bavy,bavx,bax,bay,screen_array))
-        #     temp.append(i)
-        # balls.append(temp)
-        # totla_balls = len(ball_index)
-        # ball_index.append(totla_balls)
-        #do nothing now
+        temp = []
+        self.update_time_activated()
+        for i in range(0,total_balls):
+            (bavx,bavy,bax,bay) = ball_class[i].return_class_init()
+            screen_array[bax][bay] = 'O'
+            ball_class.append(Ball(bavx,-bavy,bax,bay,screen_array))
+        logging.debug("do balls : "+ str(ball_class))
 
-    def undo(self,ball_class,screen_array,ball_index):
-        x = ball_class
-        # index = ball_index[0]
-        # for i in index:
-        #     ball_class[i] = ""
-        # index.pop(0)
-        #undo nothing now
+    def undo(self,ball_class,screen_array):
+        for i in range(0,len(ball_class)-1):
+            (bavx,bavy,bax,bay) = ball_class[i].return_class_init()
+            screen_array[bax][bay] = ' '
+            ball_class.pop(1)
+        logging.debug("undo balls : "+ str(ball_class))
 
 class power3(powerupclass):
     def __init__(self,x,y):
@@ -135,17 +132,21 @@ class power3(powerupclass):
         self.ballx = x + 5
         self.bally = y
         self.index = 3
+        self.vx = 0
+        self.vy = 0
 
     def do(self,ball_class):
         # for i in ball_class:
         #     i.increase_speed(2,2)   for multiple balls
-
-        ball_class.increase_speed(-2,-2)
+        (bavx,bavy,bax,bay) = ball_class.return_class_init()
+        self.vx = bavx
+        self.vy = bavy
+        ball_class.increase_speed(2,2)
 
     def undo(self,ball_class):
         # for i in ball_class:
         #     i.increase_speed(-2,-2)   for multiple balls
-        ball_class.increase_speed(-2,-2)
+        ball_class.update_speed(-1,-1)
 
 class power4(powerupclass):
     def __init__(self,x,y):

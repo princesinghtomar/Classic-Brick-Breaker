@@ -5,6 +5,7 @@ import random
 from inherit_brick import *
 import sys
 from powerup import *
+import logging
 
 class Bricks:
     ''' 
@@ -16,7 +17,8 @@ class Bricks:
         self.sys_random = random.SystemRandom()
         self.brick_configuration = brick_orientation[self.sys_random.randint(0,((brick_orientation.size)-1))].split()
         self.brick_data = np.array([])
-        self.poweruparray = [0 for i in range(1,30)]
+        self.brick_info_for_bonus = []
+        self.poweruparray = [0 for i in range(1,130)]
         for i in range(0,6):
             self.poweruparray[i] = 6-i
     
@@ -32,14 +34,19 @@ class Bricks:
             splited_bricks = np.array(bricks_splitted_array[i].split('-'))
             lamda = self.brick_start_y
             brci_temp = []
+            another_temp = []
             for k in range(0,splited_bricks.size):
                 brci_temp.insert(k,Brick_inherit(int(splited_bricks[k]),i+self.brick_start_x,lamda))
+                another_temp.append([lamda+1,int(splited_bricks[k])])
                 for z in range(0,6):
                     temp = bricks_color[int(splited_bricks[k])] + bricks_font_color[int(splited_bricks[k])]
                     screen_array[i+self.brick_start_x][lamda] = temp +bricks[int(splited_bricks[k])][z] + all_reset
                     lamda+=1
             temp_brick_data.append(brci_temp)
+            self.brick_info_for_bonus.append(another_temp)
         self.brick_data = np.array(temp_brick_data)
+        logging.debug("brick_info_for_bonus : " + str(self.brick_info_for_bonus))
+        logging.debug("size of brick_info_for_bonus : " + str(np.array(self.brick_info_for_bonus[0]).shape))
 
     def remove_brick_onscreen(self,screen_array,x,y,go_thru):
         '''
@@ -92,7 +99,7 @@ class Bricks:
             for z in range(0,6):
                     screen_array[x][lamda] = ' '
                     lamda+=1
-        # choosen_value = self.sys_random.choice(self.poweruparray)
-        choosen_value = 6
+        choosen_value = self.sys_random.choice(self.poweruparray)
+        # choosen_value = 3
         return (score_,choosen_value)
 

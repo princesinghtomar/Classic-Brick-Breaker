@@ -169,7 +169,7 @@ class Ball(functionality_class):
         This functions handle collision of ball with bricks
         '''
         if (self.velocity_x == 0):
-            self.velocity_y+=1
+            self.velocity_x+=1
         temp_x = self.ball_x + self.velocity_x
         temp_y = self.bal_y + self.velocity_y
         previous_x = self.ball_x

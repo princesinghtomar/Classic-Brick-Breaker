@@ -36,5 +36,17 @@ instructions = fred + art.instructions_art + all_reset + "\n" + \
     "                                                                                         " + fred + "|\n" + all_reset + \
     fred + "|" + all_reset + " > Press " + fred + "k" + all_reset + " to release ball                                                " + \
     "                                                                                         " + fred + "|\n" + all_reset + \
+    fred + "|" + all_reset + " > Power " + bmagenta + "P" + all_reset + " Expand Paddle                                                  " + \
+    "                                                                                         " + fred + "|\n" + all_reset + \
+    fred + "|" + all_reset + " > Power " + bgreen + "P" + all_reset + " Shrink Paddle                                                  " + \
+    "                                                                                         " + fred + "|\n" + all_reset + \
+    fred + "|" + all_reset + " > Power " + bred + "P" + all_reset + " Ball Multiplier                                                " + \
+    "                                                                                         " + fred + "|\n" + all_reset + \
+    fred + "|" + all_reset + " > Power " + byellow + "P" + all_reset + " Fast Ball                                                      " + \
+    "                                                                                         " + fred + "|\n" + all_reset + \
+    fred + "|" + all_reset + " > Power " + bblue + "P" + all_reset + " Thru-ball                                                      " + \
+    "                                                                                         " + fred + "|\n" + all_reset + \
+    fred + "|" + all_reset + " > Power " + bcyan + "P" + all_reset + " Paddle Grab                                                    " + \
+    "                                                                                         " + fred + "|\n" + all_reset + \
     fred + "*----------------------------------------------------------------------------------------------------------------------" + \
     "---------------------------------------------*\n"+ all_reset

@@ -81,42 +81,48 @@ class functionality_class:
         '''
         Never let vX be 0
         '''
-        if(dy/dx < 0):
-            flag_check = 1
-            if(dy>0):
-                yB+=1
-                xA+=1
-            else:
-                yA+=1
-                xB+=1
-        (dx, dy) = (xB - xA, yB - yA)
-        # print("(dx, dy) : " + str((dx, dy)))
-        #
-        #   If slope = -ve 
-        #       then do (xA+1,yB) & (xB,yB+1)
-        #   elif slope = +ve
-        #       then do nothing
-        #   elif slope == 0
-        #       then do nothing
-        #
-        coeff.append(dy/dx)
-        coeff.append(yA-coeff[0]*xA)
-        sigvar = (sx, sy) = (self.sign(dx), self.sign(dy))
-        grid_start = A
-        result = []
-        x = xA
-        y = yA
-        j = 0 
-        while (x != xB+sx):
+        if(dx != 0):
+            if(dy/dx < 0):
+                flag_check = 1
+                if(dy>0):
+                    yB+=1
+                    xA+=1
+                else:
+                    yA+=1
+                    xB+=1
+            (dx, dy) = (xB - xA, yB - yA)
+            # print("(dx, dy) : " + str((dx, dy)))
+            #
+            #   If slope = -ve 
+            #       then do (xA+1,yB) & (xB,yB+1)
+            #   elif slope = +ve
+            #       then do nothing
+            #   elif slope == 0
+            #       then do nothing
+            #
+            coeff.append(dy/dx)
+            coeff.append(yA-coeff[0]*xA)
+            sigvar = (sx, sy) = (self.sign(dx), self.sign(dy))
+            grid_start = A
+            result = []
+            x = xA
             y = yA
-            while (y != yB+sy):
-                if(self.s(coeff,x,y)):
-                    result.append((x,y))
-                y += sy
-                j+=1
-            x += sx
-        result = self.sort_bydist(result,xA,yA,flag_check)
-        return result
+            j = 0 
+            while (x != xB+sx):
+                y = yA
+                while (y != yB+sy):
+                    if(self.s(coeff,x,y)):
+                        result.append((x,y))
+                    y += sy
+                    j+=1
+                x += sx
+            result = self.sort_bydist(result,xA,yA,flag_check)
+            return result
+        else:
+            result = []
+            for i in range(xA,xB+1):
+                result.append((i,yA))
+            return result
 
 
 class Ball(functionality_class):
@@ -162,6 +168,8 @@ class Ball(functionality_class):
         ''' 
         This functions handle collision of ball with bricks
         '''
+        if (self.velocity_x == 0):
+            self.velocity_y+=1
         temp_x = self.ball_x + self.velocity_x
         temp_y = self.bal_y + self.velocity_y
         previous_x = self.ball_x

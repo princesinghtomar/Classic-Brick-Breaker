@@ -136,10 +136,18 @@ class Run:
                 
                 if(not self.sticky_ball_motion):
                     (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
-                    (ball_return_value,score_,choosen_value) = self.ball_class[0].update_ball_motion(self.screen_array,bricks,paddle_start,paddle_end)
+                    some_temp_val= self.ball_class[0].update_ball_motion(self.screen_array,bricks,paddle_start,paddle_end)
+                    if(some_temp_val is not None):
+                        (ball_return_value,score_,choosen_value) = some_temp_val
+                    else:
+                        (bavx,bavy,bax,bay) = self.ball_class[0].return_class_init()
+                        self.ball_class[0].update_speed(-bavx,bavy)
+                        print("(bavx,bavy,bax,bay) : " + str((bavx,bavy,bax,bay)))
+                        bricks.remove_brick_onscreen(self.screen_array,bax-1,bay,powerups[4].check_time())
+                        (ball_return_value,score_,choosen_value)  = (0,0,0)
                     if(len(self.ball_class) > 1):
                         for i in range(1,len(self.ball_class)):
-                            (ball_return_value1,score_1,choosen_value1) = self.ball_class[i].update_ball_motion(self.screen_array,bricks,paddle_start,paddle_end)
+                            some_temp_val_2 = self.ball_class[i].update_ball_motion(self.screen_array,bricks,paddle_start,paddle_end)
                     # --------  choosen_value 
                     logging.debug("choosen_value : " + str(choosen_value))
                     if(choosen_value!=0):

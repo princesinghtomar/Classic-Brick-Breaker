@@ -11,6 +11,11 @@ import logging
 # Active = 2 // taken by player
 
 class powerupclass:
+    '''
+    Main Powerup Class to handle motion and time of any powerup
+    do : Used for activating Power Function
+    undo : Used for deactivating Power Function
+    '''
     def __init__(self,x,y):
         self.time_activated = time.time()
         self.active = 0
@@ -68,7 +73,10 @@ class powerupclass:
             return False
 
 class power0(powerupclass):
-
+    '''
+    Expand Paddle Powerup : Increases the size of the paddle 
+    by a certain amount.
+    '''
     def __init__(self,x,y):
         self.time_activated = time.time()
         self.active = 0
@@ -84,6 +92,10 @@ class power0(powerupclass):
         Paddle.update_type(1)
 
 class power1(powerupclass):
+    '''
+    Shrink Paddle Powerup : Reduce the size of the paddle by a 
+    certain amount but not completely.
+    '''
     def __init__(self,x,y):
         self.time_activated = time.time()
         self.active = 0
@@ -99,6 +111,10 @@ class power1(powerupclass):
         Paddle.update_type(1)
     
 class power2(powerupclass):
+    '''
+    Ball Multiplier Powerup : Each of the balls which are present 
+    will be further divided into two.
+    '''
     def __init__(self,x,y):
         self.time_activated = time.time()
         self.active = 0
@@ -125,6 +141,9 @@ class power2(powerupclass):
         logging.debug("undo balls : "+ str(ball_class))
 
 class power3(powerupclass):
+    '''
+    Fast Ball Powerup : Increases the speed of the ball.
+    '''
     def __init__(self,x,y):
         self.time_activated = time.time()
         self.active = 0
@@ -149,6 +168,10 @@ class power3(powerupclass):
         ball_class.update_speed(-1,-1)
 
 class power4(powerupclass):
+    '''
+    Thru-ball Powerup : This enables the ball to destroy and go through 
+    any brick it touches, irrespective of the strength of the wall.
+    '''
     def __init__(self,x,y):
         self.time_activated = time.time()
         self.active = 0
@@ -164,6 +187,11 @@ class power4(powerupclass):
         ball_class.update_thru_ball(False)
 
 class power5(powerupclass):
+    '''
+    Paddle Grab Powerup : Allows the paddle to grab the ball on contact and relaunch 
+    the ball at will. The ball will follow the same expected trajectory after release, 
+    similar to the movement expected without the grab.
+    '''
     def __init__(self,x,y):
         self.time_activated = time.time()
         self.active = 0

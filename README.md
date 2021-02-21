@@ -1,7 +1,7 @@
 # Classic Brick Breaker Game 
 
 ## Requirements :
-    - python packages :
+    python packages :
         sys
         termios
         tty
@@ -15,70 +15,76 @@
         cd ./{ Folder containing Game files }
         python3 main.py
 
-    For Mac and Windows : 
-        - Shift to Linux 
-
+    For Mac and Windows Users : 
+        - Shift to Linux or figure yourself 
 
 ## Controls :
-    - a : move left
-    - d : move right
-    - k : release ball
-    - g : start game
-    - q : quit game
+    a : move left
+    d : move right
+    k : release ball
+    g : start game
+    q : quit game
  
 ## Files :
  ### art :
-    - Just some Ascii Arts
+    Just some Ascii Arts
  
  ### ball :
-    - Handles functionality of Ball like collision etc. Uses Inheritence.
+    Handles functionality of Ball like collision etc. Uses Inheritence.
 
  ### bricks : 
-    - Used to render Bricks on Screen and also delete them
+    Used to render Bricks on Screen and also delete them
 
  ### gametop : 
-    - update top values like Score,Time etc. etc.
+    update top values like Score,Time etc. etc.
 
  ### headerfile :
-    - It contains some important attributes or definations used in the Game
+    It contains some important attributes or definations used in the Game
 
  ### inherit_bricks :
-    - It just defines different types pf bricks used to render on the screen
+    It just defines different types pf bricks used to render on the screen
 
  ### items :
-    - Contains some important items like instructions etc.
+    Contains some important items like instructions etc.
 
  ### keypressed : 
-    - Used to take input from the User
+    Used to take input from the User
 
  ### main :
-    - Calls the game
+    Calls the game
 
  ###  mainrunning :
-    - Contains the main game flow
+    Contains the main game flow
 
  ### paddle :
-    - Handles paddle functionality
+    Handles paddle functionality
 
  ### powerup :
-    - Contains classes and function for Powerup using function overiding method
+    Contains classes and function for Powerup using function overiding method
 
  ### screen :
-    - Screen is created here
+    Screen is created here
 
 ## Some concepts Concepts :
  ### Inheritance :
-    - Inheritance allows us to define a class that inherits all the methods and properties from another class. Child class is the class that inherits from another class, also called derived class.
-    - Implemeted in ball.py
+    > Inheritance allows us to define a class that inherits all the methods and properties from 
+    another class. Child class is the class that inherits from another class, also called derived
+    class.
+    > Implemeted in ball.py
 
  ### Polymorphism :
-    - In Python, Polymorphism lets us define methods in the child class that have the same name as the methods in the parent class. In inheritance, the child class inherits the methods from the parent class.
-    - Implemented in powerup.py
+    > In Python, Polymorphism lets us define methods in the child class that have the same 
+    name as the methods in the parent class. In inheritance, the child class inherits 
+    the methods from the parent class.
+    > Implemented in powerup.py
 
  ### Encapsulation :
-    - Encapsulation in Python is the process of wrapping up variables and methods into a single entity.In programming, a class is an example that wraps all the variables and methods defined inside it.
-    - Whole code is based on it
+    > Encapsulation in Python is the process of wrapping up variables and methods into a 
+    single entity.In programming, a class is an example that wraps all the variables and 
+    methods defined inside it.
+    > Whole code is based on it
 
  ### Abstraction :
-    - Abstraction in Python is the process of hiding the real implementation of an application from the user and emphasizing only on usage of it.
-    - Done!
+    > Abstraction in Python is the process of hiding the real implementation of an application 
+    from the user and emphasizing only on usage of it.
+    > Done!

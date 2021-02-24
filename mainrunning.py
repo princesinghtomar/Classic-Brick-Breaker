@@ -131,7 +131,7 @@ class Run:
                 if(available_time < 0):
                     os.system('clear')
                     # --------
-                    print('Time_Over')
+                    print(fmagenta + art.game_over + all_reset)
                     break
                 
                 if(not self.sticky_ball_motion):
@@ -167,7 +167,8 @@ class Run:
                     if(ball_return_value < 0):
                         livesleft -= 1
                         if(livesleft <= 0):
-                            print("You loose")
+                            os.system('clear')
+                            print(fred + art.you_loose + all_reset)
                             break
                         temp_random = self.sys_random.choice([i for i in range(paddle_start,paddle_end)])
                         self.ball_class[0] = Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,temp_random,self.screen_array)

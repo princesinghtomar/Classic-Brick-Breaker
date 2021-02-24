@@ -141,7 +141,7 @@ class Run:
                         (bavx,bavy,bax,bay) = self.ball_class[0].return_class_init()
                         self.ball_class[0].update_speed(-bavx,bavy)
                         val_zero = (0,0,0)
-                        print("(bavx,bavy,bax,bay) : " + str((bavx,bavy,bax,bay)))
+                        # print("(bavx,bavy,bax,bay) : " + str((bavx,bavy,bax,bay)))
                         logging.debug("(bavx,bavy,bax,bay) : " + str((bavx,bavy,bax,bay)))
                         bricks.remove_brick_onscreen(self.screen_array,bax-1,bay,powerups[4].check_time())
                         (ball_return_value,score_,choosen_value)  = val_zero

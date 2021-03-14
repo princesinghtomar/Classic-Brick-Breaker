@@ -77,7 +77,7 @@ class power0(powerupclass):
     Expand Paddle Powerup : Increases the size of the paddle 
     by a certain amount.
     '''
-    def __init__(self,x,y):
+    def __init__(self,x,y,changed_type = 2):
         self.time_activated = time.time()
         self.active = 0
         self.max_time = 15
@@ -86,7 +86,7 @@ class power0(powerupclass):
         self.index = 0
 
     def do(self,Paddle):
-        Paddle.update_type(2)
+        Paddle.update_type(changed_type)
     
     def undo(self,Paddle):
         Paddle.update_type(1)
@@ -205,3 +205,27 @@ class power5(powerupclass):
 
     def undo(self):
         return False
+
+class power6(powerupclass):
+    '''
+    Powerup Class for Shooting paddle
+    '''
+    def __init__(self,x,y):
+        self.time_activated = time.time()
+        self.active = 0
+        self.max_time = 15
+        self.ballx = x + 5
+        self.bally = y
+        self.index = 6
+        self.shooting_gap = 0.2
+        self.last_shot = 0
+        self.power0 = None
+
+    def do(self,Paddle):
+        if(self.last_shot - time.time() > self.shooting_gap):
+            if(self.last_shot == 0):
+                self.last_shot = time.time()
+                changed_type = Paddle.return_type + 3
+                self.power0 = power0(Paddle,changes_type)
+                # see tomorrow
+

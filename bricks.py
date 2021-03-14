@@ -28,6 +28,7 @@ class Bricks:
         bricks_splitted_array = np.array(self.brick_configuration)
         lamda = 0
         temp_brick_data = []
+        # if(bricks_1 == None):
         for i in range(0,bricks_splitted_array.size):
             splited_bricks = np.array(bricks_splitted_array[i].split('-'))
             lamda = self.brick_start_y
@@ -45,6 +46,7 @@ class Bricks:
         '''
         This function is used to remove bricks that are being hit
         '''
+        os.system("aplay -q funstuff/stompenemy.wav")
         pointer_1 = y
         if(screen_array[x][pointer_1][5]=='P'):
             return (0,0)

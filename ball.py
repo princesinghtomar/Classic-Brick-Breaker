@@ -5,6 +5,7 @@ from bricks import *
 import math
 import logging
 import sys
+import os
 
 # CHECK THIS PART :-/
 
@@ -185,6 +186,8 @@ class Ball(functionality_class):
             if(( temp_x == 43 or self.ball_x <= 43 )):
                 paddle_center = (paddle_start + paddle_end)/2
                 if(temp_y >= paddle_start and temp_y <= paddle_end):
+                    os.system("aplay -q funstuff/coin.wav &")
+                    logging.debug("reached coin.wav in ball.py")
                     if(temp_y > paddle_center):
                         self.velocity_y += math.ceil(abs(temp_y - paddle_center))
                     else:
@@ -286,3 +289,5 @@ class Ball(functionality_class):
                 self.bal_y = temp_y
                 screen_array[self.ball_x][self.bal_y] = 'O'
                 return (1,score_,choosen_value)
+            else:
+                os.system("aplay -q funstuff/coin.wav")

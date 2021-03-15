@@ -23,8 +23,10 @@ class Brick_inherit:
         self.type = typeb
         self.life = brick_life_store[typeb]
         self.color = bricks_color[typeb]+bricks_font_color[typeb]
+        self.bricks_size = 6
         self.s_x = starting_x
         self.s_y = starting_y
+        self.alive = True
         
     def update_score(self,go_thru):
         score = 0
@@ -49,12 +51,14 @@ class Brick_inherit:
         score += self.update_score(go_thru)
         # print("Score : ",score)
         if(go_thru):
-            
             self.type = -1
             self.life = 0
+            self.die()
         elif(self.type  != 3):
             self.life = brick_life_store[self.type]
             self.type -= 1
+            if(self.type < 0):
+                self.die()
             return (self.life,self.type,score)
         return (self.life,self.type,score)
     
@@ -70,3 +74,15 @@ class Brick_inherit:
         Returns current X and Y coordinates of the brick
         '''
         return (self.s_x,self.s_y)
+
+    def returnbsize(self):
+        return self.bricks_size
+
+    def die(self):
+        self.alive = False
+
+    def return_alive(self):
+        return self.alive
+    
+    def return_type(self):
+        return self.type

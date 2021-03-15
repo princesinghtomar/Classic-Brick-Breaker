@@ -226,6 +226,10 @@ class power6(powerupclass):
             if(self.last_shot == 0):
                 self.last_shot = time.time()
                 changed_type = Paddle.return_type + 3
-                self.power0 = power0(Paddle,changes_type)
+                self.power0 = power0(Paddle,changed_type)
+                self.power0.do(changed_type)
+            else:
+                self.power0.do(changed_type)
+                
                 # see tomorrow
 

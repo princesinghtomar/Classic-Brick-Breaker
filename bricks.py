@@ -5,6 +5,7 @@ import random
 from inherit_brick import *
 import sys
 from powerup import *
+import logging
 
 class Bricks:
     ''' 
@@ -19,6 +20,9 @@ class Bricks:
         self.poweruparray = [0 for i in range(1,130)]
         for i in range(0,6):
             self.poweruparray[i] = 6-i
+
+    def bd_return(self):
+        return self.brick_data
     
     def update_brick_onscreen(self,screen_array):
         '''
@@ -28,19 +32,30 @@ class Bricks:
         bricks_splitted_array = np.array(self.brick_configuration)
         lamda = 0
         temp_brick_data = []
-        # if(bricks_1 == None):
-        for i in range(0,bricks_splitted_array.size):
-            splited_bricks = np.array(bricks_splitted_array[i].split('-'))
-            lamda = self.brick_start_y
-            brci_temp = []
-            for k in range(0,splited_bricks.size):
-                brci_temp.insert(k,Brick_inherit(int(splited_bricks[k]),i+self.brick_start_x,lamda))
-                for z in range(0,6):
-                    temp = bricks_color[int(splited_bricks[k])] + bricks_font_color[int(splited_bricks[k])]
-                    screen_array[i+self.brick_start_x][lamda] = temp +bricks[int(splited_bricks[k])][z] + all_reset
-                    lamda+=1
-            temp_brick_data.append(brci_temp)
-        self.brick_data = np.array(temp_brick_data)
+        if(self.brick_data.size == 0):
+            logging.debug("In part \"if condition\" of update_brick_function")  #
+            for i in range(0,bricks_splitted_array.size):
+                splited_bricks = np.array(bricks_splitted_array[i].split('-'))
+                lamda = self.brick_start_y
+                brci_temp = []
+                for k in range(0,splited_bricks.size):
+                    brci_temp.insert(k,Brick_inherit(int(splited_bricks[k]),i+self.brick_start_x,lamda))
+                    for z in range(0,6):
+                        temp = bricks_color[int(splited_bricks[k])] + bricks_font_color[int(splited_bricks[k])]
+                        screen_array[i+self.brick_start_x][lamda] = temp +bricks[int(splited_bricks[k])][z] + all_reset
+                        lamda+=1
+                temp_brick_data.append(brci_temp)
+            self.brick_data = np.array(temp_brick_data)
+            logging.debug("self.brick_data : " + str(self.brick_data))  #
+        else:
+            logging.debug("In part \"else condition\" of update_brick_function")    #
+            for i in range(0,self.brick_data.shape[0]):
+                for j in  range(0,self.brick_data[0].size):
+                    if(self.brick_data[i][j].return_alive):
+                        (x,y) = self.brick_data[i][j].returnxy()
+                        for z in range(0,self.brick_data[i][j].returnbsize()):
+                            temp = bricks_color[self.brick_data[i][j].return_type()] + bricks_font_color[self.brick_data[i][j].return_type()]
+                            screen_array[x][y+z] = temp +bricks[self.brick_data[i][j].return_type()][z] + all_reset
 
     def remove_brick_onscreen(self,screen_array,x,y,go_thru):
         '''

@@ -2,6 +2,7 @@ import numpy as np
 from items import *
 from headerfile import *
 import random
+import logging
 
 #   ^ (-x)
 #   |
@@ -24,8 +25,9 @@ class Brick_inherit:
         self.life = brick_life_store[typeb]
         self.color = bricks_color[typeb]+bricks_font_color[typeb]
         self.bricks_size = 6
-        self.s_x = starting_x
-        self.s_y = starting_y
+        self.sx = starting_x
+        self.sy = starting_y
+        self.rainbow = False
         self.alive = True
         
     def update_score(self,go_thru):
@@ -49,17 +51,23 @@ class Brick_inherit:
         '''
         score = 0
         score += self.update_score(go_thru)
+        logging.debug("decrease_brick_life: self.type" + str(self.type) )
         # print("Score : ",score)
         if(go_thru):
+            logging.debug("go_thru : " +str(go_thru))
             self.type = -1
             self.life = 0
             self.die()
-        elif(self.type  != 3):
+        elif(self.type!= 4):
+            if(self.type == 3):
+                self.rainbow = True
+            logging.debug("self.type  != 3 : " + str(self.type  != 3))
             self.life = brick_life_store[self.type]
             self.type -= 1
             if(self.type < 0):
                 self.die()
-            return (self.life,self.type,score)
+        
+        logging.debug("self.type : " + str(self.type) + " | self.life : " + str(self.life) + " | self.alive : " + str(self.alive))
         return (self.life,self.type,score)
     
     def change_color_brick(self,typeb):
@@ -73,7 +81,8 @@ class Brick_inherit:
         '''
         Returns current X and Y coordinates of the brick
         '''
-        return (self.s_x,self.s_y)
+        # logging.debug("inside returnxy (self.sx,self.sy) : " + str((self.sx,self.sy)))
+        return (self.sx,self.sy)
 
     def returnbsize(self):
         return self.bricks_size
@@ -86,3 +95,6 @@ class Brick_inherit:
     
     def return_type(self):
         return self.type
+
+    def retrainbow(self):
+        return self.rainbow

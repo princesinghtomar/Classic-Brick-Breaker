@@ -33,7 +33,7 @@ class Bricks:
         lamda = 0
         temp_brick_data = []
         if(self.brick_data.size == 0):
-            logging.debug("In part \"if condition\" of update_brick_function")  #
+            # logging.debug("In part \"if condition\" of update_brick_function")  #
             for i in range(0,bricks_splitted_array.size):
                 splited_bricks = np.array(bricks_splitted_array[i].split('-'))
                 lamda = self.brick_start_y
@@ -46,70 +46,53 @@ class Bricks:
                         lamda+=1
                 temp_brick_data.append(brci_temp)
             self.brick_data = np.array(temp_brick_data)
-            logging.debug("self.brick_data : " + str(self.brick_data))  #
+            # logging.debug("self.brick_data : " + str(self.brick_data))  #
         else:
-            logging.debug("In part \"else condition\" of update_brick_function")    #
+            # logging.debug("In part \"else condition\" of update_brick_function")    #
+            a = [i for i in range(0,len(brick_life_store))]
             for i in range(0,self.brick_data.shape[0]):
                 for j in  range(0,self.brick_data[0].size):
-                    if(self.brick_data[i][j].return_alive):
-                        (x,y) = self.brick_data[i][j].returnxy()
+                    # logging.debug("i : " + str(i) + " : j : " + str(j) + "(life,typeb) : " + str((self.brick_data[i][j].return_some_debug_value())))
+                    (x,y) = self.brick_data[i][j].returnxy()
+                    if(self.brick_data[i][j].return_alive()):
+                        temp = self.return_choice(a)
+                        if(self.brick_data[i][j].retrainbow()):
+                            brickclr = bricks_color[temp] + bricks_font_color[temp]
+                        else:
+                            brickclr = bricks_color[self.brick_data[i][j].return_type()] + bricks_font_color[self.brick_data[i][j].return_type()]
                         for z in range(0,self.brick_data[i][j].returnbsize()):
-                            temp = bricks_color[self.brick_data[i][j].return_type()] + bricks_font_color[self.brick_data[i][j].return_type()]
+                            temp = brickclr
                             screen_array[x][y+z] = temp +bricks[self.brick_data[i][j].return_type()][z] + all_reset
+                    else:
+                        for z in range(0,self.brick_data[i][j].returnbsize()):
+                            screen_array[x][y+z] = ' '
+
 
     def remove_brick_onscreen(self,screen_array,x,y,go_thru):
         '''
         This function is used to remove bricks that are being hit
         '''
         os.system("aplay -q funstuff/stompenemy.wav")
-        pointer_1 = y
-        if(screen_array[x][pointer_1][5]=='P'):
-            return (0,0)
-        while (screen_array[x][pointer_1][10]!='['):
-            pointer_1 -= 1
-            if(screen_array[x][pointer_1] == 'O' or screen_array[x][pointer_1] == ' '):
-                if(len(screen_array[x][pointer_1-1])>2):
-                    screen_array[x][pointer_1] = screen_array[x][pointer_1+1]
-                    if(screen_array[x][pointer_1-1][10]== ']'):
-                        break
-                else:
-                    i = pointer_1+1
-                    while(screen_array[x][i][10]!=']' or screen_array[x][i][10]!='['):
-                        if(screen_array[x][i][10]!=']'):
-                            pointer_1 = i-5
-                            break
-                        elif(screen_array[x][i][10]!='['):
-                            pointer_1 = i-6
-                            break
-                        i+=1
-                        if(len(screen_array[x][i])<2):
-                            break
-                    else:
-                        continue
-                    break
-
         index= [0,0]
         for i in range(0,self.brick_data.shape[0]):
             index[0] = i
-            for j in range(0,self.brick_data[i].size):
+            for j in range(0,self.brick_data[0].size):
                 index[1] = j
-                if((x,pointer_1) == self.brick_data[i][j].returnxy()):
+                # (x1,y1) == self.brick_data[i][j].returnxy()
+                (x1,y1) = self.brick_data[i][j].returnxy()
+                size = self.brick_data[i][j].returnbsize()
+                if(x == x1 and (y >= y1 and y <= y1 + size)):   
                     break
             else:
                 continue
             break
+        # logging.debug("x1 : " + str(x1) + " : " + "y1 : " + str(y1))
         (life,typeb,score_) = self.brick_data[index[0]][index[1]].decrease_brick_life(1,go_thru)
-        k_color = self.brick_data[index[0]][index[1]].change_color_brick(typeb)
-        lamda = pointer_1
-        if(life > 0):
-            for z in range(0,6):
-                    screen_array[x][lamda] = k_color +bricks[typeb][z] + all_reset
-                    lamda+=1
-        else:
-            for z in range(0,6):
-                    screen_array[x][lamda] = ' '
-                    lamda+=1
         choosen_value = self.sys_random.choice(self.poweruparray)
         # choosen_value = 3
+        logging.debug("self.brick_data[index[0]][index[1]].return_alive : " + str(self.brick_data[index[0]][index[1]].return_alive()))
+        logging.debug("(life,typeb,score_) : " + str((life,typeb,score_)))
         return (score_,choosen_value)
 
+    def return_choice(self,a):
+        return self.sys_random.choice(a)

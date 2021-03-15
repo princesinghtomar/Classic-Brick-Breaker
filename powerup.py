@@ -5,6 +5,7 @@ from items import *
 from ball import *
 import time
 import logging
+from fire import *
 
 # Active = 0 // not active or release
 # Active = 1 // released but not yet taken by the player
@@ -131,14 +132,14 @@ class power2(powerupclass):
             (bavx,bavy,bax,bay) = ball_class[i].return_class_init()
             screen_array[bax][bay] = 'O'
             ball_class.append(Ball(bavx,-bavy,bax,bay,screen_array))
-        logging.debug("do balls : "+ str(ball_class))
+        # logging.debug("do balls : "+ str(ball_class))
 
     def undo(self,ball_class,screen_array):
         for i in range(0,len(ball_class)-1):
             (bavx,bavy,bax,bay) = ball_class[i].return_class_init()
             screen_array[bax][bay] = ' '
             ball_class.pop(1)
-        logging.debug("undo balls : "+ str(ball_class))
+        # logging.debug("undo balls : "+ str(ball_class))
 
 class power3(powerupclass):
     '''
@@ -220,16 +221,22 @@ class power6(powerupclass):
         self.shooting_gap = 0.2
         self.last_shot = 0
         self.power0 = None
+        self.changed_type = 2
+        self.fire = [] 
 
     def do(self,Paddle):
         if(self.last_shot - time.time() > self.shooting_gap):
             if(self.last_shot == 0):
                 self.last_shot = time.time()
-                changed_type = Paddle.return_type + 3
-                self.power0 = power0(Paddle,changed_type)
-                self.power0.do(changed_type)
+                self.changed_type = Paddle.return_type + 3
+                self.power0 = power0(Paddle,self.changed_type)
+                self.power0.do(self.changed_type)
             else:
-                self.power0.do(changed_type)
+                self.power0.do(self.changed_type)
+
+                fire.append()
                 
                 # see tomorrow
 
+    def undo(self,Paddle):
+        self.power0.undo()

@@ -62,11 +62,11 @@ class functionality_class:
             j+=1
         a.sort()
         val = []
-        logging.debug("a : " + str(a))
+        # logging.debug("a : " + str(a))
         for i in range(0,len(a)):
             if(i!=0 and abs(a[i][0]-a[i-1][0])>0.1):
                 val.append(a[i][1])
-        logging.debug("val : " + str(val))
+        # logging.debug("val : " + str(val))
         return val
 
     def raytrace(self,A, B):
@@ -187,7 +187,7 @@ class Ball(functionality_class):
                 paddle_center = (paddle_start + paddle_end)/2
                 if(temp_y >= paddle_start and temp_y <= paddle_end):
                     os.system("aplay -q funstuff/coin.wav &")
-                    logging.debug("reached coin.wav in ball.py")
+                    # logging.debug("reached coin.wav in ball.py")
                     if(temp_y > paddle_center):
                         self.velocity_y += math.ceil(abs(temp_y - paddle_center))
                     else:

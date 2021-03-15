@@ -5,10 +5,12 @@ class asb:
     def b(self):
         self.c()
         print(self.a)
+        return (2,3)
 
     def c(self):
         self.a = 4
 
 temp = asb()
 
-temp.b()
+(a,b) = temp.b()
+print(a+b)

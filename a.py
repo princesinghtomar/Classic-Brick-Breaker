@@ -14,3 +14,5 @@ temp = asb()
 
 (a,b) = temp.b()
 print(a+b)
+
+art = "asfd"

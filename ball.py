@@ -6,6 +6,7 @@ import math
 import logging
 import sys
 import os
+from art import art
 
 # CHECK THIS PART :-/
 
@@ -188,6 +189,11 @@ class Ball(functionality_class):
                 if(temp_y >= paddle_start and temp_y <= paddle_end):
                     os.system("aplay -q funstuff/coin.wav &")
                     # logging.debug("reached coin.wav in ball.py")
+                    bricks_class.mainfallbrickfunction(screen_array)
+                    lowest = bricks_class.findlby()
+                    if(lowest <= 43):
+                        print(game_over_art)
+                        exit()
                     if(temp_y > paddle_center):
                         self.velocity_y += math.ceil(abs(temp_y - paddle_center))
                     else:

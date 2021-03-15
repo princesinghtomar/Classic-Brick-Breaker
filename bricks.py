@@ -17,7 +17,12 @@ class Bricks:
         self.sys_random = random.SystemRandom()
         self.brick_configuration = brick_orientation[self.sys_random.randint(0,((brick_orientation.size)-1))].split()
         self.brick_data = np.array([])
-        self.poweruparray = [0 for i in range(1,130)]
+        self.poweruparray = [0 for i in range(1,200)]
+        self.starttime = time.time()
+        self.previousfall = time.time()
+        self.falldowngap = 0
+        self.startinggap = 0
+        self.startfalling = False
         for i in range(0,6):
             self.poweruparray[i] = 6-i
 
@@ -57,15 +62,12 @@ class Bricks:
                     if(self.brick_data[i][j].return_alive()):
                         temp = self.return_choice(a)
                         if(self.brick_data[i][j].retrainbow()):
-                            brickclr = bricks_color[temp] + bricks_font_color[temp]
-                        else:
-                            brickclr = bricks_color[self.brick_data[i][j].return_type()] + bricks_font_color[self.brick_data[i][j].return_type()]
+                            self.brick_data[i][j].update_type(temp)
                         for z in range(0,self.brick_data[i][j].returnbsize()):
-                            temp = brickclr
+                            temp = bricks_color[self.brick_data[i][j].return_type()] + bricks_font_color[self.brick_data[i][j].return_type()]
                             screen_array[x][y+z] = temp +bricks[self.brick_data[i][j].return_type()][z] + all_reset
                     else:
-                        for z in range(0,self.brick_data[i][j].returnbsize()):
-                            screen_array[x][y+z] = ' '
+                        self.brick_data[i][j].clear(screen_array)
 
 
     def remove_brick_onscreen(self,screen_array,x,y,go_thru):
@@ -90,9 +92,49 @@ class Bricks:
         (life,typeb,score_) = self.brick_data[index[0]][index[1]].decrease_brick_life(1,go_thru)
         choosen_value = self.sys_random.choice(self.poweruparray)
         # choosen_value = 3
-        logging.debug("self.brick_data[index[0]][index[1]].return_alive : " + str(self.brick_data[index[0]][index[1]].return_alive()))
-        logging.debug("(life,typeb,score_) : " + str((life,typeb,score_)))
+        # logging.debug("self.brick_data[index[0]][index[1]].return_alive : " + str(self.brick_data[index[0]][index[1]].return_alive()))
+        # logging.debug("(life,typeb,score_) : " + str((life,typeb,score_)))
         return (score_,choosen_value)
 
     def return_choice(self,a):
         return self.sys_random.choice(a)
+
+    def mainfallbrickfunction(self,screen_array):
+        if(self.startfalling):
+            self.fallbrick(screen_array)
+        else :
+            self.check_falling()
+
+    def fallbrick(self,screen_array):
+        if(time.time() - self.previousfall > self.falldowngap):
+            self.previousfall = time.time()
+            if(len(self.brick_data)> 0 ):
+                for i in range(0,self.brick_data.shape[0]):
+                    for j in range(0,len(self.brick_data[0])):
+                        self.brick_data[i][j].clear(screen_array)
+                        self.brick_data[i][j].falldown()
+    
+    def check_falling(self):
+        if((time.time() - self.starttime) > self.startinggap):
+            self.startfalling = True
+
+    def findlby(self):
+        i = self.brick_data.shape[0]-1
+        j = len(self.brick_data[0])-1
+        lowest = 0
+        flag = 1
+        while(i and flag):
+            while(j and flag):
+                if(self.brick_data[i][j].return_alive()):
+                    (x,lowest) = self.brick_data[i][j].returnxy()
+                    flag = 0
+        return lowest
+
+    def bkleft(self):
+        brleft = 0
+        for i in range(0,self.brick_data.shape[0]):
+            for j in range(0,len(self.brick_data[0])):
+                if(self.brick_data[i][j].return_alive()):
+                    brleft += 1
+        return brleft
+        

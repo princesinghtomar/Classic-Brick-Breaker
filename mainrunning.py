@@ -27,6 +27,7 @@ class Run:
         self.screen_array = np.array([])
         self.Paddle = None
         self.paddle_array = np.array([])
+        self.level = 1
         self.powerup_flag = [0,0,0,0,0,0]
         # self.ball_index = []
 
@@ -264,6 +265,8 @@ class Run:
                 gametop_data.update_gametop(available_time,score,livesleft)
                 gametop_data.update_gametop_onscreen(self.screen_array)
                 self.Paddle.update_paddle_onscreen(self.screen_array)
+                if(bricks.bkleft == 0):
+                    self.level += 1
                 bricks.update_brick_onscreen(self.screen_array)
                 screen_board.showscreen()
                 

@@ -51,23 +51,23 @@ class Brick_inherit:
         '''
         score = 0
         score += self.update_score(go_thru)
-        logging.debug("decrease_brick_life: self.type" + str(self.type) )
+        # logging.debug("decrease_brick_life: self.type" + str(self.type) )
         # print("Score : ",score)
         if(go_thru):
-            logging.debug("go_thru : " +str(go_thru))
+            # logging.debug("go_thru : " +str(go_thru))
             self.type = -1
             self.life = 0
             self.die()
         elif(self.type!= 4):
             if(self.type == 3):
                 self.rainbow = True
-            logging.debug("self.type  != 3 : " + str(self.type  != 3))
+            # logging.debug("self.type  != 3 : " + str(self.type  != 3))
             self.life = brick_life_store[self.type]
             self.type -= 1
             if(self.type < 0):
                 self.die()
         
-        logging.debug("self.type : " + str(self.type) + " | self.life : " + str(self.life) + " | self.alive : " + str(self.alive))
+        # logging.debug("self.type : " + str(self.type) + " | self.life : " + str(self.life) + " | self.alive : " + str(self.alive))
         return (self.life,self.type,score)
     
     def change_color_brick(self,typeb):
@@ -98,3 +98,14 @@ class Brick_inherit:
 
     def retrainbow(self):
         return self.rainbow
+
+    def falldown(self):
+        self.sx += 1
+        # logging.debug("self.sx : " + str(self.sx))
+
+    def clear(self,screen_array):
+        for z in range(0,self.bricks_size):
+            screen_array[self.sx][self.sy+z] = ' '
+
+    def update_type(self,btype):
+        self.type = btype

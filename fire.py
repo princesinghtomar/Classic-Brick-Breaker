@@ -9,6 +9,7 @@ class fire:
         self.initial_y = y
         self.alive = True
         self.ballcollide = False
+        self.interactball = False
 
     def move(self,bricks_class):
         self.initial_x += -1

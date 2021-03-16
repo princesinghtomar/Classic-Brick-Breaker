@@ -11,17 +11,18 @@ class Bricks:
     ''' 
     This class handles all brick related functionality
     '''
-    def __init__(self):
+    def __init__(self,level):
         self.brick_start_x = 20
         self.brick_start_y = 45
         self.sys_random = random.SystemRandom()
-        self.brick_configuration = brick_orientation[self.sys_random.randint(0,((brick_orientation.size)-1))].split()
+        self.brick_configuration = brick_orientation[level-1].split()
         self.brick_data = np.array([])
         self.poweruparray = [0 for i in range(1,200)]
         self.starttime = time.time()
         self.previousfall = time.time()
         self.falldowngap = 0
         self.startinggap = 0
+        self.level = level
         self.startfalling = False
         for i in range(0,6):
             self.poweruparray[i] = 6-i
@@ -37,6 +38,9 @@ class Bricks:
         bricks_splitted_array = np.array(self.brick_configuration)
         lamda = 0
         temp_brick_data = []
+        # logging.debug("self.level : "  + str(self.level))
+        if(self.level == 3):
+            return
         if(self.brick_data.size == 0):
             # logging.debug("In part \"if condition\" of update_brick_function")  #
             for i in range(0,bricks_splitted_array.size):
@@ -45,10 +49,8 @@ class Bricks:
                 brci_temp = []
                 for k in range(0,splited_bricks.size):
                     brci_temp.insert(k,Brick_inherit(int(splited_bricks[k]),i+self.brick_start_x,lamda))
-                    for z in range(0,6):
-                        temp = bricks_color[int(splited_bricks[k])] + bricks_font_color[int(splited_bricks[k])]
-                        screen_array[i+self.brick_start_x][lamda] = temp +bricks[int(splited_bricks[k])][z] + all_reset
-                        lamda+=1
+                    brci_temp[k].draw(screen_array)
+                    lamda+=6
                 temp_brick_data.append(brci_temp)
             self.brick_data = np.array(temp_brick_data)
             # logging.debug("self.brick_data : " + str(self.brick_data))  #
@@ -63,9 +65,7 @@ class Bricks:
                         temp = self.return_choice(a)
                         if(self.brick_data[i][j].retrainbow()):
                             self.brick_data[i][j].update_type(temp)
-                        for z in range(0,self.brick_data[i][j].returnbsize()):
-                            temp = bricks_color[self.brick_data[i][j].return_type()] + bricks_font_color[self.brick_data[i][j].return_type()]
-                            screen_array[x][y+z] = temp +bricks[self.brick_data[i][j].return_type()][z] + all_reset
+                        self.brick_data[i][j].draw(screen_array)
                     else:
                         self.brick_data[i][j].clear(screen_array)
 
@@ -91,7 +91,7 @@ class Bricks:
         # logging.debug("x1 : " + str(x1) + " : " + "y1 : " + str(y1))
         (life,typeb,score_) = self.brick_data[index[0]][index[1]].decrease_brick_life(1,go_thru)
         choosen_value = self.sys_random.choice(self.poweruparray)
-        # choosen_value = 3
+        choosen_value = 3
         # logging.debug("self.brick_data[index[0]][index[1]].return_alive : " + str(self.brick_data[index[0]][index[1]].return_alive()))
         # logging.debug("(life,typeb,score_) : " + str((life,typeb,score_)))
         return (score_,choosen_value)
@@ -119,6 +119,8 @@ class Bricks:
             self.startfalling = True
 
     def findlby(self):
+        if(self.brick_data.shape[0] == 0):
+            return 1
         i = self.brick_data.shape[0]-1
         j = len(self.brick_data[0])-1
         lowest = 0
@@ -126,7 +128,7 @@ class Bricks:
         while(i and flag):
             while(j and flag):
                 if(self.brick_data[i][j].return_alive()):
-                    (x,lowest) = self.brick_data[i][j].returnxy()
+                    (lowest,y) = self.brick_data[i][j].returnxy()
                     flag = 0
         return lowest
 
@@ -138,3 +140,8 @@ class Bricks:
                     brleft += 1
         return brleft
         
+    def killbs(self):
+        for i in range(0,self.brick_data.shape[0]):
+            for j in range(0,len(self.brick_data[0])):
+                self.brick_data[i][j].die()
+                # self.brick_data[i][j].clear()

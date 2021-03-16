@@ -12,8 +12,9 @@ from bricks import *
 from ball import *
 from powerup import *
 
-logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s',level=logging.DEBUG)
+logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s - %(message)s',level=logging.DEBUG)
 logging.debug('This will get logged to a file')
+logging.debug('If you face any problem in powerup do check for the way __init__ is declared each time')
 
 class Run:
     '''
@@ -29,13 +30,14 @@ class Run:
         self.paddle_array = np.array([])
         self.level = 1
         self.powerup_flag = [0,0,0,0,0,0]
+        self.skipkey = False
         # self.ball_index = []
 
     def return_paddle_start_and_end(self):
         '''
         This function returns starting  and ending point of paddle
         '''
-        half_size = int((paddle_size[self.paddle_array[2]])/2)
+        half_size = int((PADDLE_SIZE[self.paddle_array[2]])/2)
         paddle_start = self.paddle_array[0] - half_size-1
         paddle_end = self.paddle_array[0] + half_size+1
         return (half_size,paddle_start,paddle_end)
@@ -46,7 +48,7 @@ class Run:
         '''
         key = input_to()
         (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
-        print(clear_screen)
+        print(CLEAR_SCREEN)
         if(key == 'q'):
             os.system('clear')
             # ----
@@ -66,6 +68,8 @@ class Run:
                 self.Paddle.update_paddle_value(self.paddle_array[0],self.paddle_array[1],self.paddle_array[2])
         elif(key == 'k'):
             self.sticky_ball_motion = False
+        elif(key == 'f' ):
+            self.skipkey = True
         return 1
 
     def starting_instruction(self):
@@ -84,10 +88,22 @@ class Run:
                 pass
         os.system('clear')
 
+    def puinit(self,powerups):
+        powerups.clear()
+        self.ball_class.clear()
+        powerups.append(power0(0,0,0,0))
+        powerups.append(power1(0,0,0,0))
+        powerups.append(power2(0,0,0,0))
+        powerups.append(power3(0,0,0,0))
+        powerups.append(power4(0,0,0,0))
+        powerups.append(power5(0,0,0,0))
+
     def Go(self):
         '''
         This function has the main control flow of the game
         '''
+        powerups = []
+        self.puinit(powerups)
         self.starting_instruction()
         screen_board = screen(HEIGHT,WIDTH)
         screen_board.create_scenery()
@@ -95,29 +111,20 @@ class Run:
         self.paddle_array = np.array([80,43,1])
         self.Paddle = paddle(self.paddle_array[0],self.paddle_array[1],self.paddle_array[2])
         self.Paddle.update_paddle_onscreen(self.screen_array)
-        bricks = Bricks()
+        bricks = Bricks(self.level)
         (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
         temp_random = self.sys_random.choice([i for i in range(paddle_start,paddle_end)])
-        self.ball_class.append(Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,temp_random,self.screen_array))
+        self.ball_class.append(Ball(BALL_X_STARTING_CONSTANT_VELOCITY,BALL_Y_STARTING_CONSTANT_VELOCITY,42,temp_random,self.screen_array))
         bricks.update_brick_onscreen(self.screen_array)
         score = 0
         choosen_value = 0
         start_time = time.time()
-        available_time = 1000
         livesleft = 3
-        gametop_data = gametop(available_time,score,livesleft)
+        gametop_data = gametop(score,livesleft)
+        gametop_data.stimer()
         gametop_data.update_gametop_onscreen(self.screen_array)
         screen_board.showscreen()
         tic_toc = time.time()
-        power_up_x = 0
-        power_up_y = 0
-        powerups = []
-        powerups.append(power0(0,0))
-        powerups.append(power1(0,0))
-        powerups.append(power2(0,0))
-        powerups.append(power3(0,0))
-        powerups.append(power4(0,0))
-        powerups.append(power5(0,0))
         while True:
             toc = time.time()
             frames = toc - tic_toc
@@ -126,10 +133,10 @@ class Run:
                 move_return = self.move()
                 if(not move_return):
                     break
-                cur_time = time.time()
-                available_time -= (cur_time - start_time)
-                start_time = cur_time
-                if(available_time < 0):
+                # cur_time = time.time()
+                # available_time -= (cur_time - start_time)
+                # start_time = cur_time
+                if(gametop_data.update_availabletime() < 0):
                     os.system('clear')
                     # --------
                     print(fmagenta + art.game_over + all_reset)
@@ -154,13 +161,9 @@ class Run:
                     # --------  choosen_value 
                     # logging.debug("choosen_value : " + str(choosen_value))
                     if(choosen_value!=0):
-                        # ---------
+                        # ---------   
                         # logging.debug("choosen_value!=0 : " + str(choosen_value!=0))
-                        if(self.powerup_flag[choosen_value-1] == 1):
-                            # logging.debug("self.powerup_flag[choosen_value-1] :" + str(self.powerup_flag[choosen_value-1]))
-                            logging.debug("just nothing (ignore)")
-                            # powerups[choosen_value-1].update_time_activated()
-                        else:
+                        if(self.powerup_flag[choosen_value-1] != 1):
                             self.powerup_flag[choosen_value-1] = 1
                         # -------  self.powerup_flag - 
                         # logging.debug("self.powerup_flag : " + str(self.powerup_flag))
@@ -170,10 +173,10 @@ class Run:
                         livesleft -= 1
                         if(livesleft <= 0):
                             os.system('clear')
-                            print(fred + art.you_loose + all_reset)
+                            print(FRED + art.you_loose + all_reset)
                             break
                         temp_random = self.sys_random.choice([i for i in range(paddle_start,paddle_end)])
-                        self.ball_class[0] = Ball(ball_x_starting_constant_velocity,ball_y_starting_constant_velocity,42,temp_random,self.screen_array)
+                        self.ball_class[0] = Ball(BALL_X_STARTING_CONSTANT_VELOCITY,BALL_Y_STARTING_CONSTANT_VELOCITY,42,temp_random,self.screen_array)
                         for i in range(0,6):
                             if(self.powerup_flag[i] == 1): 
                                 powerups[i].update_status(0)
@@ -261,14 +264,38 @@ class Run:
                                     # logging.debug("Here at i == 5 -- undo part")
                                     self.sticky_ball_powerup = powerups[i].undo()
                                     powerups[i].update_status(0)
-
-                gametop_data.update_gametop(available_time,score,livesleft)
+                # logging.debug("bricks.bkleft : " + str(bricks.bkleft()))
+                if(bricks.bkleft() == 0 and self.level != 3):
+                    self.level += 1
+                    if(self.level < 4):
+                        os.system('clear')
+                        print(" Moving to next level ")
+                        print("Level #" + str(self.level))
+                        self.puinit(powerups)
+                        gametop_data.update_level(self.level)
+                        temp_random = self.sys_random.choice([i for i in range(paddle_start,paddle_end)])
+                        self.ball_class.append(Ball(BALL_X_STARTING_CONSTANT_VELOCITY,BALL_Y_STARTING_CONSTANT_VELOCITY,42,temp_random,self.screen_array))
+                        bricks.killbs()
+                        bricks.update_brick_onscreen(self.screen_array)
+                        bricks = Bricks(self.level)
+                    else:
+                        print("You Won !!")
+                        break
+                if(self.level == 3):
+                    # BOSS LEVEL
+                    logging.debug("Boss LEVEL")
+                    print("Boss LEVEL")
+                gametop_data.update_gametop(score,livesleft)
                 gametop_data.update_gametop_onscreen(self.screen_array)
                 self.Paddle.update_paddle_onscreen(self.screen_array)
-                if(bricks.bkleft == 0):
-                    self.level += 1
+                    
                 bricks.update_brick_onscreen(self.screen_array)
                 screen_board.showscreen()
+
+                if(self.skipkey):
+                    bricks.killbs()
+                    self.skipkey = False
+                    logging.debug("level : " + str(self.level))
                 
                 if(self.sticky_ball_powerup):
                     (bavx,bavy,bax,bay) = self.ball_class[0].return_class_init()

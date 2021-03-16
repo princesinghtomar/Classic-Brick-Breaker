@@ -23,12 +23,12 @@ class Brick_inherit:
     def __init__(self,typeb,starting_x,starting_y):
         self.type = typeb
         self.life = brick_life_store[typeb]
-        self.color = bricks_color[typeb]+bricks_font_color[typeb]
         self.bricks_size = 6
         self.sx = starting_x
         self.sy = starting_y
         self.rainbow = False
         self.alive = True
+        self.interactball = True
         
     def update_score(self,go_thru):
         score = 0
@@ -102,6 +102,11 @@ class Brick_inherit:
     def falldown(self):
         self.sx += 1
         # logging.debug("self.sx : " + str(self.sx))
+
+    def draw(self,screen_array):
+        temp = bricks_color[self.type] + bricks_font_color[self.type]
+        for z in range(0,self.bricks_size):
+            screen_array[self.sx][self.sy+z] = temp + bricks[self.type][z] + all_reset
 
     def clear(self,screen_array):
         for z in range(0,self.bricks_size):

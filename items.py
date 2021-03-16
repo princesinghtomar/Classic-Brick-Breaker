@@ -9,7 +9,7 @@ bricks = np.array(["[####]","[$$$$]","[++++]","[IIII]","[::::]"])
 ball_graphic = "O"
 
 # Paddle :
-paddle_size = np.array([7,9,13,7,9,13])
+PADDLE_SIZE = np.array([7,9,13,7,9,13])
 paddle_graphic = np.array(['<======>','<=======>','<===========>','|======|','|=======|','|===========|'])
 
 # Brick Orientations :
@@ -24,30 +24,30 @@ brick_orientation = np.array([b_1,b_2,b_3])
 brick_life_store = [0,1,2,3,5000]
 
 # instructions :
-instructions = fred + art.instructions_art + all_reset + "\n" + \
-    fred + "|" + all_reset + " > Press " + fred + "q" + all_reset + " to quit the game                                               " + \
-    "                                                                                         " + fred + "|\n" + all_reset + \
-    fred + "|" + all_reset + " > Press " + fred + "d" + all_reset + " to move paddle to right                                        " + \
-    "                                                                                         " + fred + "|\n" + all_reset + \
-    fred + "|" + all_reset + " > Press " + fred + "a" + all_reset + " to move paddle to right                                        " + \
-    "                                                                                         " + fred + "|\n" + all_reset + \
-    fred + "|" + all_reset + " > Press " + fred + "j" + all_reset + " to fire the ball                                               " + \
-    "                                                                                         " + fred + "|\n" + all_reset + \
-    fred + "|" + all_reset + " > Press " + fred + "g" + all_reset + " to start the game                                              " + \
-    "                                                                                         " + fred + "|\n" + all_reset + \
-    fred + "|" + all_reset + " > Press " + fred + "k" + all_reset + " to release ball                                                " + \
-    "                                                                                         " + fred + "|\n" + all_reset + \
-    fred + "|" + all_reset + " > Power " + bmagenta + "P" + all_reset + " Expand Paddle                                                  " + \
-    "                                                                                         " + fred + "|\n" + all_reset + \
-    fred + "|" + all_reset + " > Power " + bgreen + "P" + all_reset + " Shrink Paddle                                                  " + \
-    "                                                                                         " + fred + "|\n" + all_reset + \
-    fred + "|" + all_reset + " > Power " + bred + "P" + all_reset + " Ball Multiplier                                                " + \
-    "                                                                                         " + fred + "|\n" + all_reset + \
-    fred + "|" + all_reset + " > Power " + byellow + "P" + all_reset + " Fast Ball                                                      " + \
-    "                                                                                         " + fred + "|\n" + all_reset + \
-    fred + "|" + all_reset + " > Power " + bblue + "P" + all_reset + " Thru-ball                                                      " + \
-    "                                                                                         " + fred + "|\n" + all_reset + \
-    fred + "|" + all_reset + " > Power " + bcyan + "P" + all_reset + " Paddle Grab                                                    " + \
-    "                                                                                         " + fred + "|\n" + all_reset + \
-    fred + "*----------------------------------------------------------------------------------------------------------------------" + \
+instructions = FRED + art.instructions_art + all_reset + "\n" + \
+    FRED + "|" + all_reset + " > Press " + FRED + "q" + all_reset + " to quit the game                                               " + \
+    "                                                                                         " + FRED + "|\n" + all_reset + \
+    FRED + "|" + all_reset + " > Press " + FRED + "d" + all_reset + " to move paddle to right                                        " + \
+    "                                                                                         " + FRED + "|\n" + all_reset + \
+    FRED + "|" + all_reset + " > Press " + FRED + "a" + all_reset + " to move paddle to right                                        " + \
+    "                                                                                         " + FRED + "|\n" + all_reset + \
+    FRED + "|" + all_reset + " > Press " + FRED + "j" + all_reset + " to fire the ball                                               " + \
+    "                                                                                         " + FRED + "|\n" + all_reset + \
+    FRED + "|" + all_reset + " > Press " + FRED + "g" + all_reset + " to start the game                                              " + \
+    "                                                                                         " + FRED + "|\n" + all_reset + \
+    FRED + "|" + all_reset + " > Press " + FRED + "k" + all_reset + " to release ball                                                " + \
+    "                                                                                         " + FRED + "|\n" + all_reset + \
+    FRED + "|" + all_reset + " > Power " + bmagenta + "P" + all_reset + " Expand Paddle                                                  " + \
+    "                                                                                         " + FRED + "|\n" + all_reset + \
+    FRED + "|" + all_reset + " > Power " + bgreen + "P" + all_reset + " Shrink Paddle                                                  " + \
+    "                                                                                         " + FRED + "|\n" + all_reset + \
+    FRED + "|" + all_reset + " > Power " + bred + "P" + all_reset + " Ball Multiplier                                                " + \
+    "                                                                                         " + FRED + "|\n" + all_reset + \
+    FRED + "|" + all_reset + " > Power " + byellow + "P" + all_reset + " Fast Ball                                                      " + \
+    "                                                                                         " + FRED + "|\n" + all_reset + \
+    FRED + "|" + all_reset + " > Power " + bblue + "P" + all_reset + " Thru-ball                                                      " + \
+    "                                                                                         " + FRED + "|\n" + all_reset + \
+    FRED + "|" + all_reset + " > Power " + bcyan + "P" + all_reset + " Paddle Grab                                                    " + \
+    "                                                                                         " + FRED + "|\n" + all_reset + \
+    FRED + "*----------------------------------------------------------------------------------------------------------------------" + \
     "---------------------------------------------*\n"+ all_reset

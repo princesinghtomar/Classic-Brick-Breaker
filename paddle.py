@@ -19,12 +19,13 @@ class paddle:
         self.free_ball = False
         self.Stick_powerup = False
         self.incr_dec_paddle = 0
+        self.interactball = True
 
     def update_paddle_onscreen(self,screengrid):
         ''' 
         Focusses on updating paddle on screen
         '''
-        # logging.debug(len(paddle_size))
+        # logging.debug(len(PADDLE_SIZE))
         paddle = paddle_graphic[self.type]
         # logging.debug("paddle : " + paddle) #
         (paddle_start,half_size ,paddle_end) = self.return_se()
@@ -69,7 +70,7 @@ class paddle:
         return self.type
 
     def return_se(self):
-        half_size = int((paddle_size[self.type])/2)
+        half_size = int((PADDLE_SIZE[self.type])/2)
         paddle_start = self.cur_x - half_size
         paddle_end = self.cur_x + half_size+1
         return (paddle_start,half_size,paddle_end)

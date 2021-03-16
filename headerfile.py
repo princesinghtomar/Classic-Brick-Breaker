@@ -6,18 +6,17 @@ GROUND = 1
 SKY = 4
 HEIGHT = 45
 WIDTH = 165
-clear_screen = "\033[0;0H"
-paddle_size = [7,9,13,7,9,13]
-random_paddle_array = [77,78,79,80,81,82,83]
-ball_x_starting_constant_velocity = -1
-ball_y_starting_constant_velocity = -1
+CLEAR_SCREEN = "\033[0;0H"
+PADDLE_SIZE = [7,9,13,7,9,13]
+BALL_X_STARTING_CONSTANT_VELOCITY = -1
+BALL_Y_STARTING_CONSTANT_VELOCITY = -1
 
 #NOTE Colors 
 # Foreground Colors :
-fblack = "\033[30m"
-fred = "\033[31m"
-fgreen = "\033[32m"
-fyellow = "\033[33m"
+FBLACK = "\033[30m"
+FRED = "\033[31m"
+FGREEN = "\033[32m"
+FYELLOW = "\033[33m"
 fblue = "\033[34m"
 fmagenta = "\033[35m"
 fcyan = "\033[36m"

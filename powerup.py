@@ -17,13 +17,16 @@ class powerupclass:
     do : Used for activating Power Function
     undo : Used for deactivating Power Function
     '''
-    def __init__(self,x,y):
+    def __init__(self,x,y,vx,vy):
         self.time_activated = time.time()
         self.active = 0
         self.max_time = 15
         self.ballx = x + 5
         self.bally = y
         self.index = 0
+        self.interactball = False
+        self.ballvx = vx
+        self.ballvy = vy
 
     def update_time_activated(self):
         self.time_activated = time.time()
@@ -55,13 +58,20 @@ class powerupclass:
     def update_xy(self,x,y):
         self.ballx = x + 5
         self.bally = y
+    
+    def uballv(self,vx,vy):
+        self.vx = vx
+        self.vy = vy
+
+    def clear(self,screen_array):
+        temp = powerup_temper[self.index]
+        screen_array[self.ballx-1][self.bally] = ' '
+        screen_array[self.ballx][self.bally] = temp
 
     def update_powerup_onscreen(self,screen_array,paddle_end,paddle_start,Paddle):
         if(self.active == 1):
             if(self.ballx < 43):
-                temp = powerup_temper[self.index]
-                screen_array[self.ballx-1][self.bally] = ' '
-                screen_array[self.ballx][self.bally] = temp
+                self.clear(screen_array)
             elif(self.ballx > 43):
                 self.active = 0
             else:
@@ -78,13 +88,8 @@ class power0(powerupclass):
     Expand Paddle Powerup : Increases the size of the paddle 
     by a certain amount.
     '''
-    def __init__(self,x,y,changed_type = 2):
-        self.time_activated = time.time()
-        self.active = 0
-        self.max_time = 15
-        self.ballx = x + 5
-        self.bally = y
-        self.index = 0
+    def __init__(self,x,y,vx,vy,changed_type = 2):
+        powerupclass.__init__(self,x,y,vx,vy)
 
     def do(self,Paddle):
         Paddle.update_type(changed_type)
@@ -97,12 +102,8 @@ class power1(powerupclass):
     Shrink Paddle Powerup : Reduce the size of the paddle by a 
     certain amount but not completely.
     '''
-    def __init__(self,x,y):
-        self.time_activated = time.time()
-        self.active = 0
-        self.max_time = 15
-        self.ballx = x + 5
-        self.bally = y
+    def __init__(self,x,y,vx,vy):
+        powerupclass.__init__(self,x,y,vx,vy)
         self.index = 1
 
     def do(self,Paddle):
@@ -116,12 +117,8 @@ class power2(powerupclass):
     Ball Multiplier Powerup : Each of the balls which are present 
     will be further divided into two.
     '''
-    def __init__(self,x,y):
-        self.time_activated = time.time()
-        self.active = 0
-        self.max_time = 15
-        self.ballx = x + 5
-        self.bally = y
+    def __init__(self,x,y,vx,vy):
+        powerupclass.__init__(self,x,y,vx,vy)
         self.index = 2
 
     def do(self,ball_class,screen_array):
@@ -145,12 +142,8 @@ class power3(powerupclass):
     '''
     Fast Ball Powerup : Increases the speed of the ball.
     '''
-    def __init__(self,x,y):
-        self.time_activated = time.time()
-        self.active = 0
-        self.max_time = 15
-        self.ballx = x + 5
-        self.bally = y
+    def __init__(self,x,y,vx,vy):
+        powerupclass.__init__(self,x,y,vx,vy)
         self.index = 3
         self.vx = 0
         self.vy = 0
@@ -173,12 +166,8 @@ class power4(powerupclass):
     Thru-ball Powerup : This enables the ball to destroy and go through 
     any brick it touches, irrespective of the strength of the wall.
     '''
-    def __init__(self,x,y):
-        self.time_activated = time.time()
-        self.active = 0
-        self.max_time = 15
-        self.ballx = x + 5
-        self.bally = y
+    def __init__(self,x,y,vx,vy):
+        powerupclass.__init__(self,x,y,vx,vy)
         self.index = 4
 
     def do(self,ball_class):
@@ -193,12 +182,8 @@ class power5(powerupclass):
     the ball at will. The ball will follow the same expected trajectory after release, 
     similar to the movement expected without the grab.
     '''
-    def __init__(self,x,y):
-        self.time_activated = time.time()
-        self.active = 0
-        self.max_time = 15
-        self.ballx = x + 5
-        self.bally = y
+    def __init__(self,x,y,vx,vy):
+        powerupclass.__init__(self,x,y,vx,vy)
         self.index = 5
 
     def do(self):
@@ -211,12 +196,8 @@ class power6(powerupclass):
     '''
     Powerup Class for Shooting paddle
     '''
-    def __init__(self,x,y):
-        self.time_activated = time.time()
-        self.active = 0
-        self.max_time = 15
-        self.ballx = x + 5
-        self.bally = y
+    def __init__(self,x,y,vx,vy):
+        powerupclass.__init__(self,x,y,vx,vy)
         self.index = 6
         self.shooting_gap = 0.2
         self.last_shot = 0

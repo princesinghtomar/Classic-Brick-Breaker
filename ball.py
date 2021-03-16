@@ -191,8 +191,9 @@ class Ball(functionality_class):
                     # logging.debug("reached coin.wav in ball.py")
                     bricks_class.mainfallbrickfunction(screen_array)
                     lowest = bricks_class.findlby()
-                    if(lowest <= 43):
-                        print(game_over_art)
+                    # logging.debug("lowest : " + str(lowest))
+                    if(lowest >= 43):
+                        print(art.game_over_art)
                         exit()
                     if(temp_y > paddle_center):
                         self.velocity_y += math.ceil(abs(temp_y - paddle_center))

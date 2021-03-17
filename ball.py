@@ -6,6 +6,7 @@ import math
 import logging
 import sys
 import os
+from bosslevel import *
 from art import art
 
 # CHECK THIS PART :-/
@@ -131,19 +132,23 @@ class Ball(functionality_class):
     ''' 
     This class contains all ball functions
     '''
-    def __init__(self,velocity_x,velocity_y,x,y,screen_array):
+    def __init__(self,velocity_x,velocity_y,x,y,screen_array,level = 1):
         self.velocity_x = velocity_x
         self.velocity_y = velocity_y
         self.ball_x = x
         self.bal_y = y
         self.thru_ball = False
         self.sticky_ball = False
+        self.level = level
 
         if(screen_array[x][y] == ' '):
             screen_array[x][y] = 'O'
 
     def return_class_init(self):
         return (self.velocity_x,self.velocity_y,self.ball_x,self.bal_y)
+
+    def update_level(self,level):
+        self.level = level
 
     def update_speed(self,vx,vy):
         self.velocity_y = vx
@@ -166,7 +171,7 @@ class Ball(functionality_class):
         self.bal_y += dy
         screen_array[self.ball_x][self.bal_y] = 'O'
 
-    def update_ball_motion(self,screen_array,bricks_class,paddle_start,paddle_end):
+    def update_ball_motion(self,screen_array,bricks_class,paddle_start,paddle_end,boss):
         ''' 
         This functions handle collision of ball with bricks
         '''
@@ -267,7 +272,12 @@ class Ball(functionality_class):
                                 (cur_x-1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
                                 (cur_x+1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
                                 self.velocity_x = -self.velocity_x
-                            (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
+                            if(self.level != 3):
+                                (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
+                            elif(self.level == 3 and boss != None):
+                                logging.debug("type(boss) : " + str(type(boss)))
+                                logging.debug("boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1]) : " + str(boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1])))
+                                (score_,choosen_value) = boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1])
                             temp_x = cur_x
                             temp_y = cur_y
                             break
@@ -284,8 +294,13 @@ class Ball(functionality_class):
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '>' or 
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '<'):
                             if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!=' '):
-                                (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],True)
-
+                                if(self.level != 3):
+                                    (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
+                                elif(self.level == 3 and boss != None):
+                                    logging.debug("type(boss) : " + str(type(boss)))
+                                    logging.debug("boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1]) : " + str(boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1])))
+                                    (score_,choosen_value) = boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1])
+                                    logging.debug("(score_,choosen_value) : " + str((score_,choosen_value)))
             if(screen_array[temp_x][temp_y] == ' ' and not self.thru_ball):
                 self.ball_x = temp_x
                 self.bal_y = temp_y

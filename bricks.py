@@ -119,8 +119,12 @@ class Bricks:
             self.startfalling = True
 
     def findlby(self):
+        # logging.debug("I'm here")
+        # logging.debug("self.brick_data.shape : " + str(self.brick_data.shape))
         if(self.brick_data.shape[0] == 0):
+            # logging.debug("returned 1")
             return 1
+        # logging.debug("Reached after return 1")
         i = self.brick_data.shape[0]-1
         j = len(self.brick_data[0])-1
         lowest = 0

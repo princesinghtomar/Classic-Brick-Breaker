@@ -59,8 +59,8 @@ class Run:
             if(paddle_start > 4):
                 self.paddle_array[0] -= 3
                 if(self.level == 3):
-                    logging.debug("self.paddle_array[1] : " + str(self.paddle_array[1]))
-                    self.boss.updatepy(self.paddle_array[1],self.screen_array)
+                    # logging.debug("self.paddle_array[1] : " + str(self.paddle_array[0]))
+                    self.boss.updatepy(self.paddle_array[0],self.screen_array)
                 if(self.sticky_ball_motion):
                     self.ball_class[0].ball_sticky_motion(self.screen_array,0,-3)
                 self.Paddle.update_paddle_value(self.paddle_array[0],self.paddle_array[1],self.paddle_array[2])
@@ -68,15 +68,19 @@ class Run:
             if(paddle_end < WIDTH-3):
                 self.paddle_array[0] += 3
                 if(self.level == 3):
-                    logging.debug("self.paddle_array[1] : " + str(self.paddle_array[1]))
-                    self.boss.updatepy(self.paddle_array[1],self.screen_array)
+                    # logging.debug("self.paddle_array[1] : " + str(self.paddle_array[0]))
+                    self.boss.updatepy(self.paddle_array[0],self.screen_array)
                 if(self.sticky_ball_motion):
                     self.ball_class[0].ball_sticky_motion(self.screen_array,0,+3)
                 self.Paddle.update_paddle_value(self.paddle_array[0],self.paddle_array[1],self.paddle_array[2])
         elif(key == 'k'):
             self.sticky_ball_motion = False
         elif(key == 'f' ):
-            self.skipkey = True
+            if( self.level < 3):
+                self.skipkey = True
+            else:
+                print("Game Over")
+                exit()
         return 1
 
     def starting_instruction(self):
@@ -274,7 +278,7 @@ class Run:
                 # logging.debug("bricks.bkleft : " + str(bricks.bkleft()))
                 if(bricks.bkleft() == 0 and self.level != 3 ):
                     self.level += 1
-                    logging.debug("here in increase level : " + str(self.level))
+                    # logging.debug("here in increase level : " + str(self.level))
                     if(self.level == 4):
                         print("You Won !!")
                         break
@@ -294,9 +298,16 @@ class Run:
                 if(self.level == 3):
                     # BOSS LEVEL
                     logging.debug("Boss LEVEL")
-                    print("Boss LEVEL")
-                    logging.debug("self.Paddle.return_xandy[1] : " + str(self.Paddle.return_xandy()[1]))
-                    self.boss = Boss(self.Paddle.return_xandy()[1],score)
+                    # print("Boss LEVEL")
+                    # logging.debug("self.Paddle.return_xandy[1] : " + str(self.Paddle.return_xandy()[1]))
+                    if(self.boss == None):
+                        self.boss = Boss(self.Paddle.return_xandy()[1],score)
+                        self.boss.updatepy(self.paddle_array[0],self.screen_array)
+                    gametop_data.update_life(self.boss.rlife())
+                    if(self.boss.rlife() <=0 ):
+                        os.system('clear')
+                        print("You won")
+                        break
                     # self.boss.draw(self.screen_array)
                 gametop_data.update_gametop(score,livesleft)
                 gametop_data.update_gametop_onscreen(self.screen_array)
@@ -308,7 +319,7 @@ class Run:
                 if(self.skipkey):
                     bricks.killbs()
                     self.skipkey = False
-                    logging.debug("level : " + str(self.level))
+                    # logging.debug("level : " + str(self.level))
                 
                 if(self.sticky_ball_powerup):
                     (bavx,bavy,bax,bay) = self.ball_class[0].return_class_init()

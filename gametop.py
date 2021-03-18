@@ -12,6 +12,7 @@ class gametop:
         self.previoustime = time.time()
         self.score = score
         self.livesleft = livesleft
+        self.bosslife = -1
         self.level = 1
 
     def stimer(self):
@@ -20,6 +21,9 @@ class gametop:
     
     def update_level(self,level):
         self.level = level
+
+    def update_life(self,bosslife):
+        self.bosslife = bosslife
 
     def update_availabletime(self):
         cur_time = time.time()
@@ -39,6 +43,7 @@ class gametop:
         For updating Gametop on screen
         '''
         string = np.array(["Time  : " + str(round(self.timeleft))+ '   ',"Lives : " + str(self.livesleft) + '   ',"Score : " + str(self.score) + '   ',"Level : " + str(self.level) + '   ' ])
+        l = "Boss Lives : " + str(self.bosslife) + '   '
         length = string.size
         for i in range(0,3):
             for j in range(0,len(string[i])):
@@ -46,3 +51,7 @@ class gametop:
         for i in range(3,string.size):
             for j in range(0,len(string[i])):
                 screen_array[i+1-3][j+4+20] = string[i][j]
+        if(self.bosslife >= 0 ):
+            for j in range(0,len(l)):
+                screen_array[4+1-3][j+4+20] = l[j]
+        

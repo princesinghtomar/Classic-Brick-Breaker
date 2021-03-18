@@ -275,8 +275,8 @@ class Ball(functionality_class):
                             if(self.level != 3):
                                 (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
                             elif(self.level == 3 and boss != None):
-                                logging.debug("type(boss) : " + str(type(boss)))
-                                logging.debug("boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1]) : " + str(boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1])))
+                                # logging.debug("type(boss) : " + str(type(boss)))
+                                # logging.debug("boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1]) : " + str(boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1])))
                                 (score_,choosen_value) = boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1])
                             temp_x = cur_x
                             temp_y = cur_y
@@ -297,10 +297,10 @@ class Ball(functionality_class):
                                 if(self.level != 3):
                                     (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
                                 elif(self.level == 3 and boss != None):
-                                    logging.debug("type(boss) : " + str(type(boss)))
-                                    logging.debug("boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1]) : " + str(boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1])))
+                                    # logging.debug("type(boss) : " + str(type(boss)))
+                                    # logging.debug("boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1]) : " + str(boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1])))
                                     (score_,choosen_value) = boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1])
-                                    logging.debug("(score_,choosen_value) : " + str((score_,choosen_value)))
+                                    # logging.debug("(score_,choosen_value) : " + str((score_,choosen_value)))
             if(screen_array[temp_x][temp_y] == ' ' and not self.thru_ball):
                 self.ball_x = temp_x
                 self.bal_y = temp_y

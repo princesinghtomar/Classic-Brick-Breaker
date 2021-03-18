@@ -13,26 +13,30 @@ class Boss:
         self.life = 100
         self.score = score
         self.sbricks = []
-        self.pstart = 0
-        self.pend = 0
+        self.pstart = 2
+        self.pend = 2
         self.ufo = art.ufo.split('9')
         self.unb = [self.pstart + 10, self.pend - 20, len(self.ufo) + self.px]
-        self.spawnbricks = [False,False]
+        self.spawnbricks = (False,False)
+        self.previousshot = time.time()
+        self.bomb = []
 
     def cp(self):
         self.pstart = self.py - 22
         self.pend = self.py + 22
+        # logging.debug("self.pstart : " + str(self.pend) + " : " + "self.pend : " + str(self.pend))
         if(self.pstart <= 2):
             self.pstart = 2
-            self.pend = pstart + 44
+            self.pend = self.pstart + 44
         elif(self.pend >= WIDTH - 2):
-            self.pend = WIDTH -2
+            self.pend = WIDTH - 2
             self.pstart = self.pend - 44
         self.unb = [self.pstart + 10, self.pend - 20, len(self.ufo) + self.px]
 
     def updatepy(self,py,screen_array):
         self.clear(screen_array)
-        self.check_spawing()
+        self.binit()
+        # self.check_spawing()
         self.py = py
         self.draw(screen_array)
 
@@ -41,21 +45,31 @@ class Boss:
         self.bswfun(screen_array,True)
         for i in range(0,len(self.ufo)-1):
             for j in range(0,len(self.ufo[i])):
-                screen_array[self.px+i][self.py + j] = self.ufo[i][j]
+                # logging.debug("self.px+i : " + str(self.px+i) + " : " + "self.pstart + j : " + str(self.pstart + j))
+                screen_array[self.px+i][self.pstart + j] = self.ufo[i][j]
 
     def clear(self,screen_array):
         self.bswfun(screen_array,False)
+        # logging.debug("self.pstart : " + str(self.pstart) + " : " + "self.pend : " + str(self.pend))
+        # logging.debug("len(self.ufo : " + str(len(self.ufo)) )
         for i in range(0,len(self.ufo)-1):
             for j in range(0,len(self.ufo[i])):
-                screen_array[self.px+i][self.py + j] = ' '
+                # logging.debug("len(self.ufo[i]) : " + str(len(self.ufo[i])))
+                screen_array[self.px+i][self.pstart + j] = ' '
 
     def check_spawing(self):
+        # logging.debug("self.spawnbricks[0] : " + str(self.spawnbricks[0]) )
+        # logging.debug("self.spawnbricks[1] : " + str(self.spawnbricks[1]) )
+        # logging.debug("self.life <= 50 and self.life > 20 and not self.spawnbricks[0] : " + str(self.life <= 50 and self.life > 20 and not self.spawnbricks[0]) )
         if(self.life <= 50 and self.life > 20 and not self.spawnbricks[0]):
             self.binit()
-            self.spawnbricks[0] = True
+            self.spawnbricks = (True,False)
+        # logging.debug("self.life <= 20 and not self.spawnbricks[1] : " + str(self.life <= 20 and not self.spawnbricks[1]))
+        # logging.debug("self.life : " + str(self.life))
         if(self.life <= 20 and not self.spawnbricks[1]):
+            # logging.debug("inside this")
             self.binit()
-            self.spawnbricks[1] = True
+            self.spawnbricks = (True,True)
 
     def decreaselife(self):
         self.life = self.life - 10
@@ -65,9 +79,10 @@ class Boss:
         return self.life
 
     def collision(self,screen_array,x,y):
-        if(x <= self.px ):
+        if(x <= self.px + len(self.ufo)-1):
             self.decreaselife()
-            return(self.score,80)
+            logging.debug("self.life : " + str(self.life))
+            return(self.score,0)
         else:
             for i in range(len(self.sbricks)):
                 (x1,y1) = self.sbricks[i].returnxy()
@@ -75,28 +90,28 @@ class Boss:
                 if(x == x1 and (y >= y1 and y <= y1 + size)):
                     (life,typeb,score_) = self.sbricks[i].decrease_brick_life(1,False)
                     self.sbricks[i].clear(screen_array)
-                    self.sbricks[i].draw(screen_array)
+                    # self.sbricks[i].draw(screen_array)
                     self.score += score_
-                    return(score_,80)   # (score,choosen_value)
-            logging.debug("x y : " + str((x,y)))
+                    return(self.score,0)   # (score,choosen_value)
+            # logging.debug("x y : " + str((x,y)))
             return(0,0)
 
     def binit(self):
-        if(not self.spawnbricks[0] and not self.spawnbricks[1]):
-            if(len(self.sbricks) < 2):
-                self.sbricks.append(Brick_inherit(self.unb[0],self.unb[2]))
-                self.sbricks.append(Brick_inherit(self.unb[1],self.unb[2]))
-        elif(self.spawnbricks[0] and not self.spawnbricks[1]):
-            # if(len(self.sbricks) < 13):
-            lamda = 0 
-            for i in range(0,7):
-                self.sbricks.append(Brick_inherit(0,self.px + len(self.ufo) + 1,self.pstart + lamda))
+        # if(not self.spawnbricks[0] and not self.spawnbricks[1]):
+        if(len(self.sbricks) < 2):
+            self.sbricks.append(Brick_inherit(4,self.unb[2],self.unb[0]))
+            self.sbricks.append(Brick_inherit(4,self.unb[2],self.unb[1]))
+        # elif(self.spawnbricks[0] and not self.spawnbricks[1]):
+        if(len(self.sbricks) < 5 and self.life > 20 and self.life <=50):
+            lamda = 2
+            while lamda < WIDTH - 8:
+                self.sbricks.append(Brick_inherit(0,self.px + len(self.ufo) + 1,lamda))
                 lamda += self.sbricks[-1].returnbsize()
-        elif(self.spawnbricks[0] and self.spawnbricks[1]):
-            # if(len(self.sbricks) < 13):
-            lamda = 0 
-            for i in range(0,7):
-                self.sbricks.append(Brick_inherit(1,self.px + len(self.ufo) + 2,self.pstart + lamda))
+        # elif(self.spawnbricks[1]):
+        if(len(self.sbricks) <= 14 and self.life <= 20):
+            lamda = 2
+            while lamda < WIDTH - 8:
+                self.sbricks.append(Brick_inherit(1,self.px + len(self.ufo) + 2,lamda))
                 lamda += self.sbricks[-1].returnbsize()
 
     # use : True, then draw otherwise clear
@@ -107,3 +122,27 @@ class Boss:
                     self.sbricks[i].draw(screen_array)
                 else:
                     self.sbricks[i].clear(screen_array)
+
+    def mbomb(self,screen_array,paddletuple):
+        sdraw(screen_array,False)
+        for i in range(len(self.bomb)):
+            if(self.bomb[i][0]<43):
+                val = (self.bomb[i][0]+1,self.bomb[i][1])
+                self.bomb[i] = val
+                screen_array[self.bomb[i][0]][self.bomb[i][1]] = 'B'
+            else:
+                if(self.bomb[i][1]<paddletuple[2]  and self.bomb[i][1] > paddletuple[1])
+
+
+    def cbomb(self):
+        if(time.time() - self.previousshot > 0.2):
+            self.previousshot = time.time()
+            self.bomb.append(self.px,self.px+len(self.ufo))
+
+    # falg : true, draw and  False ,clear
+    def sdraw(self,screen_array,flag):
+        for i in range(len(self.bomb)):
+            if(flag):
+                screen_array[self.bomb[i][0]][self.bomb[i][1]] = 'B'
+            else:
+                screen_array[self.bomb[i][0]][self.bomb[i][1]] = ' '

@@ -7,7 +7,7 @@ import logging
 #   ^ (-x)
 #   |
 #   |
-#   -----> (+y)
+#    -----> (+y)
 
 # Score : 
 #     Super Ball Mode    Normal ball Mode
@@ -66,8 +66,7 @@ class Brick_inherit:
             self.type -= 1
             if(self.type < 0):
                 self.die()
-        
-        # logging.debug("self.type : " + str(self.type) + " | self.life : " + str(self.life) + " | self.alive : " + str(self.alive))
+        logging.debug("self.type : " + str(self.type) + " | self.life : " + str(self.life) + " | self.alive : " + str(self.alive))
         return (self.life,self.type,score)
     
     def change_color_brick(self,typeb):

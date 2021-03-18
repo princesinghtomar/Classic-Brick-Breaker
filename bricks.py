@@ -74,7 +74,7 @@ class Bricks:
         '''
         This function is used to remove bricks that are being hit
         '''
-        os.system("aplay -q funstuff/stompenemy.wav")
+        os.system("aplay -q funstuff/stompenemy.wav &")
         index= [0,0]
         for i in range(0,self.brick_data.shape[0]):
             index[0] = i

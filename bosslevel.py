@@ -38,6 +38,7 @@ class Boss:
         self.binit()
         # self.check_spawing()
         self.py = py
+        self.cbomb()
         self.draw(screen_array)
 
     def draw(self,screen_array):
@@ -124,20 +125,29 @@ class Boss:
                     self.sbricks[i].clear(screen_array)
 
     def mbomb(self,screen_array,paddletuple):
-        sdraw(screen_array,False)
-        for i in range(len(self.bomb)):
+        self.sdraw(screen_array,False)
+        i = 0
+        while i < len(self.bomb):
+            logging.debug("self.bomb[" + str(i) + "][0]" + str(self.bomb[i][0]))
             if(self.bomb[i][0]<43):
                 val = (self.bomb[i][0]+1,self.bomb[i][1])
                 self.bomb[i] = val
                 screen_array[self.bomb[i][0]][self.bomb[i][1]] = 'B'
             else:
-                if(self.bomb[i][1]<paddletuple[2]  and self.bomb[i][1] > paddletuple[1])
-
+                if(self.bomb[i][1]<= paddletuple[2]  and self.bomb[i][1] >= paddletuple[1]):
+                    self.bomb.pop(i)
+                    i-=1
+                    return 1
+                else:
+                    self.bomb.pop(i)
+                    i-=1
+            i+=1
+        return 0
 
     def cbomb(self):
-        if(time.time() - self.previousshot > 0.2):
+        if(time.time() - self.previousshot > 0.1):
             self.previousshot = time.time()
-            self.bomb.append(self.px,self.px+len(self.ufo))
+            self.bomb.append((self.px+len(self.ufo),self.py))
 
     # falg : true, draw and  False ,clear
     def sdraw(self,screen_array,flag):

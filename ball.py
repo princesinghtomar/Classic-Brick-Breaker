@@ -292,7 +292,8 @@ class Ball(functionality_class):
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '*' or 
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '=' or 
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '>' or 
-                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '<'):
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '<' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != 'B'):
                             if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!=' '):
                                 if(self.level != 3):
                                     (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
@@ -312,4 +313,4 @@ class Ball(functionality_class):
                 screen_array[self.ball_x][self.bal_y] = 'O'
                 return (1,score_,choosen_value)
             else:
-                os.system("aplay -q funstuff/coin.wav")
+                os.system("aplay -q funstuff/coin.wav &")

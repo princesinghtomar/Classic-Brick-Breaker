@@ -301,14 +301,23 @@ class Run:
                     # print("Boss LEVEL")
                     # logging.debug("self.Paddle.return_xandy[1] : " + str(self.Paddle.return_xandy()[1]))
                     if(self.boss == None):
+                        os.system("aplay -q funstuff/theme.wav &")
+                        # val = os.system("ps")
+                        # logging.debug("va : " + str(val))
                         self.boss = Boss(self.Paddle.return_xandy()[1],score)
                         self.boss.updatepy(self.paddle_array[0],self.screen_array)
                     gametop_data.update_life(self.boss.rlife())
                     if(self.boss.rlife() <=0 ):
-                        os.system('clear')
+                        os.system("aplay -q funstuff/ &")
                         print("You won")
                         break
                     # self.boss.draw(self.screen_array)
+                if(self.level == 3 and self.boss.mbomb(self.screen_array,self.return_paddle_start_and_end())):
+                    livesleft -= 1 
+                    if(livesleft <= 0):
+                        os.system('clear')
+                        print(FRED + art.you_loose + all_reset)
+                        break
                 gametop_data.update_gametop(score,livesleft)
                 gametop_data.update_gametop_onscreen(self.screen_array)
                 self.Paddle.update_paddle_onscreen(self.screen_array)

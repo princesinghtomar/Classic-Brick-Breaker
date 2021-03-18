@@ -21,12 +21,13 @@ class powerupclass:
         self.time_activated = time.time()
         self.active = 0
         self.max_time = 15
-        self.ballx = x + 5
-        self.bally = y
+        self.px = x
+        self.py = y
+        self.ball_initial = [x,y]
         self.index = 0
         self.interactball = False
-        self.ballvx = vx
-        self.ballvy = vy
+        self.vx = vx
+        self.vy = vy
 
     def update_time_activated(self):
         self.time_activated = time.time()
@@ -56,31 +57,71 @@ class powerupclass:
         self.time_activated = time.time() - self.max_time
 
     def update_xy(self,x,y):
-        self.ballx = x + 5
-        self.bally = y
+        self.px = x
+        self.py = y
+        self.ball_initial =[x,y]
     
     def uballv(self,vx,vy):
         self.vx = vx
         self.vy = vy
 
-    def clear(self,screen_array):
+    def pdraw(self,screen_array,flag):
         temp = powerup_temper[self.index]
-        screen_array[self.ballx-1][self.bally] = ' '
-        screen_array[self.ballx][self.bally] = temp
+        logging.debug("self.py : " + str(self.py) + " : " + "self.px : " + str(self.px))
+        if(not flag):
+            screen_array[self.px][self.py] = ' '
+        else:
+            screen_array[self.px][self.py] = temp
+
+    def ccoll(self):
+        if(self.px <= 5):
+            self.vx = -self.vx
+            temp_val = 5 - self.px
+            self.px = 5 + temp_val
+            if(self.py <= 2):
+                self.vy = -self.vy
+                temp_val = 2 - self.py
+                self.py = 2 + temp_val
+            elif(self.py >= WIDTH-2):
+                self.vy = -self.vy
+                temp_val = (WIDTH - 2) - self.py
+                self.py = (WIDTH - 2) + temp_val
+            self.ball_x = self.px
+            self.bal_y = self.py
+        elif(self.py <=2 ):
+            self.vy = -self.vy
+            temp_val = 2 - self.py
+            self.py = 2 + temp_val
+        elif(self.py >= (WIDTH-2)):
+            self.vy = -self.vy
+            temp_val = (WIDTH - 2) - self.py
+            self.py = (WIDTH - 2) + temp_val
+
+    def pmove(self):
+        t = time.time() - self.time_activated
+        logging.debug("Before : self.py : " + str(self.py) + " : " + "self.px : " + str(self.px))
+        self.px = int(self.ball_initial[0] + self.vx*t + (1/2)*10*(t**2))
+        self.py = int(self.ball_initial[1] + self.vy*t)
+        logging.debug("self.ball_initial : " + str(self.ball_initial))
+        logging.debug("self.vy : " + str(self.vy) + " : " + "self.vx : " + str(self.vx))
+        logging.debug("After : self.py : " + str(self.py) + " : " + "self.px : " + str(self.px))
+        self.ccoll()
 
     def update_powerup_onscreen(self,screen_array,paddle_end,paddle_start,Paddle):
         if(self.active == 1):
-            if(self.ballx < 43):
-                self.clear(screen_array)
-            elif(self.ballx > 43):
+            self.pdraw(screen_array,False)
+            self.pmove()
+            logging.debug("After : self.py : " + str(self.py) + " : " + "self.px : " + str(self.px))
+            if(self.px < 43):
+                self.pdraw(screen_array,True)
+            elif(self.px > 43):
                 self.active = 0
             else:
                 temp = powerup_temper[self.index]
-                screen_array[self.ballx-1][self.bally] = ' '
-                if(self.bally >= paddle_start and self.bally <= paddle_end):
+                self.pdraw(screen_array,False)
+                if(self.py >= paddle_start and self.py <= paddle_end):
                     self.active = 2
                     return True
-            self.ballx += 1
             return False
 
 class power0(powerupclass):

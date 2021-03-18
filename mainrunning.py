@@ -219,6 +219,7 @@ class Run:
                             # -------- (bavx,bavy,bax,bay) -
                             # logging.debug("(bavx,bavy,bax,bay) : " + str((bavx,bavy,bax,bay)))
                             powerups[i].update_xy(bax,bay)
+                            powerups[i].uballv(bavx,bavy)
                             powerups[i].make_powerup_active()
                         elif(powerups[i].return_status() == 1):
                             (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()

@@ -10,7 +10,7 @@ class Boss:
     def __init__(self,py,score):
         self.py = py    #paddle y
         self.px = 7
-        self.life = 100
+        self.life = 40
         self.score = score
         self.sbricks = []
         self.pstart = 2

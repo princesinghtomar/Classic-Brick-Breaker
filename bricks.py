@@ -89,7 +89,11 @@ class Bricks:
                 continue
             break
         # logging.debug("x1 : " + str(x1) + " : " + "y1 : " + str(y1))
-        (life,typeb,score_) = self.brick_data[index[0]][index[1]].decrease_brick_life(1,go_thru)
+        score_ = 0
+        if(len(self.brick_data)!=0):
+            (life,typeb,score_) = self.brick_data[index[0]][index[1]].decrease_brick_life(1,go_thru)
+        else:
+            (life,typeb,score_) = (0,0,0)
         choosen_value = self.sys_random.choice(self.poweruparray)
         # choosen_value = 7
         # logging.debug("self.brick_data[index[0]][index[1]].return_alive : " + str(self.brick_data[index[0]][index[1]].return_alive()))

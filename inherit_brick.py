@@ -65,7 +65,7 @@ class Brick_inherit:
         elif(self.type!= 4):
             if(self.type == 3):
                 self.rainbow = True
-            logging.debug("self.type : " + str(self.type) + " | self.life : " + str(self.life) + " | self.alive : " + str(self.alive))
+            # logging.debug("self.type : " + str(self.type) + " | self.life : " + str(self.life) + " | self.alive : " + str(self.alive))
             # logging.debug("self.type  != 3 : " + str(self.type  != 3))
             self.life = brick_life_store[self.type]
             self.type -= 1

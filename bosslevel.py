@@ -145,7 +145,7 @@ class Boss:
         return 0
 
     def cbomb(self):
-        if(time.time() - self.previousshot > 0.1):
+        if(time.time() - self.previousshot > 0.9):
             self.previousshot = time.time()
             self.bomb.append((self.px+len(self.ufo),self.py))
 

@@ -260,34 +260,51 @@ class Ball(functionality_class):
                     # while second_flag:
                     #
                     for i in range(1,len(ball_temp)):
-                        if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!=' '):
-                            if((cur_x+1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
-                                (cur_x-1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1]) or 
-                                (cur_x-1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
-                                (cur_x+1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
-                                # print("here1")
-                                self.velocity_x = -self.velocity_x
-                                self.velocity_y = -self.velocity_y
-                            elif((cur_x,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
-                                (cur_x,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
-                                # print("here2")
-                                self.velocity_y = -self.velocity_y
-                            elif((cur_x+1,cur_y)==(ball_temp[i][0],ball_temp[i][1]) or
-                                (cur_x-1,cur_y)==(ball_temp[i][0],ball_temp[i][1])):
-                                # print("here3")
-                                self.velocity_x = -self.velocity_x
-                            if(self.level != 3):
-                                (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
-                            elif(self.level == 3 and boss != None):
-                                # logging.debug("type(boss) : " + str(type(boss)))
-                                # logging.debug("boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1]) : " + str(boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1])))
-                                (score_,choosen_value) = boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1])
-                            temp_x = cur_x
-                            temp_y = cur_y
-                            break
-                        else:
-                            cur_x = ball_temp[i][0]
-                            cur_y = ball_temp[i][1]
+                        if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!= 'O' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]]!= '-' or 
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '|' or 
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '*' or 
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '=' or 
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '>' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '.' or 
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '<' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != 'B' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '+' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '(' or 
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != ')' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '`' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '_' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '\'' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != ',' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != ':'):
+                            if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!=' '):
+                                if((cur_x+1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
+                                    (cur_x-1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1]) or 
+                                    (cur_x-1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
+                                    (cur_x+1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
+                                    # print("here1")
+                                    self.velocity_x = -self.velocity_x
+                                    self.velocity_y = -self.velocity_y
+                                elif((cur_x,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
+                                    (cur_x,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
+                                    # print("here2")
+                                    self.velocity_y = -self.velocity_y
+                                elif((cur_x+1,cur_y)==(ball_temp[i][0],ball_temp[i][1]) or
+                                    (cur_x-1,cur_y)==(ball_temp[i][0],ball_temp[i][1])):
+                                    # print("here3")
+                                    self.velocity_x = -self.velocity_x
+                                if(self.level != 3):
+                                    (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
+                                elif(self.level == 3 and boss != None):
+                                    # logging.debug("type(boss) : " + str(type(boss)))
+                                    # logging.debug("boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1]) : " + str(boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1])))
+                                    (score_,choosen_value) = boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1])
+                                temp_x = cur_x
+                                temp_y = cur_y
+                                break
+                            else:
+                                cur_x = ball_temp[i][0]
+                                cur_y = ball_temp[i][1]
                 else:
                     for i in range(1,len(ball_temp)):
                         if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!= 'O' or
@@ -298,7 +315,15 @@ class Ball(functionality_class):
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '>' or
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '.' or 
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '<' or
-                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != 'B'):
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != 'B' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '+' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '(' or 
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != ')' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '`' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '_' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '\'' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != ',' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != ':'):
                             if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!=' '):
                                 if(self.level != 3):
                                     (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)

@@ -185,6 +185,7 @@ class Run:
                             os.system('clear')
                             print(FRED + art.you_loose + all_reset)
                             break
+                        (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
                         temp_random = self.sys_random.choice([i for i in range(paddle_start,paddle_end)])
                         self.ball_class[0] = Ball(BALL_X_STARTING_CONSTANT_VELOCITY,BALL_Y_STARTING_CONSTANT_VELOCITY,42,temp_random,self.screen_array)
                         for i in range(0,7):
@@ -242,6 +243,7 @@ class Run:
                         gametop_data.update_level(self.level)
                         temp_random = self.sys_random.choice([i for i in range(paddle_start,paddle_end)])
                         self.ball_class.append(Ball(BALL_X_STARTING_CONSTANT_VELOCITY,BALL_Y_STARTING_CONSTANT_VELOCITY,42,temp_random,self.screen_array,self.level))
+                        self.Paddle = paddle(self.paddle_array[0],self.paddle_array[1],self.paddle_array[2])
                         # self.ball_class[0].update_level()
                         bricks.killbs()
                         bricks.update_brick_onscreen(self.screen_array)
@@ -281,6 +283,9 @@ class Run:
 
                 if(self.skipkey):
                     bricks.killbs()
+                    for i in range(8,len(self.screen_array)-2):
+                        for j in range(3,len(self.screen_array)-2):
+                            self.screen_array[i][j] = ' '
                     for i in range(len(self.ball_class)):
                         (vx,vy,bx,by) = self.ball_class[i].return_class_init()
                         self.screen_array[bx][by] = ' '

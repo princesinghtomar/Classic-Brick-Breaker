@@ -5,7 +5,9 @@ from items import *
 from ball import *
 import time
 import logging
+from  math import ceil
 from fire import *
+import os
 
 # Active = 0 // not active or release
 # Active = 1 // released but not yet taken by the player
@@ -67,7 +69,7 @@ class powerupclass:
 
     def pdraw(self,screen_array,flag):
         temp = powerup_temper[self.index]
-        logging.debug("self.py : " + str(self.py) + " : " + "self.px : " + str(self.px))
+        # logging.debug("self.py : " + str(self.py) + " : " + "self.px : " + str(self.px))
         if(not flag):
             screen_array[self.px][self.py] = ' '
         else:
@@ -98,30 +100,38 @@ class powerupclass:
             self.py = (WIDTH - 2) + temp_val
 
     def pmove(self):
-        t = time.time() - self.time_activated
-        logging.debug("Before : self.py : " + str(self.py) + " : " + "self.px : " + str(self.px))
-        self.px = int(self.ball_initial[0] + self.vx*t + (1/2)*10*(t**2))
-        self.py = int(self.ball_initial[1] + self.vy*t)
-        logging.debug("self.ball_initial : " + str(self.ball_initial))
-        logging.debug("self.vy : " + str(self.vy) + " : " + "self.vx : " + str(self.vx))
-        logging.debug("After : self.py : " + str(self.py) + " : " + "self.px : " + str(self.px))
+        t = (time.time() - self.time_activated)
+        # logging.debug("time.time() : "+ str(time.time()) +" : " + str(self.time_activated) + " : " + str(t))
+        # logging.debug("Before : self.py : " + str(self.py) + " : " + "self.px : " + str(self.px))
+        self.px = ceil(self.ball_initial[0] + self.vx*t + (1/2)*10*(t**2))
+        if(self.px >= 45):
+            self.px = 44
+        if(self.px <= 5):
+            self.px = 7
+        self.py = ceil(self.ball_initial[1] + self.vy*t)
+        if(self.py <= 3):
+            self.py = 3
+        elif(self.py > WIDTH - 2):
+            self.py = WIDTH -2
+        # logging.debug("self.ball_initial : " + str(self.ball_initial))
+        # logging.debug("self.vy : " + str(self.vy) + " : " + "self.vx : " + str(self.vx))
+        # logging.debug("After : self.py : " + str(self.py) + " : " + "self.px : " + str(self.px))
         self.ccoll()
 
     def update_powerup_onscreen(self,screen_array,paddle_end,paddle_start,Paddle):
         if(self.active == 1):
             self.pdraw(screen_array,False)
             self.pmove()
-            logging.debug("After : self.py : " + str(self.py) + " : " + "self.px : " + str(self.px))
+            # logging.debug("After : self.py : " + str(self.py) + " : " + "self.px : " + str(self.px))
             if(self.px < 43):
                 self.pdraw(screen_array,True)
-            elif(self.px > 43):
-                self.active = 0
             else:
-                temp = powerup_temper[self.index]
-                self.pdraw(screen_array,False)
                 if(self.py >= paddle_start and self.py <= paddle_end):
+                    self.pdraw(screen_array,False)
                     self.active = 2
                     return True
+                else:
+                    self.active = 0
             return False
 
 class power0(powerupclass):
@@ -131,12 +141,14 @@ class power0(powerupclass):
     '''
     def __init__(self,x,y,vx,vy,changed_type = 2):
         powerupclass.__init__(self,x,y,vx,vy)
+        self.changed_type = changed_type
 
-    def do(self,Paddle):
-        Paddle.update_type(changed_type)
+    def do(self,Paddle,paddle_array,ball_class,screen_array,ball_class1,sticky_ball_powerup,bricks_class):
+        paddle_array[2] = self.changed_type
+        # logging.debug("FUCK")
     
-    def undo(self,Paddle):
-        Paddle.update_type(1)
+    def undo(self,Paddle,paddle_array,ball_class,screen_array,ball_class1,sticky_ball_powerup,bricks_class):
+        paddle_array[2] = 1
 
 class power1(powerupclass):
     '''
@@ -147,11 +159,11 @@ class power1(powerupclass):
         powerupclass.__init__(self,x,y,vx,vy)
         self.index = 1
 
-    def do(self,Paddle):
-        Paddle.update_type(0)
+    def do(self,Paddle,paddle_array,ball_class,screen_array,ball_class1,sticky_ball_powerup,bricks_class):
+        paddle_array[2] = 0
     
-    def undo(self,Paddle):
-        Paddle.update_type(1)
+    def undo(self,Paddle,paddle_array,ball_class,screen_array,ball_class1,sticky_ball_powerup,bricks_class):
+        paddle_array[2] = 1
     
 class power2(powerupclass):
     '''
@@ -162,7 +174,7 @@ class power2(powerupclass):
         powerupclass.__init__(self,x,y,vx,vy)
         self.index = 2
 
-    def do(self,ball_class,screen_array):
+    def do(self,Paddle,paddle_array,ball_class,screen_array,ball_class1,sticky_ball_powerup,bricks_class):
         total_balls = len(ball_class)
         temp = []
         self.update_time_activated()
@@ -172,7 +184,7 @@ class power2(powerupclass):
             ball_class.append(Ball(bavx,-bavy,bax,bay,screen_array))
         # logging.debug("do balls : "+ str(ball_class))
 
-    def undo(self,ball_class,screen_array):
+    def undo(self,Paddle,paddle_array,ball_class,screen_array,ball_class1,sticky_ball_powerup,bricks_class):
         for i in range(0,len(ball_class)-1):
             (bavx,bavy,bax,bay) = ball_class[i].return_class_init()
             screen_array[bax][bay] = ' '
@@ -189,18 +201,18 @@ class power3(powerupclass):
         self.vx = 0
         self.vy = 0
 
-    def do(self,ball_class):
+    def do(self,Paddle,paddle_array,ball_class,screen_array,ball_class1,sticky_ball_powerup,bricks_class):
         # for i in ball_class:
         #     i.increase_speed(2,2)   for multiple balls
-        (bavx,bavy,bax,bay) = ball_class.return_class_init()
+        (bavx,bavy,bax,bay) = ball_class1.return_class_init()
         self.vx = bavx
         self.vy = bavy
-        ball_class.increase_speed(2,2)
+        ball_class1.increase_speed(2,2)
 
-    def undo(self,ball_class):
+    def undo(self,Paddle,paddle_array,ball_class,screen_array,ball_class1,sticky_ball_powerup,bricks_class):
         # for i in ball_class:
         #     i.increase_speed(-2,-2)   for multiple balls
-        ball_class.update_speed(-1,-1)
+        ball_class1.update_speed(-1,-1)
 
 class power4(powerupclass):
     '''
@@ -211,11 +223,11 @@ class power4(powerupclass):
         powerupclass.__init__(self,x,y,vx,vy)
         self.index = 4
 
-    def do(self,ball_class):
-        ball_class.update_thru_ball(True)
+    def do(self,Paddle,paddle_array,ball_class,screen_array,ball_class1,sticky_ball_powerup,bricks_class):
+        ball_class1.update_thru_ball(True)
 
-    def undo(self,ball_class):
-        ball_class.update_thru_ball(False)
+    def undo(self,Paddle,paddle_array,ball_class,screen_array,ball_class1,sticky_ball_powerup,bricks_class):
+        ball_class1.update_thru_ball(False)
 
 class power5(powerupclass):
     '''
@@ -227,11 +239,13 @@ class power5(powerupclass):
         powerupclass.__init__(self,x,y,vx,vy)
         self.index = 5
 
-    def do(self):
-        return True
+    def do(self,Paddle,paddle_array,ball_class,screen_array,ball_class1,sticky_ball_powerup,bricks_class):
+        # logging.debug("inside powerups1 : " + str(sticky_ball_powerup))
+        sticky_ball_powerup[0] = True
+        # logging.debug("inside powerups2 : " + str(sticky_ball_powerup))
 
-    def undo(self):
-        return False
+    def undo(self,Paddle,paddle_array,ball_class,screen_array,ball_class1,sticky_ball_powerup,bricks_class):
+        sticky_ball_powerup[0] = False
 
 class power6(powerupclass):
     '''
@@ -240,25 +254,43 @@ class power6(powerupclass):
     def __init__(self,x,y,vx,vy):
         powerupclass.__init__(self,x,y,vx,vy)
         self.index = 6
-        self.shooting_gap = 0.2
-        self.last_shot = 0
+        self.shooting_gap = 0.1
+        self.last_shot = time.time()
         self.power0 = None
         self.changed_type = 2
+        self.firsttime = True
         self.fire = [] 
 
-    def do(self,Paddle):
-        if(self.last_shot - time.time() > self.shooting_gap):
-            if(self.last_shot == 0):
-                self.last_shot = time.time()
-                self.changed_type = Paddle.return_type + 3
-                self.power0 = power0(Paddle,self.changed_type)
-                self.power0.do(self.changed_type)
-            else:
-                self.power0.do(self.changed_type)
+    def firedraw(self,screen_array,bricks_class):
+        score_ = 0
+        for i in self.fire:
+            (self.life,self.type,score) = i.move(screen_array,bricks_class)
+            score_ += score
+        return score_
 
-                fire.append()
-                
-                # see tomorrow
+    def do(self,Paddle,paddle_array,ball_class,screen_array,ball_class1,sticky_ball_powerup,bricks_class):
+        logging.debug("came here")
+        score_ = 0
+        timeleft = self.max_time - (time.time() - self.time_activated)
+        if(time.time() - self.last_shot > self.shooting_gap):
+            self.last_shot = time.time()
+            score_ = self.firedraw(screen_array,bricks_class)
+            logging.debug("self.last_shot : " + str(self.last_shot))
+            if(self.firsttime):
+                self.changed_type = Paddle.return_type() + 3
+                # logging.debug("self.changed_type : " + str(self.changed_type))
+                paddle_array[2] = paddle_array[2] + 3
+                logging.debug("paddle_array inside powerup: " + str(paddle_array))
+                self.firsttime = False
+            (paddle_start,half_size,paddle_end) = Paddle.return_se()
+            os.system("aplay -q funstuff/laser.wav &")
+            self.fire.append(fire(42,paddle_start))
+            self.fire.append(fire(42,paddle_end))
+        return (score_,timeleft)
 
-    def undo(self,Paddle):
-        self.power0.undo()
+    def undo(self,Paddle,paddle_array,ball_class,screen_array,ball_class1,sticky_ball_powerup,bricks_class):
+        for i in self.fire:
+            i.fdraw(screen_array,False)
+        self.fire.clear()
+        self.firsttime = True
+        paddle_array[2] = 1

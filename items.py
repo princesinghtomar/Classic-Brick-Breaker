@@ -37,6 +37,8 @@ instructions = FRED + art.instructions_art + all_reset + "\n" + \
     "                                                                                         " + FRED + "|\n" + all_reset + \
     FRED + "|" + all_reset + " > Press " + FRED + "g" + all_reset + " to start the game                                              " + \
     "                                                                                         " + FRED + "|\n" + all_reset + \
+    FRED + "|" + all_reset + " > Press " + FRED + "f" + all_reset + " to move to next level                                          " + \
+    "                                                                                         " + FRED + "|\n" + all_reset + \
     FRED + "|" + all_reset + " > Press " + FRED + "k" + all_reset + " to release ball                                                " + \
     "                                                                                         " + FRED + "|\n" + all_reset + \
     FRED + "|" + all_reset + " > Power " + bmagenta + "P" + all_reset + " Expand Paddle                                                  " + \
@@ -50,6 +52,8 @@ instructions = FRED + art.instructions_art + all_reset + "\n" + \
     FRED + "|" + all_reset + " > Power " + bblue + "P" + all_reset + " Thru-ball                                                      " + \
     "                                                                                         " + FRED + "|\n" + all_reset + \
     FRED + "|" + all_reset + " > Power " + bcyan + "P" + all_reset + " Paddle Grab                                                    " + \
+    "                                                                                         " + FRED + "|\n" + all_reset + \
+    FRED + "|" + all_reset + " > Power " + bbrightgreen + "P" + all_reset + " Shoot Bullets                                                  " + \
     "                                                                                         " + FRED + "|\n" + all_reset + \
     FRED + "*----------------------------------------------------------------------------------------------------------------------" + \
     "---------------------------------------------*\n"+ all_reset

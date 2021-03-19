@@ -261,16 +261,20 @@ class Ball(functionality_class):
                     #
                     for i in range(1,len(ball_temp)):
                         if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!=' '):
-                            if((cur_x,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
-                                (cur_x,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
-                                self.velocity_y = -self.velocity_y
-                            elif((cur_x+1,cur_y)==(ball_temp[i][0],ball_temp[i][1]) or
-                                (cur_x-1,cur_y)==(ball_temp[i][0],ball_temp[i][1])):
-                                self.velocity_x = -self.velocity_x
-                            elif((cur_x+1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
+                            if((cur_x+1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
                                 (cur_x-1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1]) or 
                                 (cur_x-1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
                                 (cur_x+1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
+                                # print("here1")
+                                self.velocity_x = -self.velocity_x
+                                self.velocity_y = -self.velocity_y
+                            elif((cur_x,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
+                                (cur_x,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
+                                # print("here2")
+                                self.velocity_y = -self.velocity_y
+                            elif((cur_x+1,cur_y)==(ball_temp[i][0],ball_temp[i][1]) or
+                                (cur_x-1,cur_y)==(ball_temp[i][0],ball_temp[i][1])):
+                                # print("here3")
                                 self.velocity_x = -self.velocity_x
                             if(self.level != 3):
                                 (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
@@ -291,7 +295,8 @@ class Ball(functionality_class):
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '|' or 
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '*' or 
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '=' or 
-                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '>' or 
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '>' or
+                            screen_array[ball_temp[i][0]][ball_temp[i][1]] != '.' or 
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != '<' or
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != 'B'):
                             if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!=' '):

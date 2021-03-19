@@ -54,6 +54,9 @@ class Brick_inherit:
         score += self.update_score(go_thru)
         # logging.debug("decrease_brick_life: self.type" + str(self.type) )
         # print("Score : ",score)
+        if(self.type < 0):
+            self.die()
+            return (0,0,0)
         if(go_thru):
             # logging.debug("go_thru : " +str(go_thru))
             self.type = -1
@@ -62,13 +65,13 @@ class Brick_inherit:
         elif(self.type!= 4):
             if(self.type == 3):
                 self.rainbow = True
+            logging.debug("self.type : " + str(self.type) + " | self.life : " + str(self.life) + " | self.alive : " + str(self.alive))
             # logging.debug("self.type  != 3 : " + str(self.type  != 3))
             self.life = brick_life_store[self.type]
             self.type -= 1
-            if(self.type < 0):
-                os.system("aplay -q funstuff/mandodie.wav &")
+            if(int(self.type) < 0):
+                os.system("aplay -q funstuff/explosion.wav &")
                 self.die()
-        logging.debug("self.type : " + str(self.type) + " | self.life : " + str(self.life) + " | self.alive : " + str(self.alive))
         return (self.life,self.type,score)
     
     def change_color_brick(self,typeb):

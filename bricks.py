@@ -17,15 +17,15 @@ class Bricks:
         self.sys_random = random.SystemRandom()
         self.brick_configuration = brick_orientation[level-1].split()
         self.brick_data = np.array([])
-        self.poweruparray = [0 for i in range(1,200)]
+        self.poweruparray = [0 for i in range(1,300)]
         self.starttime = time.time()
         self.previousfall = time.time()
         self.falldowngap = 0
         self.startinggap = 0
         self.level = level
         self.startfalling = False
-        for i in range(0,6):
-            self.poweruparray[i] = 6-i
+        for i in range(0,7):
+            self.poweruparray[i] = 7-i
 
     def bd_return(self):
         return self.brick_data
@@ -91,7 +91,7 @@ class Bricks:
         # logging.debug("x1 : " + str(x1) + " : " + "y1 : " + str(y1))
         (life,typeb,score_) = self.brick_data[index[0]][index[1]].decrease_brick_life(1,go_thru)
         choosen_value = self.sys_random.choice(self.poweruparray)
-        choosen_value = 3
+        # choosen_value = 7
         # logging.debug("self.brick_data[index[0]][index[1]].return_alive : " + str(self.brick_data[index[0]][index[1]].return_alive()))
         # logging.debug("(life,typeb,score_) : " + str((life,typeb,score_)))
         return (score_,choosen_value)
@@ -134,6 +134,8 @@ class Bricks:
                 if(self.brick_data[i][j].return_alive()):
                     (lowest,y) = self.brick_data[i][j].returnxy()
                     flag = 0
+                j-=1
+            i-=1
         return lowest
 
     def bkleft(self):

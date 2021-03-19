@@ -82,7 +82,7 @@ class Boss:
     def collision(self,screen_array,x,y):
         if(x <= self.px + len(self.ufo)-1):
             self.decreaselife()
-            logging.debug("self.life : " + str(self.life))
+            # logging.debug("self.life : " + str(self.life))
             return(self.score,0)
         else:
             for i in range(len(self.sbricks)):
@@ -128,7 +128,7 @@ class Boss:
         self.sdraw(screen_array,False)
         i = 0
         while i < len(self.bomb):
-            logging.debug("self.bomb[" + str(i) + "][0]" + str(self.bomb[i][0]))
+            # logging.debug("self.bomb[" + str(i) + "][0]" + str(self.bomb[i][0]))
             if(self.bomb[i][0]<43):
                 val = (self.bomb[i][0]+1,self.bomb[i][1])
                 self.bomb[i] = val

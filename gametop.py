@@ -14,6 +14,8 @@ class gametop:
         self.livesleft = livesleft
         self.bosslife = -1
         self.level = 1
+        self.shoottime = 0
+        self.shoot = False
 
     def stimer(self):
         # change 1000 bvariable declared globally
@@ -21,6 +23,12 @@ class gametop:
     
     def update_level(self,level):
         self.level = level
+
+    def updateshoot(self,val):
+        self.shoot = val
+
+    def updateshoottime(self,shoottime):
+        self.shoottime = shoottime
 
     def update_life(self,bosslife):
         self.bosslife = bosslife
@@ -42,8 +50,9 @@ class gametop:
         ''' 
         For updating Gametop on screen
         '''
-        string = np.array(["Time  : " + str(round(self.timeleft))+ '   ',"Lives : " + str(self.livesleft) + '   ',"Score : " + str(self.score) + '   ',"Level : " + str(self.level) + '   ' ])
+        string = np.array(["Time  : " + str(round(self.timeleft))+ '   ',"Lives : " + str(self.livesleft) + '   ',"Score : " + str(self.score) + '   ',"Level : " + str(self.level) + '   '])
         l = "Boss Lives : " + str(self.bosslife) + '   '
+        s = "Power Time : " + str(self.shoottime) + '   '
         length = string.size
         for i in range(0,3):
             for j in range(0,len(string[i])):
@@ -54,4 +63,7 @@ class gametop:
         if(self.bosslife >= 0 ):
             for j in range(0,len(l)):
                 screen_array[4+1-3][j+4+20] = l[j]
+        if(self.shoot):
+            for j in range(0,len(s)):
+                screen_array[4+1-3][j+4+20] = s[j]
         

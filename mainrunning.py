@@ -23,15 +23,16 @@ class Run:
     def __init__(self):
         self.sys_random = random.SystemRandom()
         self.sticky_ball_motion = True
-        self.sticky_ball_powerup = False
+        self.sticky_ball_powerup = [False]
         self.ball_class = []
         self.screen_array = np.array([])
         self.Paddle = None
         self.paddle_array = np.array([])
         self.level = 1
-        self.powerup_flag = [0,0,0,0,0,0]
+        self.powerup_flag = [0,0,0,0,0,0,0]
         self.skipkey = False
         self.boss = None
+        self.bbtime = time.time()
         # self.ball_index = []
 
     def return_paddle_start_and_end(self):
@@ -108,6 +109,7 @@ class Run:
         powerups.append(power3(0,0,0,0))
         powerups.append(power4(0,0,0,0))
         powerups.append(power5(0,0,0,0))
+        powerups.append(power6(0,0,0,0))
 
     def Go(self):
         '''
@@ -144,9 +146,6 @@ class Run:
                 move_return = self.move()
                 if(not move_return):
                     break
-                # cur_time = time.time()
-                # available_time -= (cur_time - start_time)
-                # start_time = cur_time
                 if(gametop_data.update_availabletime() < 0):
                     os.system('clear')
                     # --------
@@ -188,27 +187,15 @@ class Run:
                             break
                         temp_random = self.sys_random.choice([i for i in range(paddle_start,paddle_end)])
                         self.ball_class[0] = Ball(BALL_X_STARTING_CONSTANT_VELOCITY,BALL_Y_STARTING_CONSTANT_VELOCITY,42,temp_random,self.screen_array)
-                        for i in range(0,6):
+                        for i in range(0,7):
                             if(self.powerup_flag[i] == 1): 
-                                powerups[i].update_status(0)
                                 powerups[i].deactivate_time()
                                 self.powerup_flag[i] = 0
-                                if(i == 0 or i ==1):
-                                    # -------- ( i == 0 or 1 )
-                                    # logging.debug("Here at i == 0 & i == 1  -- undo part")
-                                    powerups[i].undo(self.Paddle)
-                                elif(i == 2):
-                                    powerups[i].undo(self.ball_class,self.screen_array)
-                                elif(i == 3 or i == 4):
-                                    # -------- ( i == 3 or 4 )
-                                    # logging.debug("Here at i == 0 & i == 1  -- undo part")
-                                    powerups[i].undo(self.ball_class[0])
-                                elif(i==5):
-                                    # -------- ( i == 5 )
-                                    # logging.debug("Here at i == 5 -- undo part")
-                                    self.sticky_ball_powerup = powerups[i].undo()
+                                powerups[i].undo(self.Paddle,self.paddle_array,self.ball_class,self.screen_array,self.ball_class[0],self.sticky_ball_powerup,bricks)
+                                logging.debug("paddle_array undo1 main : " + str(self.paddle_array))
+                                powerups[i].update_status(0)
                         self.sticky_ball_motion = True
-                for i in range(0,6):
+                for i in range(0,7):
                     # ------- self.powerup_flag[i]
                     # logging.debug("self.powerup_flag[i] : " + str(self.powerup_flag[i]))
                     if(self.powerup_flag[i]):
@@ -216,66 +203,30 @@ class Run:
                         # logging.debug("powerups[i].return_status() : " + str(powerups[i].return_status()))
                         if(powerups[i].return_status() == 0):
                             (bavx,bavy,bax,bay) = self.ball_class[0].return_class_init()
-                            # -------- (bavx,bavy,bax,bay) -
-                            # logging.debug("(bavx,bavy,bax,bay) : " + str((bavx,bavy,bax,bay)))
                             powerups[i].update_xy(bax,bay)
                             powerups[i].uballv(bavx,bavy)
                             powerups[i].make_powerup_active()
                         elif(powerups[i].return_status() == 1):
                             (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
-                            # ---------  (half_size,paddle_start,paddle_end)
-                            # logging.debug("(half_size,paddle_start,paddle_end) : " + str((half_size,paddle_start,paddle_end)))
                             ret_value = powerups[i].update_powerup_onscreen(self.screen_array,paddle_end,paddle_start,self.Paddle)
-                            # --------- ret _value 
-                            # logging.debug("ret_value : " + str(ret_value))
                             if(ret_value == True):
-                                if(i == 0 or i == 1):
-                                    # -------- ( i == 0 or 1 )
-                                    # logging.debug("Here at i == 0 & i == 1  -- do part")
-                                    powerups[i].do(self.Paddle)
-                                elif(i == 2):
-                                    # -------- ( i == 2)
-                                    # logging.debug("Here at i == 2  -- do part")
-                                    powerups[i].do(self.ball_class,self.screen_array)
-                                elif(i == 3 or i ==4):
-                                    # -------- ( i == 3 or 4 )
-                                    # logging.debug("Here at i == 0 & i == 1  -- do part")
-                                    powerups[i].do(self.ball_class[0])
-                                elif(i==5):
-                                    # -------- ( i == 5 )
-                                    # logging.debug("Here at i == 5 -- do part")
-                                    self.sticky_ball_powerup = powerups[i].do()
+                                powerups[i].do(self.Paddle,self.paddle_array,self.ball_class,self.screen_array,self.ball_class[0],self.sticky_ball_powerup,bricks)
+                                logging.debug("paddle_array do main : " + str(self.paddle_array))
                             if(powerups[i].return_status() == 0):
                                 self.powerup_flag[i]=0
                         elif(powerups[i].return_status() == 2):
-                            # -------- powerups[i].return_status() == 2
-                            # logging.debug("powerups[i].return_status() == 2 " + str(powerups[i].return_status() == 2))
-                            if(i == 0 or i ==1):
-                                # --------- ( i == 0 or i ==1 )
-                                # logging.debug("Here at i == 0 & i == 1  -- do part")
-                                powerups[i].do(self.Paddle)
+                            if(i == 6):
+                                gametop_data.updateshoot(True)
+                                (score_,timeleft) = powerups[i].do(self.Paddle,self.paddle_array,self.ball_class,self.screen_array,self.ball_class[0],self.sticky_ball_powerup,bricks)
+                                score+=score_
+                                gametop_data.updateshoottime(int(abs(timeleft)))
                             if(not powerups[i].check_time()):
                                 self.powerup_flag[i] = 0
                                 powerups[i].update_status(0)
                                 powerups[i].deactivate_time()
-                                if(i == 0 or i ==1):
-                                    # -------- ( i == 0 or 1 )
-                                    # logging.debug("Here at i == 0 & i == 1  -- undo part")
-                                    powerups[i].undo(self.Paddle)
-                                elif(i == 2):
-                                    # -------- ( i == 2)
-                                    # logging.debug("Here at i == 2  -- undo part")
-                                    powerups[i].undo(self.ball_class,self.screen_array)
-                                elif(i == 3 or i == 4):
-                                    # -------- ( i == 0 or 1 )
-                                    # logging.debug("Here at i == 0 & i == 1  -- undo part")
-                                    powerups[i].undo(self.ball_class[0])
-                                    powerups[i].update_status(0)
-                                elif(i==5):
-                                    # -------- ( i == 5 )
-                                    # logging.debug("Here at i == 5 -- undo part")
-                                    self.sticky_ball_powerup = powerups[i].undo()
-                                    powerups[i].update_status(0)
+                                powerups[i].undo(self.Paddle,self.paddle_array,self.ball_class,self.screen_array,self.ball_class[0],self.sticky_ball_powerup,bricks)
+                                logging.debug("paddle_array undo2 main : " + str(self.paddle_array))
+                                powerups[i].update_status(0)
                 # logging.debug("bricks.bkleft : " + str(bricks.bkleft()))
                 if(bricks.bkleft() == 0 and self.level != 3 ):
                     self.level += 1
@@ -301,15 +252,17 @@ class Run:
                     logging.debug("Boss LEVEL")
                     # print("Boss LEVEL")
                     # logging.debug("self.Paddle.return_xandy[1] : " + str(self.Paddle.return_xandy()[1]))
+                    if(toc - self.bbtime > 2.503):
+                        os.system("aplay -q funstuff/background.wav &")
+                        self.bbtime = toc
                     if(self.boss == None):
-                        os.system("aplay -q funstuff/theme.wav &")
                         # val = os.system("ps")
                         # logging.debug("va : " + str(val))
                         self.boss = Boss(self.Paddle.return_xandy()[1],score)
                         self.boss.updatepy(self.paddle_array[0],self.screen_array)
                     gametop_data.update_life(self.boss.rlife())
                     if(self.boss.rlife() <=0 ):
-                        os.system("aplay -q funstuff/ &")
+                        os.system("aplay -q funstuff/captureflag.wav &")
                         print("You won")
                         break
                     # self.boss.draw(self.screen_array)
@@ -321,17 +274,20 @@ class Run:
                         break
                 gametop_data.update_gametop(score,livesleft)
                 gametop_data.update_gametop_onscreen(self.screen_array)
+                self.Paddle.update_type(self.paddle_array[2])
                 self.Paddle.update_paddle_onscreen(self.screen_array)
-                    
                 bricks.update_brick_onscreen(self.screen_array)
                 screen_board.showscreen()
 
                 if(self.skipkey):
                     bricks.killbs()
+                    for i in range(len(self.ball_class)):
+                        (vx,vy,bx,by) = self.ball_class[i].return_class_init()
+                        self.screen_array[bx][by] = ' '
                     self.skipkey = False
                     # logging.debug("level : " + str(self.level))
                 
-                if(self.sticky_ball_powerup):
+                if(self.sticky_ball_powerup[0]):
                     (bavx,bavy,bax,bay) = self.ball_class[0].return_class_init()
                     (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
                     if(bax >= 42):

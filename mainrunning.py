@@ -153,6 +153,7 @@ class Run:
                         (bavx,bavy,bax,bay) = self.ball_class[0].return_class_init()
                         self.ball_class[0].update_speed(-bavx,bavy)
                         val_zero = (0,0,0)
+                        logging.debug("inside mainrunning : " + str(self.level) + " : bricks length :" + str(len(bricks)))
                         bricks.remove_brick_onscreen(self.screen_array,bax-1,bay,powerups[4].check_time())
                         (ball_return_value,score_,choosen_value)  = val_zero
                     else:
@@ -179,7 +180,6 @@ class Run:
                                 powerups[i].deactivate_time()
                                 self.powerup_flag[i] = 0
                                 powerups[i].undo(self.Paddle,self.paddle_array,self.ball_class,self.screen_array,self.ball_class[0],self.sticky_ball_powerup,bricks)
-                                logging.debug("paddle_array undo1 main : " + str(self.paddle_array))
                                 powerups[i].update_status(0)
                         self.sticky_ball_motion = True
                 for i in range(0,7):
@@ -219,14 +219,20 @@ class Run:
                         os.system('clear')
                         self.puinit(powerups)
                         gametop_data.update_level(self.level)
+                        (half_size,paddle_start,paddle_end) = self.return_paddle_start_and_end()
                         temp_random = self.sys_random.choice([i for i in range(paddle_start,paddle_end)])
                         self.ball_class.append(Ball(BALL_X_STARTING_CONSTANT_VELOCITY,BALL_Y_STARTING_CONSTANT_VELOCITY,42,temp_random,self.screen_array,self.level))
                         self.Paddle = paddle(self.paddle_array[0],self.paddle_array[1],self.paddle_array[2])
                         bricks.killbs()
                         bricks.update_brick_onscreen(self.screen_array)
+                        logging.debug("mainrunning.py/if(bricks.bkleft() == 0 and self.level != 3 ) : self.level : " + str(self.level))
                         bricks = Bricks(self.level)
                         
                 if(self.level == 3):
+                    bricks.ulevel(3)
+                    for i in range(len(self.ball_class)):
+                        self.ball_class[i].update_level(3)
+                    logging.debug("inside self.level :- -:")
                     if(toc - self.bbtime > 2.503):
                         os.system("aplay -q funstuff/background.wav &")
                         self.bbtime = toc

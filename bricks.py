@@ -27,6 +27,9 @@ class Bricks:
         for i in range(0,7):
             self.poweruparray[i] = 7-i
 
+    def ulevel(self,level):
+        self.level = level
+
     def bd_return(self):
         return self.brick_data
     
@@ -70,6 +73,7 @@ class Bricks:
         This function is used to remove bricks that are being hit
         '''
         os.system("aplay -q funstuff/stompenemy.wav &")
+        logging.debug("bricks.py/remove_brick_onscreen len(self.brick_data) : " + str(len(self.brick_data)))
         index= [0,0]
         for i in range(0,self.brick_data.shape[0]):
             index[0] = i

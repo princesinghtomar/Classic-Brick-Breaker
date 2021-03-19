@@ -52,21 +52,17 @@ class Brick_inherit:
         '''
         score = 0
         score += self.update_score(go_thru)
-        # logging.debug("decrease_brick_life: self.type" + str(self.type) )
         # print("Score : ",score)
         if(self.type < 0):
             self.die()
             return (0,0,0)
         if(go_thru):
-            # logging.debug("go_thru : " +str(go_thru))
             self.type = -1
             self.life = 0
             self.die()
         elif(self.type!= 4):
             if(self.type == 3):
                 self.rainbow = True
-            # logging.debug("self.type : " + str(self.type) + " | self.life : " + str(self.life) + " | self.alive : " + str(self.alive))
-            # logging.debug("self.type  != 3 : " + str(self.type  != 3))
             self.life = brick_life_store[self.type]
             self.type -= 1
             if(int(self.type) < 0):
@@ -85,7 +81,6 @@ class Brick_inherit:
         '''
         Returns current X and Y coordinates of the brick
         '''
-        # logging.debug("inside returnxy (self.sx,self.sy) : " + str((self.sx,self.sy)))
         return (self.sx,self.sy)
 
     def returnbsize(self):
@@ -105,7 +100,6 @@ class Brick_inherit:
 
     def falldown(self):
         self.sx += 1
-        # logging.debug("self.sx : " + str(self.sx))
 
     def draw(self,screen_array):
         temp = bricks_color[self.type] + bricks_font_color[self.type]

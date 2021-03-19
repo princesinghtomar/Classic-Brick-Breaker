@@ -25,22 +25,16 @@ class paddle:
         ''' 
         Focusses on updating paddle on screen
         '''
-        # logging.debug(len(PADDLE_SIZE))
         paddle = paddle_graphic[self.type]
-        # logging.debug("paddle : " + paddle) #
         (paddle_start,half_size ,paddle_end) = self.return_se()
-        # logging.debug("paddle_start : " + str(paddle_start)  + " : " +  "paddle_end : " + str(paddle_end) + " : " + "cur_x : " + str(self.cur_x) + " : " + "cur_y : "  + str(self.cur_y) + " : " + "half_size : "+ str(half_size))
         start_val = paddle_start-2 if paddle_start-2 < 1 else 1
         end_val = WIDTH-2 if paddle_end+3 > WIDTH-2 else paddle_end + 3
         for i in range(start_val,end_val):
             if((screengrid[self.cur_y][i]!='0' or screengrid[self.cur_y][i]!='|') and (self.cur_x != 0 or self.cur_x != WIDTH-1)):
                 screengrid[self.cur_y][i] = ' '
-        # logging.debug("len(paddle) : " + str(len(paddle))) #
-        # logging.debug("paddle_end - paddle_start : " + str(paddle_end - paddle_start)) #
         j=0
         for i in range(paddle_start,paddle_end):
             screengrid[self.cur_y][i] = paddle[j]
-            # logging.debug(str(paddle_start) + " : " + str(paddle_end)+ " : " + str(j) + str(paddle_start) + " : " + str(paddle_end)+ " : " + str(j))
             j+=1        
 
     def update_paddle_value(self,changed_X,changed_Y,changed_type):

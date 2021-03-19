@@ -38,11 +38,9 @@ class Bricks:
         bricks_splitted_array = np.array(self.brick_configuration)
         lamda = 0
         temp_brick_data = []
-        # logging.debug("self.level : "  + str(self.level))
         if(self.level == 3):
             return
         if(self.brick_data.size == 0):
-            # logging.debug("In part \"if condition\" of update_brick_function")  #
             for i in range(0,bricks_splitted_array.size):
                 splited_bricks = np.array(bricks_splitted_array[i].split('-'))
                 lamda = self.brick_start_y
@@ -53,13 +51,10 @@ class Bricks:
                     lamda+=6
                 temp_brick_data.append(brci_temp)
             self.brick_data = np.array(temp_brick_data)
-            # logging.debug("self.brick_data : " + str(self.brick_data))  #
         else:
-            # logging.debug("In part \"else condition\" of update_brick_function")    #
             a = [i for i in range(0,len(brick_life_store))]
             for i in range(0,self.brick_data.shape[0]):
                 for j in  range(0,self.brick_data[0].size):
-                    # logging.debug("i : " + str(i) + " : j : " + str(j) + "(life,typeb) : " + str((self.brick_data[i][j].return_some_debug_value())))
                     (x,y) = self.brick_data[i][j].returnxy()
                     if(self.brick_data[i][j].return_alive()):
                         temp = self.return_choice(a)
@@ -88,7 +83,6 @@ class Bricks:
             else:
                 continue
             break
-        # logging.debug("x1 : " + str(x1) + " : " + "y1 : " + str(y1))
         score_ = 0
         if(len(self.brick_data)!=0):
             (life,typeb,score_) = self.brick_data[index[0]][index[1]].decrease_brick_life(1,go_thru)
@@ -96,8 +90,6 @@ class Bricks:
             (life,typeb,score_) = (0,0,0)
         choosen_value = self.sys_random.choice(self.poweruparray)
         # choosen_value = 7
-        # logging.debug("self.brick_data[index[0]][index[1]].return_alive : " + str(self.brick_data[index[0]][index[1]].return_alive()))
-        # logging.debug("(life,typeb,score_) : " + str((life,typeb,score_)))
         return (score_,choosen_value)
 
     def return_choice(self,a):
@@ -123,12 +115,8 @@ class Bricks:
             self.startfalling = True
 
     def findlby(self):
-        # logging.debug("I'm here")
-        # logging.debug("self.brick_data.shape : " + str(self.brick_data.shape))
         if(self.brick_data.shape[0] == 0):
-            # logging.debug("returned 1")
             return 1
-        # logging.debug("Reached after return 1")
         i = self.brick_data.shape[0]-1
         j = len(self.brick_data[0])-1
         lowest = 0

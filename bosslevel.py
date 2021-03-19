@@ -24,7 +24,6 @@ class Boss:
     def cp(self):
         self.pstart = self.py - 22
         self.pend = self.py + 22
-        # logging.debug("self.pstart : " + str(self.pend) + " : " + "self.pend : " + str(self.pend))
         if(self.pstart <= 2):
             self.pstart = 2
             self.pend = self.pstart + 44
@@ -46,29 +45,19 @@ class Boss:
         self.bswfun(screen_array,True)
         for i in range(0,len(self.ufo)-1):
             for j in range(0,len(self.ufo[i])):
-                # logging.debug("self.px+i : " + str(self.px+i) + " : " + "self.pstart + j : " + str(self.pstart + j))
                 screen_array[self.px+i][self.pstart + j] = self.ufo[i][j]
 
     def clear(self,screen_array):
         self.bswfun(screen_array,False)
-        # logging.debug("self.pstart : " + str(self.pstart) + " : " + "self.pend : " + str(self.pend))
-        # logging.debug("len(self.ufo : " + str(len(self.ufo)) )
         for i in range(0,len(self.ufo)-1):
             for j in range(0,len(self.ufo[i])):
-                # logging.debug("len(self.ufo[i]) : " + str(len(self.ufo[i])))
                 screen_array[self.px+i][self.pstart + j] = ' '
 
     def check_spawing(self):
-        # logging.debug("self.spawnbricks[0] : " + str(self.spawnbricks[0]) )
-        # logging.debug("self.spawnbricks[1] : " + str(self.spawnbricks[1]) )
-        # logging.debug("self.life <= 50 and self.life > 20 and not self.spawnbricks[0] : " + str(self.life <= 50 and self.life > 20 and not self.spawnbricks[0]) )
         if(self.life <= 50 and self.life > 20 and not self.spawnbricks[0]):
             self.binit()
             self.spawnbricks = (True,False)
-        # logging.debug("self.life <= 20 and not self.spawnbricks[1] : " + str(self.life <= 20 and not self.spawnbricks[1]))
-        # logging.debug("self.life : " + str(self.life))
         if(self.life <= 20 and not self.spawnbricks[1]):
-            # logging.debug("inside this")
             self.binit()
             self.spawnbricks = (True,True)
 
@@ -82,7 +71,6 @@ class Boss:
     def collision(self,screen_array,x,y):
         if(x <= self.px + len(self.ufo)-1):
             self.decreaselife()
-            # logging.debug("self.life : " + str(self.life))
             return(self.score,0)
         else:
             for i in range(len(self.sbricks)):
@@ -94,7 +82,6 @@ class Boss:
                     # self.sbricks[i].draw(screen_array)
                     self.score += score_
                     return(self.score,0)   # (score,choosen_value)
-            # logging.debug("x y : " + str((x,y)))
             return(0,0)
 
     def binit(self):
@@ -128,7 +115,6 @@ class Boss:
         self.sdraw(screen_array,False)
         i = 0
         while i < len(self.bomb):
-            # logging.debug("self.bomb[" + str(i) + "][0]" + str(self.bomb[i][0]))
             if(self.bomb[i][0]<43):
                 val = (self.bomb[i][0]+1,self.bomb[i][1])
                 self.bomb[i] = val

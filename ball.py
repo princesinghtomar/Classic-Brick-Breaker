@@ -64,18 +64,17 @@ class functionality_class:
             j+=1
         a.sort()
         val = []
-        # logging.debug("a : " + str(a))
         for i in range(0,len(a)):
             if(i!=0 and abs(a[i][0]-a[i-1][0])>0.1):
                 val.append(a[i][1])
-        # logging.debug("val : " + str(val))
         return val
 
     def raytrace(self,A, B):
-        ''' 
+        '''
         Return all cells of the unit grid crossed by the line segment between
         A and B.
         '''
+        # print(str(A) + " :A , B: " + str(B))
         flag_check = 0
         (xA, yA) = A
         (xB, yB) = B
@@ -84,48 +83,42 @@ class functionality_class:
         '''
         Never let vX be 0
         '''
-        if(dx != 0):
-            if(dy/dx < 0):
-                flag_check = 1
-                if(dy>0):
-                    yB+=1
-                    xA+=1
-                else:
-                    yA+=1
-                    xB+=1
-            (dx, dy) = (xB - xA, yB - yA)
-            # print("(dx, dy) : " + str((dx, dy)))
-            #
-            #   If slope = -ve 
-            #       then do (xA+1,yB) & (xB,yB+1)
-            #   elif slope = +ve
-            #       then do nothing
-            #   elif slope == 0
-            #       then do nothing
-            #
-            coeff.append(dy/dx)
-            coeff.append(yA-coeff[0]*xA)
-            sigvar = (sx, sy) = (self.sign(dx), self.sign(dy))
-            grid_start = A
-            result = []
-            x = xA
+        if(dy/dx < 0):
+            flag_check = 1
+            if(dy>0):
+                yB+=1
+                xA+=1
+            else:
+                yA+=1
+                xB+=1
+        (dx, dy) = (xB - xA, yB - yA)
+        # print("(dx, dy) : " + str((dx, dy)))
+        #
+        #   If slope = -ve 
+        #       then do (xA+1,yB) & (xB,yB+1)
+        #   elif slope = +ve
+        #       then do nothing
+        #   elif slope == 0
+        #       then do nothing
+        #
+        coeff.append(dy/dx)
+        coeff.append(yA-coeff[0]*xA)
+        sigvar = (sx, sy) = (self.sign(dx), self.sign(dy))
+        grid_start = A
+        result = []
+        x = xA
+        y = yA
+        j = 0 
+        while (x != xB+sx):
             y = yA
-            j = 0 
-            while (x != xB+sx):
-                y = yA
-                while (y != yB+sy):
-                    if(self.s(coeff,x,y)):
-                        result.append((x,y))
-                    y += sy
-                    j+=1
-                x += sx
-            result = self.sort_bydist(result,xA,yA,flag_check)
-            return result
-        else:
-            result = []
-            for i in range(xA,xB+1):
-                result.append((i,yA))
-            return result
+            while (y != yB+sy):
+                if(self.s(coeff,x,y)):
+                    result.append((x,y))
+                y += sy
+                j+=1
+            x += sx
+        result = self.sort_bydist(result,xA,yA,flag_check)
+        return result
 
 
 class Ball(functionality_class):
@@ -193,10 +186,8 @@ class Ball(functionality_class):
                 paddle_center = (paddle_start + paddle_end)/2
                 if(temp_y >= paddle_start and temp_y <= paddle_end):
                     os.system("aplay -q funstuff/coin.wav &")
-                    # logging.debug("reached coin.wav in ball.py")
                     bricks_class.mainfallbrickfunction(screen_array)
                     lowest = bricks_class.findlby()
-                    # logging.debug("lowest : " + str(lowest))
                     if(lowest >= 43):
                         print(art.game_over_art)
                         exit()
@@ -223,30 +214,37 @@ class Ball(functionality_class):
             # if collision with walls :
             #
             if(temp_x <= 5):
+                os.system("aplay -q funstuff/killobstacle.wav &")
                 self.velocity_x = -self.velocity_x
                 temp_val = 5 - temp_x
                 temp_x = 5 + temp_val
                 if(temp_y <= 2):
+                    os.system("aplay -q funstuff/killobstacle.wav &")
                     self.velocity_y = -self.velocity_y
                     temp_val = 2 - temp_y
                     temp_y = 2 + temp_val
                 elif(temp_y >= WIDTH-2):
+                    os.system("aplay -q funstuff/killobstacle.wav &")
                     self.velocity_y = -self.velocity_y
                     temp_val = (WIDTH - 2) - temp_y
                     temp_y = (WIDTH - 2) + temp_val
                 self.ball_x = temp_x
                 self.bal_y = temp_y
             elif(temp_y <=2 ):
+                os.system("aplay -q funstuff/killobstacle.wav &")
                 self.velocity_y = -self.velocity_y
                 temp_val = 2 - temp_y
                 temp_y = 2 + temp_val
             elif(temp_y >= (WIDTH-2)):
+                os.system("aplay -q funstuff/killobstacle.wav &")
                 self.velocity_y = -self.velocity_y
                 temp_val = (WIDTH - 2) - temp_y
                 temp_y = (WIDTH - 2) + temp_val
             else:
                 sign_vx = self.sign(self.velocity_x)
                 sign_vy = self.sign(self.velocity_y)
+                if(self.ball_x - temp_x == 0):
+                    self.ball_x += 1
                 ball_temp = self.raytrace((self.ball_x,self.bal_y),(temp_x,temp_y))
                 cur_x = self.ball_x
                 cur_y = self.bal_y
@@ -282,22 +280,17 @@ class Ball(functionality_class):
                                     (cur_x-1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1]) or 
                                     (cur_x-1,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
                                     (cur_x+1,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
-                                    # print("here1")
                                     self.velocity_x = -self.velocity_x
                                     self.velocity_y = -self.velocity_y
                                 elif((cur_x,cur_y+1)==(ball_temp[i][0],ball_temp[i][1]) or 
                                     (cur_x,cur_y-1)==(ball_temp[i][0],ball_temp[i][1])):
-                                    # print("here2")
                                     self.velocity_y = -self.velocity_y
                                 elif((cur_x+1,cur_y)==(ball_temp[i][0],ball_temp[i][1]) or
                                     (cur_x-1,cur_y)==(ball_temp[i][0],ball_temp[i][1])):
-                                    # print("here3")
                                     self.velocity_x = -self.velocity_x
                                 if(self.level != 3):
                                     (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
                                 elif(self.level == 3 and boss != None):
-                                    # logging.debug("type(boss) : " + str(type(boss)))
-                                    # logging.debug("boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1]) : " + str(boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1])))
                                     (score_,choosen_value) = boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1])
                                 temp_x = cur_x
                                 temp_y = cur_y
@@ -328,10 +321,7 @@ class Ball(functionality_class):
                                 if(self.level != 3):
                                     (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
                                 elif(self.level == 3 and boss != None):
-                                    # logging.debug("type(boss) : " + str(type(boss)))
-                                    # logging.debug("boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1]) : " + str(boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1])))
                                     (score_,choosen_value) = boss.collision(screen_array,ball_temp[i][0],ball_temp[i][1])
-                                    # logging.debug("(score_,choosen_value) : " + str((score_,choosen_value)))
             if(screen_array[temp_x][temp_y] == ' ' and not self.thru_ball):
                 self.ball_x = temp_x
                 self.bal_y = temp_y

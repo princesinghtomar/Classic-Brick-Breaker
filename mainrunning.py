@@ -33,7 +33,6 @@ class Run:
         self.skipkey = False
         self.boss = None
         self.bbtime = time.time()
-        # self.ball_index = []
 
     def return_paddle_start_and_end(self):
         '''
@@ -53,14 +52,12 @@ class Run:
         print(CLEAR_SCREEN)
         if(key == 'q'):
             os.system('clear')
-            # ----
             print(art.you_quit_art)
             return 0
         elif(key == 'a'):
             if(paddle_start > 4):
                 self.paddle_array[0] -= 3
                 if(self.level == 3):
-                    # logging.debug("self.paddle_array[1] : " + str(self.paddle_array[0]))
                     self.boss.updatepy(self.paddle_array[0],self.screen_array)
                 if(self.sticky_ball_motion):
                     self.ball_class[0].ball_sticky_motion(self.screen_array,0,-3)
@@ -69,7 +66,6 @@ class Run:
             if(paddle_end < WIDTH-3):
                 self.paddle_array[0] += 3
                 if(self.level == 3):
-                    # logging.debug("self.paddle_array[1] : " + str(self.paddle_array[0]))
                     self.boss.updatepy(self.paddle_array[0],self.screen_array)
                 if(self.sticky_ball_motion):
                     self.ball_class[0].ball_sticky_motion(self.screen_array,0,+3)
@@ -89,7 +85,6 @@ class Run:
         This function just gives instructions to the user
         '''
         print(instructions)
-        # Selecting loop :
         while True:
             pressed_key = input_to()
             if(pressed_key == 'g'):
@@ -148,7 +143,6 @@ class Run:
                     break
                 if(gametop_data.update_availabletime() < 0):
                     os.system('clear')
-                    # --------
                     print(fmagenta + art.game_over + all_reset)
                     break
                 
@@ -159,8 +153,6 @@ class Run:
                         (bavx,bavy,bax,bay) = self.ball_class[0].return_class_init()
                         self.ball_class[0].update_speed(-bavx,bavy)
                         val_zero = (0,0,0)
-                        # print("(bavx,bavy,bax,bay) : " + str((bavx,bavy,bax,bay)))
-                        # logging.debug("(bavx,bavy,bax,bay) : " + str((bavx,bavy,bax,bay)))
                         bricks.remove_brick_onscreen(self.screen_array,bax-1,bay,powerups[4].check_time())
                         (ball_return_value,score_,choosen_value)  = val_zero
                     else:
@@ -168,15 +160,9 @@ class Run:
                     if(len(self.ball_class) > 1):
                         for i in range(1,len(self.ball_class)):
                             some_temp_val_2 = self.ball_class[i].update_ball_motion(self.screen_array,bricks,paddle_start,paddle_end,self.boss)
-                    # --------  choosen_value 
-                    # logging.debug("choosen_value : " + str(choosen_value))
                     if(choosen_value!=0):
-                        # ---------   
-                        # logging.debug("choosen_value!=0 : " + str(choosen_value!=0))
                         if(self.powerup_flag[choosen_value-1] != 1):
                             self.powerup_flag[choosen_value-1] = 1
-                        # -------  self.powerup_flag - 
-                        # logging.debug("self.powerup_flag : " + str(self.powerup_flag))
                     score+=score_
                     score_ = 0
                     if(ball_return_value < 0):
@@ -197,11 +183,7 @@ class Run:
                                 powerups[i].update_status(0)
                         self.sticky_ball_motion = True
                 for i in range(0,7):
-                    # ------- self.powerup_flag[i]
-                    # logging.debug("self.powerup_flag[i] : " + str(self.powerup_flag[i]))
                     if(self.powerup_flag[i]):
-                        # ---------  powerups[i].return_status() -
-                        # logging.debug("powerups[i].return_status() : " + str(powerups[i].return_status()))
                         if(powerups[i].return_status() == 0):
                             (bavx,bavy,bax,bay) = self.ball_class[0].return_class_init()
                             powerups[i].update_xy(bax,bay)
@@ -228,38 +210,27 @@ class Run:
                                 powerups[i].undo(self.Paddle,self.paddle_array,self.ball_class,self.screen_array,self.ball_class[0],self.sticky_ball_powerup,bricks)
                                 logging.debug("paddle_array undo2 main : " + str(self.paddle_array))
                                 powerups[i].update_status(0)
-                # logging.debug("bricks.bkleft : " + str(bricks.bkleft()))
                 if(bricks.bkleft() == 0 and self.level != 3 ):
                     self.level += 1
-                    # logging.debug("here in increase level : " + str(self.level))
                     if(self.level == 4):
                         print("You Won !!")
                         break
                     if(self.level < 4):
                         os.system('clear')
-                        print(" Moving to next level ")
-                        print("Level #" + str(self.level))
                         self.puinit(powerups)
                         gametop_data.update_level(self.level)
                         temp_random = self.sys_random.choice([i for i in range(paddle_start,paddle_end)])
                         self.ball_class.append(Ball(BALL_X_STARTING_CONSTANT_VELOCITY,BALL_Y_STARTING_CONSTANT_VELOCITY,42,temp_random,self.screen_array,self.level))
                         self.Paddle = paddle(self.paddle_array[0],self.paddle_array[1],self.paddle_array[2])
-                        # self.ball_class[0].update_level()
                         bricks.killbs()
                         bricks.update_brick_onscreen(self.screen_array)
                         bricks = Bricks(self.level)
                         
                 if(self.level == 3):
-                    # BOSS LEVEL
-                    logging.debug("Boss LEVEL")
-                    # print("Boss LEVEL")
-                    # logging.debug("self.Paddle.return_xandy[1] : " + str(self.Paddle.return_xandy()[1]))
                     if(toc - self.bbtime > 2.503):
                         os.system("aplay -q funstuff/background.wav &")
                         self.bbtime = toc
                     if(self.boss == None):
-                        # val = os.system("ps")
-                        # logging.debug("va : " + str(val))
                         self.boss = Boss(self.Paddle.return_xandy()[1],score)
                         self.boss.updatepy(self.paddle_array[0],self.screen_array)
                     gametop_data.update_life(self.boss.rlife())
@@ -267,7 +238,6 @@ class Run:
                         os.system("aplay -q funstuff/captureflag.wav &")
                         print("You won")
                         break
-                    # self.boss.draw(self.screen_array)
                 if(self.level == 3 and self.boss.mbomb(self.screen_array,self.return_paddle_start_and_end())):
                     livesleft -= 1 
                     if(livesleft <= 0):
@@ -290,7 +260,6 @@ class Run:
                         (vx,vy,bx,by) = self.ball_class[i].return_class_init()
                         self.screen_array[bx][by] = ' '
                     self.skipkey = False
-                    # logging.debug("level : " + str(self.level))
                 
                 if(self.sticky_ball_powerup[0]):
                     (bavx,bavy,bax,bay) = self.ball_class[0].return_class_init()

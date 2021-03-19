@@ -288,7 +288,7 @@ class Ball(functionality_class):
                                 elif((cur_x+1,cur_y)==(ball_temp[i][0],ball_temp[i][1]) or
                                     (cur_x-1,cur_y)==(ball_temp[i][0],ball_temp[i][1])):
                                     self.velocity_x = -self.velocity_x
-                                logging.debug("ball.py level : " + str(self.level))
+                                # logging.debug("ball.py level : " + str(self.level))
                                 if(self.level != 3):
                                     (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
                                 elif(self.level == 3 and boss != None):
@@ -319,7 +319,7 @@ class Ball(functionality_class):
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != ',' or
                             screen_array[ball_temp[i][0]][ball_temp[i][1]] != ':'):
                             if(screen_array[ball_temp[i][0]][ball_temp[i][1]]!=' '):
-                                logging.debug("level in go thru: " + str(self.level))
+                                # logging.debug("level in go thru: " + str(self.level))
                                 if(self.level != 3):
                                     (score_,choosen_value) = bricks_class.remove_brick_onscreen(screen_array,ball_temp[i][0],ball_temp[i][1],False)
                                 elif(self.level == 3 and boss != None):

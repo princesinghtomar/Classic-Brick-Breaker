@@ -153,7 +153,7 @@ class Run:
                         (bavx,bavy,bax,bay) = self.ball_class[0].return_class_init()
                         self.ball_class[0].update_speed(-bavx,bavy)
                         val_zero = (0,0,0)
-                        logging.debug("inside mainrunning : " + str(self.level) + " : bricks length :" + str(len(bricks)))
+                        # logging.debug("inside mainrunning : " + str(self.level) + " : bricks length :" + str(len(bricks)))
                         bricks.remove_brick_onscreen(self.screen_array,bax-1,bay,powerups[4].check_time())
                         (ball_return_value,score_,choosen_value)  = val_zero
                     else:

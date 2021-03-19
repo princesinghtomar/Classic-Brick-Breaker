@@ -257,17 +257,17 @@ class power6(powerupclass):
         return score_
 
     def do(self,Paddle,paddle_array,ball_class,screen_array,ball_class1,sticky_ball_powerup,bricks_class):
-        logging.debug("came here")
+        # logging.debug("came here")
         score_ = 0
         timeleft = self.max_time - (time.time() - self.time_activated)
         if(time.time() - self.last_shot > self.shooting_gap):
             self.last_shot = time.time()
             score_ = self.firedraw(screen_array,bricks_class)
-            logging.debug("self.last_shot : " + str(self.last_shot))
+            # logging.debug("self.last_shot : " + str(self.last_shot))
             if(self.firsttime):
                 self.changed_type = Paddle.return_type() + 3
                 paddle_array[2] = paddle_array[2] + 3
-                logging.debug("paddle_array inside powerup: " + str(paddle_array))
+                # logging.debug("paddle_array inside powerup: " + str(paddle_array))
                 self.firsttime = False
             (paddle_start,half_size,paddle_end) = Paddle.return_se()
             os.system("aplay -q funstuff/laser.wav &")

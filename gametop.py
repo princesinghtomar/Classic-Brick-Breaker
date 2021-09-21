@@ -18,7 +18,6 @@ class gametop:
         self.shoot = False
 
     def stimer(self):
-        # change 1000 bvariable declared globally
         self.timeleft = 1000
     
     def update_level(self,level):

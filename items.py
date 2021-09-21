@@ -2,7 +2,7 @@ import numpy as  np
 from headerfile import *
 from art import *
 
-# bricks shape & sizes :
+# bricks shape and sizes :
 bricks = np.array(["[####]","[$$$$]","[++++]","[IIII]","[::::]"])
 
 # Ball :

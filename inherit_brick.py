@@ -9,6 +9,7 @@ import os
 #   |
 #   |
 #    -----> (+y)
+# Yes i know its fucked up :(
 
 # Score : 
 #     Super Ball Mode    Normal ball Mode

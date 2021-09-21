@@ -1,90 +1,67 @@
-# Classic Brick Breaker Game 
+# Classic Brick Breaker Game
 
 ## Requirements :
-    python packages :
-        sys
-        termios
-        tty
-        signal
-        numpy
-    
-    Run on Ubuntu :
-        sudo apt update
-        sudo apt-get python3
-        pip install numpy
-        cd ./{ Folder containing Game files }
-        python3 main.py
+-   Python3
 
-    For Mac and Windows Users : 
-        - Shift to Linux or figure yourself 
+-   Python3 packages :
+      1)   sys
+      2)   termios
+      3)   tty
+      4)   signal
+      5)   numpy
+    
+-   Runing on Linux distributions :
+      +   sudo apt update
+      +   sudo apt-get python3
+      +   cd <folder_containing_the_game_files>
+      +   python3 main.py
 
 ## Controls :
-    a : move left
-    d : move right
-    k : release ball
-    g : start game
-    q : quit game
- 
-## Files :
- ### art :
-    Just some Ascii Arts
- 
- ### ball :
-    Handles functionality of Ball like collision etc. Uses Inheritence.
+-  `g` : start the game
+-  `d` : move paddle to the right
+-  `a` : move paddle to right
+-  `k` : release ball
+-  `j` : fire the ball
+-  `q` : quit the game
 
- ### bricks : 
-    Used to render Bricks on Screen and also delete them
+## Cheats :innocent: :
+-  `f` : to move to next level
 
- ### gametop : 
-    update top values like Score,Time etc. etc.
+## File Content :
+-  [art.py](art.py) :
+   -  Contains Important Ascii arts, which are used int the programme.
+-  [ball.py](ball.py) :
+   -  Handles functionality of Ball like collision-detection, speed-control etc.
+-  [bricks.py](bricks.py) : 
+   -  Contains code to render, delete & update bricks.
+-  [gametop.py](gametop.py) : 
+   -  Updates top values like Score, Time etc.
+-  [headerfile.py](headerfile.py) :
+   -  It contains some important attributes, constants & definations which are used in the Game.
+-  [inherit_brick.py](inherit-brick.py) :
+   -  Defines different types of bricks to render on the screen.
+-  [items.py](items.py) :
+   -  Contains some important items like instructions etc.
+-  [keypressed.py](keypressed.py) : 
+   -  Containing functionality to take input from the User.
+-  [main.py](main.py) :
+   -  Calls the game.
+-  [mainrunning.py](mainrunning.py) :
+   -  Contains main game flow logic.
+-  [paddle.py](paddle.py) :
+   -  Handles paddle functionality.
+-  [powerup.py](powerup.py) :
+   -  Contains classes & function for Powerup using function overiding method
+-  [screen.py](screen.py) :
+   -  Contains code for creating, writing, clearing the screen.
 
- ### headerfile :
-    It contains some important attributes or definations used in the Game
+## Screenshots :
+   
+> **Start Menu**
+![Start-Menu](funstuff/start.png)
 
- ### inherit_bricks :
-    It just defines different types pf bricks used to render on the screen
+> **Level 1**
+![Level1](funstuff/level1.png)
 
- ### items :
-    Contains some important items like instructions etc.
-
- ### keypressed : 
-    Used to take input from the User
-
- ### main :
-    Calls the game
-
- ###  mainrunning :
-    Contains the main game flow
-
- ### paddle :
-    Handles paddle functionality
-
- ### powerup :
-    Contains classes and function for Powerup using function overiding method
-
- ### screen :
-    Screen is created here
-
-## Some concepts Concepts :
- ### Inheritance :
-    > Inheritance allows us to define a class that inherits all the methods and properties from 
-    another class. Child class is the class that inherits from another class, also called derived
-    class.
-    > Implemeted in ball.py
-
- ### Polymorphism :
-    > In Python, Polymorphism lets us define methods in the child class that have the same 
-    name as the methods in the parent class. In inheritance, the child class inherits 
-    the methods from the parent class.
-    > Implemented in powerup.py
-
- ### Encapsulation :
-    > Encapsulation in Python is the process of wrapping up variables and methods into a 
-    single entity.In programming, a class is an example that wraps all the variables and 
-    methods defined inside it.
-    > Whole code is based on it
-
- ### Abstraction :
-    > Abstraction in Python is the process of hiding the real implementation of an application 
-    from the user and emphasizing only on usage of it.
-    > Done!
+> **Boss Level**
+![Boss](funstuff/boss.png)

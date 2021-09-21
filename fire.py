@@ -47,6 +47,7 @@ class fire:
         return self.alive
     
     #flag = True , draw otherwise clear
+
     def fdraw(self,screen_array,flag):
         if(self.alive):
             if(flag):

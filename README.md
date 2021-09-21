@@ -18,8 +18,8 @@
 
 ## Controls :
 -  `g` : start the game
--  `d` : move paddle to the right
--  `a` : move paddle to right
+-  `d` : move paddle to right
+-  `a` : move paddle to left
 -  `k` : release ball
 -  `j` : fire the ball
 -  `q` : quit the game
@@ -38,7 +38,7 @@
    -  Updates top values like Score, Time etc.
 -  [headerfile.py](headerfile.py) :
    -  It contains some important attributes, constants & definations which are used in the Game.
--  [inherit_brick.py](inherit-brick.py) :
+-  [inherit_brick.py](inherit_brick.py) :
    -  Defines different types of bricks to render on the screen.
 -  [items.py](items.py) :
    -  Contains some important items like instructions etc.
